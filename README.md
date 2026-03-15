@@ -39,3 +39,12 @@ npm run dev
 Then just in your browser navigate to http://localhost:8080/
 
 Alternatively run `npm run build` to run webpack and save the output in the `built/` directory, and you can deploy the static assets at your will.
+
+
+2026 Package dependancies are outdated. Steps to run currently:
+
+
+nvm install 12
+nvm use 12
+npm install
+npm run dev

@@ -35,8 +35,7 @@ export class Card {
     public name: string = "Card Name";
 
     /** The type of the card, used for background generation */
-    public type: "Equipment" | "Hero" | "Location" | "Starter" |
-                 "Super Power" | "Villain" | "Weakness" = "Starter";
+    public type: "Equipment" | "Hero" | "Hostage" | "Location" | "Starter" | "Crisis"|  "Super Power" | "Villain" | "Typeless" | "Weakness" = "Starter";
 
     /** If this card is a variant with black background text */
     public variant: boolean = false;
@@ -376,7 +375,7 @@ export class Card {
      * Renders the type part of the card (text, not background)
      */
     private renderType(): void {
-        if (this.oversized || this.type === "Weakness") {
+        if (this.oversized || this.type === "Weakness"|| this.type === "Hostage"|| this.type === "Crisis"|| this.type === "Typeless") {
             return;
         }
 

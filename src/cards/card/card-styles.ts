@@ -149,6 +149,20 @@ const styles: {
         },
     },
 
+    Hostage: {
+        name: {
+            fill: "#986E4C",
+        },
+    },
+    Crisis: {
+        text: {
+            fill: "#ffffff",
+            fontFamily: "TradeGothic",
+            fontSize: 38,
+            letterSpacing: -0.84,
+            padding: 0,
+        },
+    },
     Starter: {
         name: {
             fill: "#fff200",
