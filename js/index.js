@@ -1,31 +1,1147 @@
-webpackJsonp([0],{
+webpackJsonp([0],[
+/* 0 */,
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ 142:
+"use strict";
+
+
+function __export(m) {
+    for (var p in m) {
+        if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+    }
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(165));
+__export(__webpack_require__(68));
+__export(__webpack_require__(166));
+__export(__webpack_require__(69));
+function cloneExceptEmpty() {
+    var result = {};
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+    }
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = args[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var arg = _step.value;
+
+            for (var key in arg) {
+                if (Object.prototype.hasOwnProperty.call(arg, key) && arg[key] !== "") {
+                    result[key] = arg[key];
+                }
+            }
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+
+    return result;
+}
+exports.cloneExceptEmpty = cloneExceptEmpty;
+function clone() {
+    var _Object$assign;
+
+    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+    }
+
+    return (_Object$assign = Object.assign).call.apply(_Object$assign, [Object, {}].concat(args));
+}
+exports.clone = clone;
+
+/***/ }),
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _v = __webpack_require__(143);
+
+var uuid = _interopRequireWildcard(_v);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var lookups = new Map();
+
+module.exports = function (lookup) {
+    var id = void 0;
+
+    if (lookup) {
+        if (lookups.has(lookup)) {
+            id = lookups.get(lookup);
+            lookups.delete(lookup);
+        } else {
+            id = uuid.default();
+            lookups.set(lookup, id);
+        }
+    }
+
+    return id || uuid.default();
+};
+
+/***/ }),
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function __export(m) {
+    for (var p in m) {
+        if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+    }
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var tab_1 = __webpack_require__(160);
+exports.Tab = tab_1.default;
+__webpack_require__(382);
+__export(__webpack_require__(161));
+
+/***/ }),
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var path_1 = __webpack_require__(5);
+var PIXI = __webpack_require__(57);
+var fonts_1 = __webpack_require__(164);
+var wrapper = {
+    fontsLoaded: false,
+    pixiLoaded: false,
+    callback: false
+};
+function checkIfInitialized() {
+    if (wrapper.fontsLoaded && wrapper.pixiLoaded && wrapper.callback) {
+        wrapper.callback();
+    }
+}
+var textures = {};
+function requireAll(r) {
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = r.keys()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var key = _step.value;
+
+            var textureName = path_1.basename(key, ".png");
+            var texturePath = r(key);
+            textures[textureName] = texturePath;
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+}
+requireAll(__webpack_require__(144));
+exports.initialTextures = textures;
+exports.initialTexturesToKey = new Map();
+function initialize(callback) {
+    wrapper.callback = callback;
+    PIXI.utils.skipHello();
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
+
+    try {
+        for (var _iterator2 = Object.keys(exports.initialTextures)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var key = _step2.value;
+
+            PIXI.loader.add(key, exports.initialTextures[key]);
+        }
+    } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                _iterator2.return();
+            }
+        } finally {
+            if (_didIteratorError2) {
+                throw _iteratorError2;
+            }
+        }
+    }
+
+    PIXI.loader.load(function () {
+        wrapper.pixiLoaded = true;
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+            for (var _iterator3 = Object.keys(exports.initialTextures)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                var key = _step3.value;
+
+                exports.initialTexturesToKey.set(PIXI.loader.resources[key].texture, key);
+            }
+        } catch (err) {
+            _didIteratorError3 = true;
+            _iteratorError3 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                    _iterator3.return();
+                }
+            } finally {
+                if (_didIteratorError3) {
+                    throw _iteratorError3;
+                }
+            }
+        }
+
+        checkIfInitialized();
+    });
+    requireAll(__webpack_require__(144));
+}
+exports.initialize = initialize;
+fonts_1.onFontsLoaded(function (error) {
+    if (error) {
+        console.error(error);
+    } else {
+        wrapper.fontsLoaded = true;
+        checkIfInitialized();
+    }
+});
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CardOptionsList = [{
+    name: "Name",
+    type: "text",
+    description: "The name of the card."
+}, {
+    name: "Type",
+    type: "text",
+    description: "The card type. Must be \"Equipment\", \"Hero\", \"Location\", " + "\"Starter\", \"Super Power\", \"Villain\", or \"Weakness\". " + "Alternatively \"Super Hero\" or \"Super Villain\" are " + "shorthand for their oversized versions"
+}, {
+    name: "Variant",
+    type: "checkbox",
+    description: "If enabled, the card's textbox will be black instead of " + "white, such as for the Villain Stack. If the type is " + "\"Hero\" or \"Villain\", then they also gain the special " + "\"Super Hero/Villain\" subtype. This option has no effect " + "on Oversized card"
+}, {
+    name: "Oversized",
+    type: "checkbox",
+    description: "If enabled, the card becomes an oversized player card. " + "This option is only valid for \"Hero\" and \"Villain\" types," + " and Sub Type, Cost, and Victory Points are ignored."
+}, {
+    name: "Type Prefix",
+    type: "text",
+    description: "Some text to place in front of the card's type. " + "Ignored on oversized cards."
+}, {
+    name: "Victory Points",
+    type: "number",
+    description: "The number of Victory Points this is worth at the end. " + "Can be negative or \"*\". Ignored on Oversized cards."
+}, {
+    name: "Cost",
+    type: "number",
+    description: "How much this card costs. Ignored on Oversized cards."
+}, {
+    name: "Text",
+    type: "text",
+    description: "The card text describing what this card does. It will " + "auto format in both font size and bold/italics. Words " + "like \"+2 Power\", \"Attack\", and other common <abbr " + "title=\"Cryptozoic Game Engine\">CGE</abbr> terms will " + "automatically be bolded or italics. To manually bold text" + " use [b]bold this[/b], and to italic use [i]italic " + "this[/i]. Newlines can be used, and two sequential " + "newlines indicate a break between sections of text."
+}, {
+    name: "Image URL",
+    type: "url",
+    description: "URL to the image for this card. We recommend using a site" + " like <a href=\"https://imgur.com/\">imgur</a> to manage " + "your images. The image will be automatically centered on " + "the card. Normal cards will be 750px \xD7 523px in size, and" + " Oversized ones will be 900px \xD7 741px."
+}, {
+    name: "Logo URL",
+    type: "url",
+    description: "URL to the image for the logo in the top right of this " + "card. For both sizes of cards the image will be rendered " + "at 175px \xD7 175px."
+}, {
+    name: "Logo Scale",
+    type: "number",
+    description: "A number between 0.00 to 1.00 that scales the logo down " + "so it better fits on cards."
+}, {
+    name: "Copyright",
+    type: "text",
+    description: "The year and company the card is Copyright from. The \xA9 " + "symbol is added automatically, and if this is omitted " + "just the year will be displayed, e.g. " + ("\"\xA9" + new Date().getFullYear() + "\".")
+}, {
+    name: "Legal",
+    type: "text",
+    description: "The legal disclaimer at the bottom of the card. Often has" + " a set notation such as \"(s01)\"."
+}, {
+    name: "Subtype",
+    type: "text",
+    description: "An additional type describing the card, such as its owner" + " in the Street Fighter Deck Building Game."
+}, {
+    name: "Set",
+    type: "text",
+    description: "The set this card is a part of."
+}, {
+    name: "Set Text Color",
+    type: "color",
+    description: "The hex color to use for the text on the set indicator."
+}, {
+    name: "Set Background Color",
+    type: "color",
+    description: "The hex color to use for the background rectangle for the" + " set indication."
+}, {
+    name: "Preferred Text Size",
+    type: "number",
+    description: "The text size to start at when fitting text on the card. " + "Defaults to 38. <em>Note</em>: if the text does not fit " + "at this size it will be downsized until it fits."
+}, {
+    name: "Also Bold",
+    type: "text list",
+    description: "List of words separated by commas and a space \", \" of " + "words to bold even if they lack bold tags ([b]word[/b])."
+}, {
+    name: "Round Corners",
+    type: "checkbox",
+    description: "If the corners should be rounded. By default disabled " + "for the deck building tool, and enabled for the live " + "editor."
+}];
+exports.CardOptions = {};
+var _iteratorNormalCompletion = true;
+var _didIteratorError = false;
+var _iteratorError = undefined;
+
+try {
+    for (var _iterator = exports.CardOptionsList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var cardOption = _step.value;
+
+        exports.CardOptions[cardOption.name] = cardOption;
+    }
+} catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+} finally {
+    try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+        }
+    } finally {
+        if (_didIteratorError) {
+            throw _iteratorError;
+        }
+    }
+}
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function __export(m) {
+    for (var p in m) {
+        if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+    }
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(149));
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var events_1 = __webpack_require__(19);
+var string_1 = __webpack_require__(69);
+var uuid = __webpack_require__(143);
+
+var EditableTable = function (_events_1$EventEmitte) {
+    _inherits(EditableTable, _events_1$EventEmitte);
+
+    function EditableTable(parent, columns, rows) {
+        _classCallCheck(this, EditableTable);
+
+        var _this = _possibleConstructorReturn(this, (EditableTable.__proto__ || Object.getPrototypeOf(EditableTable)).call(this));
+
+        _this.table = document.createElement("table");
+        _this.headingsRow = document.createElement("tr");
+        _this.headings = new Map();
+        _this.parent = parent;
+        _this.columns = [];
+        _this.rows = [];
+        _this.table.classList.add("gui-table");
+        _this.table.appendChild(_this.headingsRow);
+        _this.parent.appendChild(_this.table);
+        if (columns) {
+            _this.addColumns(columns);
+        }
+        if (rows) {
+            _this.addRows(rows);
+        }
+        return _this;
+    }
+
+    _createClass(EditableTable, [{
+        key: "addColumns",
+        value: function addColumns(columns) {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = columns[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var column = _step.value;
+
+                    this.formatColumn(column);
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            this.updateColumns();
+        }
+    }, {
+        key: "addColumn",
+        value: function addColumn(column) {
+            this.formatColumn(column);
+            this.updateColumns();
+        }
+    }, {
+        key: "addRows",
+        value: function addRows(rows) {
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = rows[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var row = _step2.value;
+
+                    this.formatRow(row);
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+
+            this.updateRows(true);
+        }
+    }, {
+        key: "addRow",
+        value: function addRow(row) {
+            this.formatRow(row);
+            this.updateRows(true);
+        }
+    }, {
+        key: "getRow",
+        value: function getRow(index) {
+            if (index > -1 && index < this.rows.length) {
+                return this.rows[index];
+            }
+            throw new RangeError(index + " not in range of table with " + this.rows.length + " rows.");
+        }
+    }, {
+        key: "getAllRows",
+        value: function getAllRows() {
+            return this.rows.slice();
+        }
+    }, {
+        key: "deleteRow",
+        value: function deleteRow(index) {
+            if ((typeof index === "undefined" ? "undefined" : _typeof(index)) === "object") {
+                index = index.index;
+            }
+            this.getRow(index);
+            var row = this.rows[index];
+            this.rows.splice(index, 1);
+            for (var i = index; i < this.rows.length; i++) {
+                this.rows[i].index = i;
+            }
+            row.tr.remove();
+            this.emit(EditableTable.EventSymbols.rowDeleted, row);
+        }
+    }, {
+        key: "formatColumn",
+        value: function formatColumn(column) {
+            if (typeof column === "string") {
+                column = {
+                    id: column
+                };
+            }
+            if (!column.name) {
+                column.name = column.id;
+            }
+            if (!column.id) {
+                column.id = string_1.toCamelCase(column.name);
+            }
+            column.type = column.type || "string";
+            switch (column.type) {
+                case "string":
+                    column.defaultValue = "";
+                    column.transform = column.transform || String;
+                    break;
+                case "number":
+                    column.defaultValue = 0;
+                    column.transform = column.transform || Number;
+                    break;
+                case "boolean":
+                    column.transform = column.transform || Boolean;
+                    if (column.defaultValue === undefined) {
+                        column.defaultValue = Boolean(column.defaultValue);
+                    }
+                    break;
+                case "node":
+                    column.notEditable = true;
+                    column.transform = function (val) {
+                        return val;
+                    };
+                    if (!column.defaultValue) {
+                        throw new Error("Node values require default value to clone from");
+                    }
+                    break;
+            }
+            this.columns.push(column);
+        }
+    }, {
+        key: "updateColumns",
+        value: function updateColumns() {
+            if (this.headings.size < this.columns.length) {
+                var newColumns = this.columns.slice(this.headings.size);
+                var _iteratorNormalCompletion3 = true;
+                var _didIteratorError3 = false;
+                var _iteratorError3 = undefined;
+
+                try {
+                    for (var _iterator3 = newColumns[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                        var column = _step3.value;
+
+                        var hr = document.createElement("th");
+                        hr.innerHTML = column.name;
+                        this.headingsRow.appendChild(hr);
+                        this.headings.set(column.id, hr);
+                    }
+                } catch (err) {
+                    _didIteratorError3 = true;
+                    _iteratorError3 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                            _iterator3.return();
+                        }
+                    } finally {
+                        if (_didIteratorError3) {
+                            throw _iteratorError3;
+                        }
+                    }
+                }
+
+                this.updateRows(false);
+            }
+        }
+    }, {
+        key: "formatRow",
+        value: function formatRow(values) {
+            if (values instanceof Array) {
+                var obj = {};
+                for (var i = 0; i < this.columns.length; i++) {
+                    var column = this.columns[i];
+                    obj[column.id] = values[i];
+                }
+                values = obj;
+            }
+            var row = {
+                index: this.rows.length,
+                values: values,
+                tr: document.createElement("tr"),
+                tds: []
+            };
+            this.rows.push(row);
+            var _iteratorNormalCompletion4 = true;
+            var _didIteratorError4 = false;
+            var _iteratorError4 = undefined;
+
+            try {
+                for (var _iterator4 = this.columns[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                    var _column = _step4.value;
+
+                    if (_column.type === "node") {
+                        var cloning = _column.defaultValue;
+                        var clone = cloning.cloneNode();
+                        clone.innerHTML = cloning.innerHTML;
+                        row.values[_column.id] = clone;
+                    }
+                    if (_column.allowedValues) {
+                        if (_column.allowedValues.indexOf(row.values[_column.id]) === -1) {
+                            row.values[_column.id] = _column.allowedValues[0];
+                        }
+                    }
+                    if (row.values[_column.id] === undefined) {
+                        row.values[_column.id] = _column.defaultValue;
+                    }
+                    row.values[_column.id] = _column.transform(row.values[_column.id], row);
+                }
+            } catch (err) {
+                _didIteratorError4 = true;
+                _iteratorError4 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                        _iterator4.return();
+                    }
+                } finally {
+                    if (_didIteratorError4) {
+                        throw _iteratorError4;
+                    }
+                }
+            }
+
+            this.emit(EditableTable.EventSymbols.rowAdded, row.values, row);
+        }
+    }, {
+        key: "updateRows",
+        value: function updateRows(added) {
+            var _this2 = this;
+
+            var _iteratorNormalCompletion5 = true;
+            var _didIteratorError5 = false;
+            var _iteratorError5 = undefined;
+
+            try {
+                var _loop = function _loop() {
+                    var row = _step5.value;
+
+                    if (!row.tr.parentElement) {
+                        _this2.table.appendChild(row.tr);
+                    }
+
+                    var _loop2 = function _loop2(i) {
+                        var id = "cell-" + uuid();
+                        var column = _this2.columns[i];
+                        var td = document.createElement("td");
+                        td.setAttribute("class", "column-" + column.id);
+                        var wrapper = document.createElement("div");
+                        td.appendChild(wrapper);
+                        if (column.type === "node") {
+                            wrapper.appendChild(row.values[column.id]);
+                        }
+                        if (!column.notEditable) {
+                            var child = void 0;
+                            var event = "change";
+                            var checkbox = false;
+                            if (column.allowedValues) {
+                                child = document.createElement("select");
+                                var _iteratorNormalCompletion6 = true;
+                                var _didIteratorError6 = false;
+                                var _iteratorError6 = undefined;
+
+                                try {
+                                    for (var _iterator6 = column.allowedValues[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                                        var value = _step6.value;
+
+                                        var option = document.createElement("option");
+                                        option.setAttribute("value", String(value));
+                                        option.innerText = String(value);
+                                        child.appendChild(option);
+                                    }
+                                } catch (err) {
+                                    _didIteratorError6 = true;
+                                    _iteratorError6 = err;
+                                } finally {
+                                    try {
+                                        if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                                            _iterator6.return();
+                                        }
+                                    } finally {
+                                        if (_didIteratorError6) {
+                                            throw _iteratorError6;
+                                        }
+                                    }
+                                }
+                            } else if (column.longText) {
+                                child = document.createElement("textarea");
+                            } else {
+                                child = document.createElement("input");
+                                var inputType = "text";
+                                switch (column.type) {
+                                    case "boolean":
+                                        inputType = "checkbox";
+                                        event = "click";
+                                        checkbox = true;
+                                        var label = document.createElement("label");
+                                        label.setAttribute("for", id);
+                                        wrapper.appendChild(label);
+                                        break;
+                                    case "number":
+                                        inputType = "number";
+                                        break;
+                                    case "string":
+                                        if (column.color) {
+                                            inputType = "color";
+                                        }
+                                        break;
+                                }
+                                child.setAttribute("type", inputType);
+                            }
+                            if (checkbox) {
+                                child.checked = row.values[column.id];
+                            } else {
+                                child.value = String(row.values[column.id]);
+                            }
+                            if (column.inputAttributes) {
+                                var _iteratorNormalCompletion7 = true;
+                                var _didIteratorError7 = false;
+                                var _iteratorError7 = undefined;
+
+                                try {
+                                    for (var _iterator7 = Object.keys(column.inputAttributes)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+                                        var attribute = _step7.value;
+
+                                        child.setAttribute(attribute, String(column.inputAttributes[attribute]));
+                                    }
+                                } catch (err) {
+                                    _didIteratorError7 = true;
+                                    _iteratorError7 = err;
+                                } finally {
+                                    try {
+                                        if (!_iteratorNormalCompletion7 && _iterator7.return) {
+                                            _iterator7.return();
+                                        }
+                                    } finally {
+                                        if (_didIteratorError7) {
+                                            throw _iteratorError7;
+                                        }
+                                    }
+                                }
+                            }
+                            child.id = id;
+                            wrapper.insertBefore(child, wrapper.firstChild);
+                            var lastValue = child.value;
+                            child.addEventListener(event, function () {
+                                var newValue = child.value;
+                                if (checkbox) {
+                                    newValue = child.checked;
+                                }
+                                var untransformed = newValue;
+                                newValue = column.transform(newValue, row);
+                                if (lastValue !== newValue) {
+                                    row.values[column.id] = column.transform(newValue, row);
+                                    _this2.emit(EditableTable.EventSymbols.cellChanged, row, column, newValue);
+                                    lastValue = newValue;
+                                }
+                                if (newValue !== untransformed) {
+                                    if (checkbox) {
+                                        child.checked = newValue;
+                                    } else {
+                                        child.value = newValue;
+                                    }
+                                }
+                            });
+                        } else if (column.type !== "node") {
+                            wrapper.innerHTML = String(row.values[column.id]);
+                        }
+                        if (column.rowsTitle) {
+                            td.title = column.rowsTitle;
+                        }
+                        row.tds.push(td);
+                        row.tr.appendChild(td);
+                    };
+
+                    for (var i = row.tds.length; i < _this2.columns.length; i++) {
+                        _loop2(i);
+                    }
+                };
+
+                for (var _iterator5 = this.rows[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                    _loop();
+                }
+            } catch (err) {
+                _didIteratorError5 = true;
+                _iteratorError5 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                        _iterator5.return();
+                    }
+                } finally {
+                    if (_didIteratorError5) {
+                        throw _iteratorError5;
+                    }
+                }
+            }
+        }
+    }]);
+
+    return EditableTable;
+}(events_1.EventEmitter);
+
+EditableTable.EventSymbols = {
+    rowAdded: Symbol("rowAdded"),
+    cellChanged: Symbol("cellChanged"),
+    rowDeleted: Symbol("rowDeleted")
+};
+exports.EditableTable = EditableTable;
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function clamp(val, min, max) {
+    return Math.max(min, Math.min(max, val));
+}
+exports.clamp = clamp;
+function doRectanglesOverlap(r1, r2) {
+    return !(r2.x > r1.x + r1.width || r2.x + r2.width < r1.x || r2.y > r1.y + r1.height || r2.y + r2.height < r1.y);
+}
+exports.doRectanglesOverlap = doRectanglesOverlap;
+function doesCircleOverlapRectangle(rect, circle) {
+    var distX = Math.abs(circle.x - rect.x - rect.width / 2);
+    var distY = Math.abs(circle.y - rect.y - rect.height / 2);
+    if (distX > rect.width / 2 + circle.radius || distY > rect.height / 2 + circle.radius) {
+        return false;
+    }
+    if (distX <= rect.width / 2 || distY <= rect.height / 2) {
+        return true;
+    }
+    var dx = distX - rect.width / 2;
+    var dy = distY - rect.height / 2;
+    return dx * dx + dy * dy <= circle.radius * circle.radius;
+}
+exports.doesCircleOverlapRectangle = doesCircleOverlapRectangle;
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function tryToCast(value) {
+    if (typeof value === "string") {
+        var asNum = Number(value);
+        if (!isNaN(asNum)) {
+            value = asNum;
+        } else {
+            var lowered = value.toLowerCase();
+            if (lowered === "false") {
+                value = false;
+            } else if (lowered === "true") {
+                value = true;
+            }
+        }
+    }
+    return value;
+}
+exports.tryToCast = tryToCast;
+function toCamelCase(str) {
+    return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (matched, index) {
+        if (+matched === 0) {
+            return "";
+        }
+        return index === 0 ? matched.toLowerCase() : matched.toUpperCase();
+    });
+}
+exports.toCamelCase = toCamelCase;
+function toDashCase(str) {
+    if (!str) {
+        return "";
+    }
+    str = str[0].toLowerCase() + str.substr(1);
+    str = replaceAll(str, " ", "");
+    return str.replace(/([A-Z])/g, function (sub) {
+        return "-" + sub.toLowerCase();
+    });
+}
+exports.toDashCase = toDashCase;
+function escapeRegExp(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+exports.escapeRegExp = escapeRegExp;
+function removeTags(str) {
+    var replacement = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+    return str.replace(/(<([^>]+)>)/ig, replacement);
+}
+exports.removeTags = removeTags;
+function stripTagsFromString(str) {
+    var div = document.createElement("div");
+    div.innerHTML = str;
+    return div.textContent || div.innerText || "";
+}
+exports.stripTagsFromString = stripTagsFromString;
+function replaceAll(target, search) {
+    var replacement = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+
+    return target.replace(new RegExp(escapeRegExp(search), "g"), replacement);
+}
+exports.replaceAll = replaceAll;
+function surroundText(search, regex, front, end) {
+    var matches = [];
+    while (true) {
+        var result = regex.exec(search);
+        if (result) {
+            matches.push({
+                start: result.index,
+                end: result.index + result[0].length,
+                str: result[0]
+            });
+        } else {
+            break;
+        }
+    }
+    var addLength = front.length + end.length;
+    var addedLength = 0;
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = matches[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var match = _step.value;
+
+            search = [search.substring(0, match.start + addedLength), front, match.str, end, search.substring(match.end + addedLength)].join("");
+            addedLength += addLength;
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+
+    return search;
+}
+exports.surroundText = surroundText;
+
+/***/ }),
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./Starter.png": 186,
-	"./background-cost.png": 187,
-	"./background-vp-negative.png": 188,
-	"./background-vp-normal.png": 189,
-	"./crisis.png": 190,
-	"./equipment .png": 191,
-	"./equipment.png": 192,
-	"./hero .png": 193,
-	"./hero.png": 194,
-	"./hostage.png": 195,
-	"./location.png": 196,
-	"./oversized-super-hero.png": 197,
-	"./oversized-super-villain.png": 198,
-	"./starter.png": 199,
-	"./super-hero.png": 200,
-	"./super-power.png": 201,
-	"./super-villain.png": 202,
-	"./typeless.png": 203,
-	"./villain .png": 204,
-	"./villain.png": 205,
-	"./vp-variable.png": 206,
-	"./weakness.png": 207
+	"./Starter.png": 188,
+	"./background-cost.png": 189,
+	"./background-vp-negative.png": 190,
+	"./background-vp-normal.png": 191,
+	"./crisis.png": 192,
+	"./equipment .png": 193,
+	"./equipment.png": 194,
+	"./hero .png": 195,
+	"./hero.png": 196,
+	"./hostage.png": 197,
+	"./location.png": 198,
+	"./oversized-super-hero.png": 199,
+	"./oversized-super-villain.png": 200,
+	"./starter.png": 201,
+	"./super-hero.png": 202,
+	"./super-power.png": 203,
+	"./super-villain.png": 204,
+	"./typeless.png": 205,
+	"./villain .png": 206,
+	"./villain.png": 207,
+	"./vp-variable.png": 208,
+	"./weakness.png": 209
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -41,11 +1157,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 142;
+webpackContext.id = 144;
 
 /***/ }),
-
-/***/ 143:
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57,17 +1172,17 @@ function __export(m) {
     }
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(160));
+__export(__webpack_require__(162));
 
 /***/ }),
-
-/***/ 145:
+/* 146 */,
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(176);
+var content = __webpack_require__(178);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -75,7 +1190,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(13)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -92,8 +1207,7 @@ if(false) {
 }
 
 /***/ }),
-
-/***/ 146:
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -285,8 +1399,7 @@ function getStyle(type, part) {
 exports.getStyle = getStyle;
 
 /***/ }),
-
-/***/ 147:
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -298,7 +1411,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = __webpack_require__(9);
-var card_styles_1 = __webpack_require__(146);
+var card_styles_1 = __webpack_require__(148);
 exports.CARD_MAX_WIDTH = 900;
 exports.CARD_MAX_HEIGHT = 1200;
 
@@ -767,8 +1880,7 @@ Card.autoBoldKeywords = ["+Power", ":", "Attacked", "Attack", "Defense", "Ongoin
 exports.Card = Card;
 
 /***/ }),
-
-/***/ 148:
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -783,14 +1895,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var csvParse = __webpack_require__(177);
-var events_1 = __webpack_require__(18);
-var JSZip = __webpack_require__(240);
-var PIXI = __webpack_require__(56);
-var initialize_1 = __webpack_require__(63);
+var csvParse = __webpack_require__(179);
+var events_1 = __webpack_require__(19);
+var JSZip = __webpack_require__(253);
+var PIXI = __webpack_require__(57);
+var initialize_1 = __webpack_require__(64);
 var utils_1 = __webpack_require__(9);
-var card_1 = __webpack_require__(65);
-var readmeText = __webpack_require__(342);
+var card_1 = __webpack_require__(66);
+var readmeText = __webpack_require__(355);
 var MAX_TEXTURE_LENGTH = 4096;
 
 var DeckBuilder = function (_events_1$EventEmitte) {
@@ -1184,8 +2296,7 @@ DeckBuilder.EventSymbols = {
 exports.DeckBuilder = DeckBuilder;
 
 /***/ }),
-
-/***/ 149:
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1198,8 +2309,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var tabular_1 = __webpack_require__(22);
-var entireReadme = __webpack_require__(238);
+var tabular_1 = __webpack_require__(23);
+var entireReadme = __webpack_require__(251);
 
 var AboutTab = function (_tabular_1$Tab) {
     _inherits(AboutTab, _tabular_1$Tab);
@@ -1247,8 +2358,7 @@ var AboutTab = function (_tabular_1$Tab) {
 exports.default = AboutTab;
 
 /***/ }),
-
-/***/ 150:
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1263,14 +2373,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var filesaver = __webpack_require__(210);
+var filesaver = __webpack_require__(223);
 var path_1 = __webpack_require__(5);
-var deck_builder_1 = __webpack_require__(148);
-var tabular_1 = __webpack_require__(22);
+var deck_builder_1 = __webpack_require__(150);
+var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
-var store = __webpack_require__(137);
-var hbs = __webpack_require__(215);
-__webpack_require__(366);
+var store = __webpack_require__(139);
+var hbs = __webpack_require__(228);
+__webpack_require__(379);
 var tabTemplate = utils_1.template(hbs);
 
 var DeckGeneratorTab = function (_tabular_1$Tab) {
@@ -1449,8 +2559,7 @@ var DeckGeneratorTab = function (_tabular_1$Tab) {
 exports.DeckGeneratorTab = DeckGeneratorTab;
 
 /***/ }),
-
-/***/ 151:
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1462,11 +2571,10 @@ function __export(m) {
     }
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(150));
+__export(__webpack_require__(152));
 
 /***/ }),
-
-/***/ 152:
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1479,12 +2587,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var card_options_1 = __webpack_require__(64);
-var table_1 = __webpack_require__(66);
-var tabular_1 = __webpack_require__(22);
+var card_options_1 = __webpack_require__(65);
+var table_1 = __webpack_require__(67);
+var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
-var hbs = __webpack_require__(216);
-__webpack_require__(367);
+var hbs = __webpack_require__(229);
+__webpack_require__(380);
 var tabTemplate = utils_1.template(hbs);
 var typeTitles = {
     "text": "Normal alphanumeric text.",
@@ -1554,8 +2662,7 @@ var HelpTab = function (_tabular_1$Tab) {
 exports.HelpTab = HelpTab;
 
 /***/ }),
-
-/***/ 153:
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1567,29 +2674,27 @@ function __export(m) {
     }
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(152));
+__export(__webpack_require__(154));
 
 /***/ }),
-
-/***/ 154:
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var about_1 = __webpack_require__(149);
-var deck_generator_1 = __webpack_require__(151);
-var help_1 = __webpack_require__(153);
-var live_editor_1 = __webpack_require__(155);
+var about_1 = __webpack_require__(151);
+var deck_generator_1 = __webpack_require__(153);
+var help_1 = __webpack_require__(155);
+var live_editor_1 = __webpack_require__(157);
 function getTabs() {
     return [new live_editor_1.LiveEditorTab(), new deck_generator_1.DeckGeneratorTab(), new help_1.HelpTab(), new about_1.default()];
 }
 exports.getTabs = getTabs;
 
 /***/ }),
-
-/***/ 155:
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1601,18 +2706,17 @@ function __export(m) {
     }
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(157));
+__export(__webpack_require__(159));
 
 /***/ }),
-
-/***/ 156:
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var card_options_1 = __webpack_require__(64);
+var card_options_1 = __webpack_require__(65);
 var utils_1 = __webpack_require__(9);
 function addTitlesTo(columns) {
     var _iteratorNormalCompletion = true;
@@ -1741,8 +2845,7 @@ exports.cardsRows = [{
 }];
 
 /***/ }),
-
-/***/ 157:
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1757,15 +2860,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var PIXI = __webpack_require__(56);
-var card_1 = __webpack_require__(65);
-var table_1 = __webpack_require__(66);
-var tabular_1 = __webpack_require__(22);
+var PIXI = __webpack_require__(57);
+var card_1 = __webpack_require__(66);
+var table_1 = __webpack_require__(67);
+var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
-var store = __webpack_require__(137);
-var live_editor_tables_1 = __webpack_require__(156);
-var hbs = __webpack_require__(217);
-__webpack_require__(368);
+var store = __webpack_require__(139);
+var live_editor_tables_1 = __webpack_require__(158);
+var hbs = __webpack_require__(230);
+__webpack_require__(381);
 var tabTemplate = utils_1.template(hbs);
 
 var LiveEditorTab = function (_tabular_1$Tab) {
@@ -2109,8 +3212,7 @@ var LiveEditorTab = function (_tabular_1$Tab) {
 exports.LiveEditorTab = LiveEditorTab;
 
 /***/ }),
-
-/***/ 158:
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2132,8 +3234,7 @@ var Tab = function Tab(name, element) {
 exports.default = Tab;
 
 /***/ }),
-
-/***/ 159:
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2148,9 +3249,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var events_1 = __webpack_require__(18);
+var events_1 = __webpack_require__(19);
 var utils_1 = __webpack_require__(9);
-var hbs = __webpack_require__(218);
+var hbs = __webpack_require__(231);
 var tabularTemplate = utils_1.template(hbs);
 
 var Tabular = function (_events_1$EventEmitte) {
@@ -2377,40 +3478,7 @@ Tabular.EventSymbols = {
 exports.Tabular = Tabular;
 
 /***/ }),
-
-/***/ 16:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _v = __webpack_require__(141);
-
-var uuid = _interopRequireWildcard(_v);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-var lookups = new Map();
-
-module.exports = function (lookup) {
-    var id = void 0;
-
-    if (lookup) {
-        if (lookups.has(lookup)) {
-            id = lookups.get(lookup);
-            lookups.delete(lookup);
-        } else {
-            id = uuid.default();
-            lookups.set(lookup, id);
-        }
-    }
-
-    return id || uuid.default();
-};
-
-/***/ }),
-
-/***/ 160:
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2419,11 +3487,11 @@ module.exports = function (lookup) {
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var tabs_1 = __webpack_require__(154);
-var tabular_1 = __webpack_require__(22);
+var tabs_1 = __webpack_require__(156);
+var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
-var hbs = __webpack_require__(219);
-__webpack_require__(370);
+var hbs = __webpack_require__(232);
+__webpack_require__(383);
 var uiTemplate = utils_1.template(hbs);
 
 var UI = function UI(element) {
@@ -2441,7 +3509,7 @@ var UI = function UI(element) {
     document.documentElement.setAttribute("data-browser", navigator.userAgent);
     document.title = this.title + " - " + this.subtitle;
     var faviconLink = document.createElement("link");
-    faviconLink.href = __webpack_require__(209);
+    faviconLink.href = __webpack_require__(214);
     faviconLink.rel = "icon";
     faviconLink.type = "image/png";
     document.head.appendChild(faviconLink);
@@ -2478,18 +3546,17 @@ var UI = function UI(element) {
 exports.UI = UI;
 
 /***/ }),
-
-/***/ 161:
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(144);
-__webpack_require__(145);
-var ui_1 = __webpack_require__(143);
-var initialize_1 = __webpack_require__(63);
+__webpack_require__(146);
+__webpack_require__(147);
+var ui_1 = __webpack_require__(145);
+var initialize_1 = __webpack_require__(64);
 var unloadedMessage = document.createElement("p");
 document.body.appendChild(unloadedMessage);
 unloadedMessage.classList.add("unloaded-message");
@@ -2500,16 +3567,15 @@ initialize_1.initialize(function () {
 });
 
 /***/ }),
-
-/***/ 162:
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var FontFaceObserver = __webpack_require__(211);
-__webpack_require__(371);
+var FontFaceObserver = __webpack_require__(224);
+__webpack_require__(384);
 var fonts = {
     CompactaBT: ["regular", "bold", "italics"],
     CompactaBdBT: ["regular", "bold"],
@@ -2628,8 +3694,7 @@ function onFontsLoaded(callback) {
 exports.onFontsLoaded = onFontsLoaded;
 
 /***/ }),
-
-/***/ 163:
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2680,15 +3745,14 @@ function select(from, query) {
 exports.select = select;
 
 /***/ }),
-
-/***/ 164:
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var math_1 = __webpack_require__(67);
+var math_1 = __webpack_require__(68);
 function newSprite(textureKey, container) {
     var resource = PIXI.loader.resources[textureKey];
     if (!resource) {
@@ -3103,8 +4167,7 @@ function autoSizeAndWrapStyledText(text, width, height, normalStyle) {
 exports.autoSizeAndWrapStyledText = autoSizeAndWrapStyledText;
 
 /***/ }),
-
-/***/ 165:
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3115,286 +4178,392 @@ module.exports = function () {
 };
 
 /***/ }),
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ 170:
-/***/ (function(module, exports) {
+exports = module.exports = __webpack_require__(10)(false);
+// imports
 
-throw new Error("Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (137)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.14.1\n    at module.exports (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:176:18\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:47:3)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:179:3)\n    at NormalModule.build (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:268:15)\n    at Compilation.buildModule (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:146:10)\n    at factoryCallback (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:329:11)");
 
-/***/ }),
+// module
+exports.push([module.i, ".deck-generator-tab .file-uploader-wrapper {\n  display: block;\n  width: 100%;\n  text-align: center; }\n\n.deck-generator-tab .csv-file-selector:disabled + .csv-file-selector-label .file-name, .deck-generator-tab .csv-file-selector:disabled + .csv-file-selector-label .file-button {\n  background-color: #999;\n  border-color: #999;\n  cursor: default; }\n\n.deck-generator-tab .csv-file-selector:disabled + .csv-file-selector-label .file-name {\n  background-color: #ddd; }\n  .deck-generator-tab .csv-file-selector:disabled + .csv-file-selector-label .file-name .none-selected {\n    color: #999; }\n\n.deck-generator-tab .csv-file-selector-label {\n  cursor: pointer;\n  display: inline-block; }\n  .deck-generator-tab .csv-file-selector-label:hover .file-name, .deck-generator-tab .csv-file-selector-label:hover .file-button, .deck-generator-tab .csv-file-selector-label:focus .file-name, .deck-generator-tab .csv-file-selector-label:focus .file-button {\n    background-color: #00adea;\n    border-color: #00adea; }\n  .deck-generator-tab .csv-file-selector-label:hover .file-name, .deck-generator-tab .csv-file-selector-label:focus .file-name {\n    background-color: #ffffff; }\n  .deck-generator-tab .csv-file-selector-label .file-name, .deck-generator-tab .csv-file-selector-label .file-button {\n    float: left;\n    width: 10em;\n    height: 1em;\n    padding: 1em 0;\n    border: 0.125em solid #007AA2;\n    color: #ffffff;\n    box-shadow: 3px 3px #000000; }\n  .deck-generator-tab .csv-file-selector-label .file-name {\n    width: 35em;\n    border-radius: 0.75em 0 0 0.75em;\n    color: #000000;\n    font-weight: bold;\n    white-space: nowrap;\n    overflow: hidden; }\n    .deck-generator-tab .csv-file-selector-label .file-name .none-selected {\n      font-weight: normal;\n      color: #00adea; }\n  .deck-generator-tab .csv-file-selector-label .file-button {\n    background: #007AA2;\n    text-align: center;\n    border-radius: 0 0.75em 0.75em 0; }\n    .deck-generator-tab .csv-file-selector-label .file-button svg {\n      fill: #ffffff;\n      margin-right: 0.25em;\n      height: 0.8em; }\n\n.deck-generator-tab .csv-file-selector {\n  display: none; }\n\n.deck-generator-tab .generate-button {\n  font-size: 2em;\n  padding: 1rem 2rem;\n  display: block;\n  margin: 0 auto; }\n\n.deck-generator-tab .max-cards-x, .deck-generator-tab .max-cards-y {\n  display: inline-block;\n  margin: 1em; }\n\n.deck-generator-tab .generation-options {\n  text-align: center; }\n  .deck-generator-tab .generation-options .max-cards-x {\n    margin-right: 0.25em; }\n  .deck-generator-tab .generation-options .max-cards-y {\n    margin-left: 0.25em; }\n  .deck-generator-tab .generation-options input[type=number] {\n    width: 2.5em;\n    text-align: right; }\n\n.deck-generator-tab .progress-bar-background {\n  width: 75%;\n  margin: 0 auto;\n  min-height: 2em;\n  border: 0.25em solid #555555;\n  background: #999;\n  border-radius: 0.75em; }\n  .deck-generator-tab .progress-bar-background .progress-bar-foreground {\n    min-width: 0%;\n    max-width: 100%;\n    display: inline-block;\n    background: #FFC60E;\n    border-radius: 0.5em;\n    min-height: 1em;\n    padding: 0.5em 0;\n    text-align: center; }\n\n.deck-generator-tab .generation.expanded, .deck-generator-tab .generation:not(.expandable) {\n  padding-bottom: 1em; }\n\n.deck-generator-tab .generation-log {\n  display: block;\n  border: 0.25em solid #007AA2;\n  padding: 1em;\n  border-radius: 0.75em;\n  background-color: #ddd;\n  list-style-type: none; }\n  .deck-generator-tab .generation-log li + li {\n    margin-top: 1em; }\n  .deck-generator-tab .generation-log li:nth-child(odd) {\n    color: #005F7F; }\n  .deck-generator-tab .generation-log li.error {\n    color: #f82104; }\n    .deck-generator-tab .generation-log li.error:nth-child(odd) {\n      color: #ad1703; }\n\n.deck-generator-tab .download-button {\n  font-size: 4em;\n  display: block;\n  margin: 1rem auto 0 auto; }\n  .deck-generator-tab .download-button svg {\n    width: 0.8em;\n    height: 0.8em; }\n", ""]);
 
-/***/ 171:
-/***/ (function(module, exports) {
+// exports
 
-throw new Error("Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (137)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.14.1\n    at module.exports (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:176:18\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:47:3)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:179:3)\n    at NormalModule.build (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:268:15)\n    at Compilation.buildModule (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:146:10)\n    at factoryCallback (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:329:11)");
-
-/***/ }),
-
-/***/ 172:
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (137)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.14.1\n    at module.exports (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:176:18\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:47:3)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:179:3)\n    at NormalModule.build (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:268:15)\n    at Compilation.buildModule (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:146:10)\n    at factoryCallback (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:329:11)");
 
 /***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ 173:
-/***/ (function(module, exports) {
+exports = module.exports = __webpack_require__(10)(false);
+// imports
 
-throw new Error("Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (137)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.14.1\n    at module.exports (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:176:18\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:47:3)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:179:3)\n    at NormalModule.build (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:268:15)\n    at Compilation.buildModule (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:146:10)\n    at factoryCallback (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:329:11)");
 
-/***/ }),
+// module
+exports.push([module.i, ".help-tab table tr:first-child th {\n  text-align: left; }\n  .help-tab table tr:first-child th:nth-child(1) {\n    width: 10em; }\n  .help-tab table tr:first-child th:nth-child(2) {\n    width: 5em; }\n  .help-tab table tr:first-child th:nth-child(3) {\n    padding-left: 0.5em; }\n\n.help-tab table tr:not(first-child) td:nth-child(1) {\n  font-family: monospace; }\n\n.help-tab table tr:not(first-child) td:nth-child(2) {\n  color: #007AA2;\n  font-style: italic;\n  cursor: help; }\n\n.help-tab img {\n  display: block;\n  margin: 0 auto; }\n", ""]);
 
-/***/ 174:
-/***/ (function(module, exports) {
+// exports
 
-throw new Error("Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (137)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.14.1\n    at module.exports (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:176:18\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:47:3)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:179:3)\n    at NormalModule.build (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:268:15)\n    at Compilation.buildModule (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:146:10)\n    at factoryCallback (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:329:11)");
-
-/***/ }),
-
-/***/ 175:
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (137)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.14.1\n    at module.exports (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:176:18\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:47:3)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:179:3)\n    at NormalModule.build (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:268:15)\n    at Compilation.buildModule (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:146:10)\n    at factoryCallback (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:329:11)");
 
 /***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ 176:
-/***/ (function(module, exports) {
+exports = module.exports = __webpack_require__(10)(false);
+// imports
 
-throw new Error("Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (137)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.14.1\n    at module.exports (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at Object.<anonymous> (/workspaces/Custom-Deck-Builder/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1761:14)\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:176:18\n    at loadLoader (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/loadLoader.js:47:3)\n    at iteratePitchingLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/workspaces/Custom-Deck-Builder/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:179:3)\n    at NormalModule.build (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/NormalModule.js:268:15)\n    at Compilation.buildModule (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:146:10)\n    at factoryCallback (/workspaces/Custom-Deck-Builder/node_modules/webpack/lib/Compilation.js:329:11)");
+
+// module
+exports.push([module.i, "@charset \"UTF-8\";\n.input-like, .live-editor table input[type=checkbox] + label:before {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .live-editor table input[type=checkbox] + label:hover:before, .input-like:focus, .live-editor table input[type=checkbox] + label:focus:before {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus, .live-editor table input[type=checkbox] + label:focus:before {\n    background-color: #ffffff; }\n  .input-like:disabled, .live-editor table input[type=checkbox] + label:disabled:before {\n    background-color: #999;\n    cursor: default; }\n\n.live-editor .custom-cards {\n  margin-top: 1em; }\n\n.live-editor .custom-cards-bottom {\n  float: left;\n  width: 100%;\n  text-align: center;\n  margin-top: 0.5em; }\n\n.live-editor .canvases-scale {\n  margin-top: 0.375em;\n  float: left; }\n  .live-editor .canvases-scale .canvases-scale-percent {\n    margin-left: 0.5em;\n    color: #007AA2;\n    text-align: left;\n    width: 3.5em;\n    display: inline-block; }\n\n.live-editor .add-row-button {\n  font-weight: bold;\n  cursor: pointer;\n  float: right;\n  margin-right: 0.625em; }\n\n.live-editor .reset-to-defaults {\n  background-color: #FFC60E;\n  color: #000000; }\n  .live-editor .reset-to-defaults:before {\n    display: inline-block;\n    content: '\\21BB';\n    margin-right: 0.375em; }\n  .live-editor .reset-to-defaults:hover {\n    background-color: #FFD240; }\n    .live-editor .reset-to-defaults:hover:before {\n      -webkit-transform: rotate(360deg);\n      -moz-transform: rotate(360deg);\n      -ms-transform: rotate(360deg);\n      -o-transform: rotate(360deg);\n      transform: rotate(360deg); }\n\n.live-editor table {\n  width: 100%; }\n  .live-editor table input, .live-editor table select, .live-editor table textarea {\n    font-size: 1em;\n    width: 100%;\n    padding: 0.25em; }\n    .live-editor table input[type=number], .live-editor table select[type=number], .live-editor table textarea[type=number] {\n      width: 4em;\n      text-align: right; }\n    .live-editor table input[type=color], .live-editor table select[type=color], .live-editor table textarea[type=color] {\n      padding: 0;\n      background: transparent;\n      border: 0;\n      cursor: pointer; }\n      html[data-browser*=\"Chrome\"] .live-editor table input[type=color], html[data-browser*=\"Chrome\"] .live-editor table select[type=color], html[data-browser*=\"Chrome\"] .live-editor table textarea[type=color] {\n        height: 2em; }\n  .live-editor table input[type=checkbox] {\n    display: none; }\n    .live-editor table input[type=checkbox] + label:before {\n      font-weight: bold;\n      content: '\\A0';\n      cursor: pointer;\n      min-width: 1.5em;\n      padding: 0.25em 0.125em;\n      display: inline-block; }\n    .live-editor table input[type=checkbox]:checked + label:before {\n      content: '\\2713'; }\n  .live-editor table .column-logoScale input, .live-editor table .column-copyright input {\n    width: 3.75em; }\n  .live-editor table input[type=color] {\n    width: 5em; }\n  .live-editor table textarea {\n    height: 3.5em;\n    resize: none; }\n  .live-editor table .column-copyright input {\n    width: 4.5em; }\n  .live-editor table .column-type select, .live-editor table .column-type input, .live-editor table .column-subtype select, .live-editor table .column-subtype input {\n    width: 6em; }\n  .live-editor table .column-legal textarea {\n    width: 20em; }\n  .live-editor table .column-set input, .live-editor table .column-name input, .live-editor table .column-imageURL input, .live-editor table .column-logoURL input {\n    width: 8.75em; }\n  .live-editor table .column-cost input, .live-editor table .column-victoryPoints input {\n    width: 2.5em; }\n  .live-editor table .column-text {\n    width: 30em; }\n    .live-editor table .column-text textarea {\n      width: calc(100% - 1em); }\n  .live-editor table .column-delete > button {\n    font-weight: bold;\n    cursor: pointer; }\n  .live-editor table tr td {\n    text-align: center;\n    padding: 0;\n    opacity: 0; }\n    .live-editor table tr td > div {\n      max-height: 0;\n      margin: 0; }\n    .live-editor table tr td.error input {\n      border-color: #f82104;\n      background-color: #febab1; }\n  .live-editor table tr.shown > td {\n    opacity: 1; }\n    .live-editor table tr.shown > td > div {\n      margin: 0.5em;\n      max-height: 4.5em;\n      overflow: hidden;\n      box-sizing: border-box; }\n\n.live-editor .too-many-cards {\n  clear: both;\n  text-align: center;\n  padding-top: 1em;\n  max-height: 3em; }\n  .live-editor .too-many-cards .warning-block {\n    display: inline-block;\n    text-align: center;\n    background: #A17B00;\n    color: #ffffff;\n    padding: 0.5em;\n    border-radius: 0.75em; }\n    .live-editor .too-many-cards .warning-block a {\n      color: #FFDC6A; }\n      .live-editor .too-many-cards .warning-block a:hover, .live-editor .too-many-cards .warning-block a:focus {\n        color: #27C7FC; }\n  .live-editor .too-many-cards.collapsed {\n    max-height: 0em;\n    opacity: 0; }\n\n.live-editor .canvases {\n  text-align: center; }\n  .live-editor .canvases canvas {\n    margin: 0.75em;\n    display: inline-block;\n    opacity: 0;\n    max-height: 0;\n    max-width: 0;\n    overflow: hidden; }\n    .live-editor .canvases canvas.shown {\n      opacity: 1;\n      max-height: 1200px;\n      max-width: 900px; }\n", ""]);
+
+// exports
+
 
 /***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ 186:
+exports = module.exports = __webpack_require__(10)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".tabular .tabluar-tabs li {\n  cursor: pointer; }\n\n.tabular .tabular-contents {\n  position: relative; }\n  .tabular .tabular-contents .tab-contents {\n    display: block;\n    overflow: hidden;\n    opacity: 0;\n    max-height: 999999px; }\n    .tabular .tabular-contents .tab-contents.current {\n      opacity: 1; }\n    .tabular .tabular-contents .tab-contents.hidden {\n      display: none; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var escape = __webpack_require__(73);
+exports = module.exports = __webpack_require__(10)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".input-like, .custom-deck-builder input, .custom-deck-builder textarea, .custom-deck-builder select, .custom-deck-builder option, .custom-deck-builder button {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .custom-deck-builder input:hover, .custom-deck-builder textarea:hover, .custom-deck-builder select:hover, .custom-deck-builder option:hover, .custom-deck-builder button:hover, .input-like:focus, .custom-deck-builder input:focus, .custom-deck-builder textarea:focus, .custom-deck-builder select:focus, .custom-deck-builder option:focus, .custom-deck-builder button:focus {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus, .custom-deck-builder input:focus, .custom-deck-builder textarea:focus, .custom-deck-builder select:focus, .custom-deck-builder option:focus, .custom-deck-builder button:focus {\n    background-color: #ffffff; }\n  .input-like:disabled, .custom-deck-builder input:disabled, .custom-deck-builder textarea:disabled, .custom-deck-builder select:disabled, .custom-deck-builder option:disabled, .custom-deck-builder button:disabled {\n    background-color: #999;\n    cursor: default; }\n\ninput[type=range] {\n  -webkit-appearance: none; }\n  input[type=range]:focus {\n    outline: none; }\n  input[type=range]::-webkit-slider-runnable-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-webkit-slider-runnable-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-webkit-slider-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer;\n    -webkit-appearance: none;\n    margin-top: -7px; }\n    input[type=range]::-webkit-slider-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-webkit-slider-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-webkit-slider-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]:focus::-webkit-slider-runnable-track {\n    background: #a2a2a2; }\n  input[type=range]::-moz-range-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-moz-range-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-moz-range-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer; }\n    input[type=range]::-moz-range-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-moz-range-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-moz-range-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]::-ms-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    background: transparent;\n    border-color: transparent;\n    border-width: 7px 0;\n    color: transparent; }\n    input[type=range]::-ms-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-ms-fill-lower {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #a2a2a2;\n    border: 0 solid transparent;\n    border-radius: 0; }\n  input[type=range]::-ms-fill-upper {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-ms-fill-upper:disabled {\n      background: #ddd; }\n  input[type=range]::-ms-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer; }\n    input[type=range]::-ms-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-ms-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-ms-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]:focus::-ms-fill-lower {\n    background: #bbb; }\n    input[type=range]:focus::-ms-fill-lower:disabled {\n      background: #ddd; }\n  input[type=range]:focus::-ms-fill-upper {\n    background: #a2a2a2; }\n  input[type=range]:disabled {\n    cursor: default;\n    background: #ddd;\n    opacity: 0.5; }\n\nhtml {\n  overflow-y: scroll; }\n\nbody {\n  background: url(" + escape(__webpack_require__(210)) + ") no-repeat center center fixed;\n  -webkit-background-size: cover;\n  -moz-background-size: cover;\n  -o-background-size: cover;\n  background-size: cover; }\n\n.card-name, .custom-deck-builder h1, .custom-deck-builder h2, .custom-deck-builder h3, .custom-deck-builder h4, .custom-deck-builder h5, .custom-deck-builder h6, .custom-deck-builder .tabular nav ul li {\n  font-size: 2.5em;\n  font-family: CompactaBT, Impact, Charcoal, sans-serif;\n  letter-spacing: -0.025em;\n  margin: 0;\n  color: #FFC60E;\n  text-shadow: 2px 2px #000000;\n  text-transform: uppercase;\n  transform: skewX(-15deg) scaleY(0.75);\n  -webkit-transform: skewX(-15deg) scaleY(0.75);\n  -ms-transform: skewX(-15deg) scaleY(0.75);\n  -moz-transform: skewX(-15deg) scaleY(0.75);\n  -o-transform: skewX(-15deg) scaleY(0.75); }\n\n.expandable {\n  height: 0;\n  overflow: hidden;\n  visibility: hidden;\n  opacity: 0;\n  pointer-events: none; }\n  .expandable.measuring {\n    -webkit-transition: none;\n    -moz-transition: none;\n    -ms-transition: none;\n    -o-transition: none;\n    transition: none;\n    height: auto;\n    position: absolute; }\n  .expandable.expanded {\n    opacity: 1;\n    visibility: visible;\n    height: auto;\n    pointer-events: all; }\n\n.custom-deck-builder {\n  color: #ffffff;\n  width: calc(1280px - 2em);\n  margin: 2em auto 1em auto;\n  font-family: TradeGothic, Verdana, Geneva, sans-serif;\n  font-size: 1em;\n  letter-spacing: -0.025em; }\n  .custom-deck-builder a, .custom-deck-builder a:visited {\n    color: #00adea;\n    text-decoration: underline; }\n    .custom-deck-builder a:hover, .custom-deck-builder a:focus, .custom-deck-builder a:visited:hover, .custom-deck-builder a:visited:focus {\n      color: #CD9D00; }\n  .custom-deck-builder .page-title h1 > span {\n    font-size: 5rem;\n    text-shadow: 5px 5px #000000;\n    display: block;\n    text-align: center; }\n  .custom-deck-builder .page-title h1 .subtitle {\n    color: #FFDC6A;\n    font-size: 3.75rem; }\n  .custom-deck-builder h2, .custom-deck-builder h3, .custom-deck-builder h4, .custom-deck-builder h5, .custom-deck-builder h6 {\n    color: #06C1FF;\n    margin-left: 0.075em; }\n  .custom-deck-builder input, .custom-deck-builder textarea, .custom-deck-builder select, .custom-deck-builder option, .custom-deck-builder button {\n    font-family: TradeGothic, Verdana, Geneva, sans-serif;\n    font-size: 1em;\n    letter-spacing: -0.025em; }\n  .custom-deck-builder button {\n    background-color: #007AA2;\n    border: none;\n    box-shadow: 3px 3px #000000;\n    color: #ffffff;\n    padding: 0.375em 0.5em;\n    cursor: pointer;\n    margin-bottom: 3px; }\n    .custom-deck-builder button:hover, .custom-deck-builder button:focus {\n      background-color: #06C1FF; }\n    .custom-deck-builder button:disabled {\n      background-color: #999;\n      cursor: default; }\n  .custom-deck-builder abbr[title] {\n    text-decoration: none;\n    cursor: help; }\n  .custom-deck-builder .tabular nav {\n    display: block;\n    background: url(" + escape(__webpack_require__(212)) + ") no-repeat center center;\n    -webkit-background-size: cover;\n    -moz-background-size: cover;\n    -o-background-size: cover;\n    background-size: cover;\n    color: #ffffff;\n    border-radius: 1em 1em 0 0;\n    border-bottom: 0.375rem solid #00adea; }\n    .custom-deck-builder .tabular nav ul {\n      padding: 1em 0;\n      margin: 0;\n      list-style-type: none; }\n      .custom-deck-builder .tabular nav ul li {\n        cursor: pointer;\n        font-size: 3.5em;\n        text-shadow: 4px 4px #000000;\n        display: inline-block;\n        margin: 0 0.5em; }\n        .custom-deck-builder .tabular nav ul li:not(.current) {\n          color: #A17B00; }\n        .custom-deck-builder .tabular nav ul li:hover, .custom-deck-builder .tabular nav ul li:focus {\n          color: #FFDC6A; }\n  .custom-deck-builder .tabular .tabular-contents {\n    background: #ffffff;\n    color: #000000;\n    padding: 1em; }\n  .custom-deck-builder dl dt {\n    font-weight: bold;\n    color: #007AA2; }\n    .custom-deck-builder dl dt + dd {\n      margin-left: 1em;\n      color: #005F7F; }\n      .custom-deck-builder dl dt + dd + dt {\n        margin-top: 1em; }\n  .custom-deck-builder table {\n    border: none;\n    border-collapse: collapse;\n    border-spacing: 0; }\n    .custom-deck-builder table tr:nth-child(even) > td {\n      background-color: #ddd; }\n    .custom-deck-builder table td {\n      padding: 0.5em; }\n  .custom-deck-builder tr:first-child > th {\n    background-color: #FFDC6A;\n    border-bottom: 0.25em solid #FFC60E;\n    padding: 0.5em 0.5em 0.25em 0.5em; }\n    .custom-deck-builder tr:first-child > th:first-child {\n      border-radius: 0.625em 0 0 0; }\n    .custom-deck-builder tr:first-child > th:last-child {\n      border-radius: 0 0.625em 0 0; }\n  .custom-deck-builder tr:last-child > td:first-child {\n    border-radius: 0 0 0 0.625em; }\n  .custom-deck-builder tr:last-child > td:last-child {\n    border-radius: 0 0 0.625em 0; }\n  .custom-deck-builder table, .custom-deck-builder tr, .custom-deck-builder th, .custom-deck-builder td {\n    border: none; }\n  .custom-deck-builder footer {\n    text-align: center;\n    font-size: 1.25em;\n    padding: 1em 0;\n    border-top: 0.375rem solid #00adea;\n    border-radius: 0 0 1em 1em;\n    background: url(" + escape(__webpack_require__(211)) + ") no-repeat center center;\n    -webkit-background-size: cover;\n    -moz-background-size: cover;\n    -o-background-size: cover;\n    background-size: cover; }\n    .custom-deck-builder footer a, .custom-deck-builder footer a:visited {\n      color: #FFC60E; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var escape = __webpack_require__(73);
+exports = module.exports = __webpack_require__(10)(false);
+// imports
+
+
+// module
+exports.push([module.i, "@font-face {\n  font-family: CompactaBT;\n  src: url(" + escape(__webpack_require__(219)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBT;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(217)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBT;\n  font-style: italic;\n  src: url(" + escape(__webpack_require__(218)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBdBT;\n  src: url(" + escape(__webpack_require__(216)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: CompactaBdBT;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(215)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  src: url(" + escape(__webpack_require__(222)) + ") format(\"woff\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(220)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  font-style: italic;\n  src: url(" + escape(__webpack_require__(221)) + ") format(\"opentype\"); }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(10)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".input-like {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .input-like:focus {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus {\n    background-color: #ffffff; }\n  .input-like:disabled {\n    background-color: #999;\n    cursor: default; }\n\n*, *:before, *:after {\n  -webkit-transition: all 0.35s ease-in-out;\n  -moz-transition: all 0.35s ease-in-out;\n  -ms-transition: all 0.35s ease-in-out;\n  -o-transition: all 0.35s ease-in-out;\n  transition: all 0.35s ease-in-out; }\n\np {\n  margin: 0 0 1em 0; }\n\n* + p {\n  margin-top: 1em; }\n\nh1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {\n  margin-top: 0; }\n\nbody {\n  background: #005F7F; }\n  body > .unloaded-message {\n    color: #FFC60E;\n    display: block;\n    font-weight: bold;\n    font-size: 3em;\n    margin: 1em auto;\n    text-align: center; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/a86cb8bba70acee3c4e074ed385b29dc.png";
 
 /***/ }),
-
-/***/ 187:
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/f73966e84da5cefb55bc88f287680a42.png";
 
 /***/ }),
-
-/***/ 188:
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/746554058e001fcffc5ab3f0212d47b9.png";
 
 /***/ }),
-
-/***/ 189:
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/d042c4dd0014847032b6ddfc401dda8d.png";
 
 /***/ }),
-
-/***/ 190:
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/de6d3b4350d95e575bf730434febc000.png";
 
 /***/ }),
-
-/***/ 191:
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/e7fc178699c482ca82b6b9de1af1bf4a.png";
 
 /***/ }),
-
-/***/ 192:
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/e70e315b98145495760f797e802cbed1.png";
 
 /***/ }),
-
-/***/ 193:
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/1ac94711e8b6b5158b4d3c4e74d13013.png";
 
 /***/ }),
-
-/***/ 194:
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/cf1e8982bc803e66867e0dfc7cb18282.png";
 
 /***/ }),
-
-/***/ 195:
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/d7ae3fd2087dcd05df0b392add3f3cda.png";
 
 /***/ }),
-
-/***/ 196:
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/275d6b6a5e57f4596aaf5fab085677f3.png";
 
 /***/ }),
-
-/***/ 197:
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/756c7885cca3251f091065a561a180b3.png";
 
 /***/ }),
-
-/***/ 198:
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/ee0f44576fb1df659f72845b5086cd36.png";
 
 /***/ }),
-
-/***/ 199:
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/3915a476e2a284486169827114c529c6.png";
 
 /***/ }),
-
-/***/ 200:
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/846e29413d904668b0f43d477a328b2c.png";
 
 /***/ }),
-
-/***/ 201:
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/abca638dc6f1e221196134e1275aaad0.png";
 
 /***/ }),
-
-/***/ 202:
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/c3903aac7f8a93a31e03ac79d81b0578.png";
 
 /***/ }),
-
-/***/ 203:
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/0526136f10583f57bf74cc5f63f82529.png";
 
 /***/ }),
-
-/***/ 204:
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/169e42795f87d10c73d4d8bec3a41520.png";
 
 /***/ }),
-
-/***/ 205:
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/bef059bef4ae3590ac55c1900b94912c.png";
 
 /***/ }),
-
-/***/ 206:
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/d0ca5136df4e523818e139423571bfb0.png";
 
 /***/ }),
-
-/***/ 207:
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/205c0a75321d91c1035bb7e7defb5ba7.png";
 
 /***/ }),
+/* 210 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ 208:
+module.exports = __webpack_require__.p + "resources/27963f10586f4adb3ee60ddd844bafee.jpg";
+
+/***/ }),
+/* 211 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "resources/2f647df6adf0f9337da5ed968d8d9ba3.jpg";
+
+/***/ }),
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "resources/6529039b5bd390a8b2260f48418cb112.jpg";
+
+/***/ }),
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/13386f2b64779e1c52f6626d5bb1015f.png";
 
 /***/ }),
-
-/***/ 209:
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "resources/60debde16cc531620d0edfb6608f1043.png";
 
 /***/ }),
-
-/***/ 215:
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Handlebars = __webpack_require__(24);
+module.exports = __webpack_require__.p + "resources/4ecdb5886bf7f71b67b26b7acaa68653.ttf";
+
+/***/ }),
+/* 216 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "resources/035e8b4b319c1c6e843f8cbcc85d42e0.ttf";
+
+/***/ }),
+/* 217 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "resources/f0d74efcb3514ddd8b40798b589948d1.otf";
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "resources/f82cba211182fbb07d3510cbe89c7ccb.otf";
+
+/***/ }),
+/* 219 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "resources/3596833b8852b6ea37b94e4f6b572e5b.otf";
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "resources/cdfd0160e30988fa0f6330f01c1bb710.ttf";
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "resources/e614413a37093b678d900978f5c3ef1c.otf";
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "resources/4ceca9b16de3f3089eb490977af7b391.woff";
+
+/***/ }),
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Handlebars = __webpack_require__(25);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.escapeExpression;
 
   return "<div class=\"deck-generator-tab\">\n	<p>This tool is intended to convert a spreadsheet of cards into a few images of the generated cards. These images can then be imported and played in a game such as <a href=\"http://store.steampowered.com/app/286160/Tabletop_Simulator/\">Tabletop Simulator</a>.</p>\n	<p>Select a <a href=\"https://en.wikipedia.org/wiki/Comma-separated_values\">CSV file</a> to parse into a deck of custom cards to download.</p>\n	<div class=\"file-uploader-wrapper\">\n		<input id=\""
-    + alias2(__default(__webpack_require__(16)).call(alias1,"file",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":5,"column":13},"end":{"line":5,"column":28}}}))
+    + alias2(__default(__webpack_require__(17)).call(alias1,"file",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":5,"column":13},"end":{"line":5,"column":28}}}))
     + "\" class=\"csv-file-selector\" type=\"file\" accept=\".csv\"/>\n		<label for=\""
-    + alias2(__default(__webpack_require__(16)).call(alias1,"file",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":6,"column":14},"end":{"line":6,"column":29}}}))
+    + alias2(__default(__webpack_require__(17)).call(alias1,"file",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":6,"column":14},"end":{"line":6,"column":29}}}))
     + "\" class=\"csv-file-selector-label\">\n			<span class=\"file-name\">\n				<em class=\"none-selected\">None Selected</em>\n			</span>\n			<span class=\"file-button\">\n				<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"17\" viewBox=\"0 0 20 17\">\n					<path d=\"M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z\"></path>\n					</svg>\n				 Choose a file\n			</span>\n		</label>\n	</div>\n	<p>For more information on the format your CSV file should be in, check out the <a href=\"#help\">Help tab</a>.</p>\n	<p><em>Note:</em> Generation cards can be memory intensive. Every image you set for your card will be loaded into memory and combined to form high resolution 4K textures of cards. For main deck sized spreadsheets (150 cards) this can take ~600 MB to 1 GB of memory. If you encounter bottlenecks due to your computer please consider splitting up your sheet into multiple files.</p>\n	<button class=\"generate-button\">Generate</button>\n	<div class=\"generation-options\">\n		<span class=\"max-cards-x\">\n			<label title=\"The maximum number of cards to pack into an image along the (horizontal) X-axis.\" for=\""
-    + alias2(__default(__webpack_require__(16)).call(alias1,"x",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":23,"column":104},"end":{"line":23,"column":116}}}))
+    + alias2(__default(__webpack_require__(17)).call(alias1,"x",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":23,"column":104},"end":{"line":23,"column":116}}}))
     + "\">Max Cards X:</label> <input type=\"number\" class=\"max-cards-x-input\" id=\""
-    + alias2(__default(__webpack_require__(16)).call(alias1,"x",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":23,"column":190},"end":{"line":23,"column":202}}}))
+    + alias2(__default(__webpack_require__(17)).call(alias1,"x",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":23,"column":190},"end":{"line":23,"column":202}}}))
     + "\" />\n		</span>\n		<span class=\"max-cards-y\">\n			<label title=\"The maximum number of cards to pack into an image along the (vertical) Y-axis.\" for=\""
-    + alias2(__default(__webpack_require__(16)).call(alias1,"y",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":26,"column":102},"end":{"line":26,"column":114}}}))
+    + alias2(__default(__webpack_require__(17)).call(alias1,"y",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":26,"column":102},"end":{"line":26,"column":114}}}))
     + "\">Max Cards Y:</label> <input type=\"number\" class=\"max-cards-y-input\" id=\""
-    + alias2(__default(__webpack_require__(16)).call(alias1,"y",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":26,"column":188},"end":{"line":26,"column":200}}}))
+    + alias2(__default(__webpack_require__(17)).call(alias1,"y",{"name":"uuid","hash":{},"data":data,"loc":{"start":{"line":26,"column":188},"end":{"line":26,"column":200}}}))
     + "\" />\n		</span>\n	</div>\n	<div class=\"generation expandable\">\n		<div class=\"progress-bar-background\">\n			<div class=\"progress-bar-foreground\">0%</div>\n		</div>\n		<ul class=\"generation-log\">\n		</ul>\n		<button class=\"download-button\" disabled>\n			<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" id=\"Capa_1\" width=\"512px\" height=\"512px\" viewBox=\"0 0 554.625 554.625\" xml:space=\"preserve\">\n				<path d=\"M267.75,153h95.625L248.625,19.125v114.75C248.625,145.35,258.188,153,267.75,153z\" fill=\"#FFFFFF\"/>\n				<path d=\"M133.875,401.625V267.75c0-32.513,24.862-57.375,57.375-57.375h172.125v-38.25H267.75c-21.038,0-38.25-17.212-38.25-38.25    V19.125H38.25C17.212,19.125,0,36.337,0,57.375V497.25c0,21.037,17.212,38.25,38.25,38.25h286.875    c21.037,0,38.25-17.213,38.25-38.25V459H191.25C158.737,459,133.875,434.138,133.875,401.625z\" fill=\"#FFFFFF\"/>\n				<path d=\"M516.375,229.5H191.25c-21.038,0-38.25,17.212-38.25,38.25v133.875c0,21.037,17.212,38.25,38.25,38.25h325.125    c21.037,0,38.25-17.213,38.25-38.25V267.75C554.625,246.712,537.412,229.5,516.375,229.5z M306,286.875L229.5,382.5H306v19.125    h-95.625V382.5l76.5-95.625h-76.5V267.75H306V286.875z M382.5,286.875h-19.125V382.5H382.5v19.125h-57.375V382.5h19.125v-95.625    h-19.125V267.75H382.5V286.875z M459,344.25h-38.25v57.375h-19.125V306v-38.25H459c21.037,0,38.25,17.213,38.25,38.25    S480.037,344.25,459,344.25z\" fill=\"#FFFFFF\"/>\n				<path d=\"M459,286.875h-38.25v38.25H459c11.475,0,19.125-7.65,19.125-19.125S470.475,286.875,459,286.875z\" fill=\"#FFFFFF\"/>\n			</svg>\n			Download Deck\n		</button>\n	</div>\n</div>\n";
 },"useData":true});
 
 /***/ }),
-
-/***/ 216:
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Handlebars = __webpack_require__(24);
+var Handlebars = __webpack_require__(25);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"help-tab\">\n	<p>This tab is intended for help with using this tool, specifically uding the <a href=\"#deck-generator\">Deck Generator</a> functionality.</p>\n	<section class=\"availible-options\">\n		<h2>Your Custom Spreadsheet</h2>\n		<p>Most of the funtionality of this tool is in creating your down <abbr title=\"Cryptozoic Game Engine\">CGE</abbr> deck. To do that all you need to create is a spreadsheet in your office sheet of choice, and follow these rules when formatting it.</p>\n		<p>The first row of your spreadsheet <strong>must</strong> be the headers for each column of options. The list of availible options is below:</p>\n		<div class=\"card-options\"></div>\n		<p>After you make your first row, all entries after count as a card. You can create blank rows and they will be skipped over. Columns that do not match one of the above options are skipped as well, so feel free to add columns to help you organize your cards.</p>\n		<p>Additionally there are two special rows. If you name your card <code>__defaults__</code>, then <strong>all</strong> cards after it will default to the values of that row. This is useful for setting all the values for shared options such as Set, Legal, Copyright, etc. The other row name is <code>__oversized_defaults__</code> but will only be applied to Oversized cards.</p>\n	</section>\n	<section>\n		<h2>Examples</h2>\n		<p>Below are some examples of valid what to expect and valid spreadsheets to use.</p>\n		<p>For an example spreadsheet for use with this tool, check out my <a href=\"https://docs.google.com/spreadsheets/d/1C4sG2btMuTEaFaTlKtoSytHsuSTmM2uhnR2j-IEhsKk/edit?usp=sharing\">Overwatch Deck Building Game spreadsheet here</a>. You can download the first sheet as a CSV file and import it using this tool to generate your own copy of the deck.</p>\n		<img src=\"" + __webpack_require__(208) + "\" alt=\"card example\" title=\"Example of what column names effect what parts of the card.\"/>\n		<p>For any issues, especially technical ones, create an <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder/issues\">issue on GitHub</a>.</p>\n	</section>\n</div>\n";
+    return "<div class=\"help-tab\">\n	<p>This tab is intended for help with using this tool, specifically uding the <a href=\"#deck-generator\">Deck Generator</a> functionality.</p>\n	<section class=\"availible-options\">\n		<h2>Your Custom Spreadsheet</h2>\n		<p>Most of the funtionality of this tool is in creating your down <abbr title=\"Cryptozoic Game Engine\">CGE</abbr> deck. To do that all you need to create is a spreadsheet in your office sheet of choice, and follow these rules when formatting it.</p>\n		<p>The first row of your spreadsheet <strong>must</strong> be the headers for each column of options. The list of availible options is below:</p>\n		<div class=\"card-options\"></div>\n		<p>After you make your first row, all entries after count as a card. You can create blank rows and they will be skipped over. Columns that do not match one of the above options are skipped as well, so feel free to add columns to help you organize your cards.</p>\n		<p>Additionally there are two special rows. If you name your card <code>__defaults__</code>, then <strong>all</strong> cards after it will default to the values of that row. This is useful for setting all the values for shared options such as Set, Legal, Copyright, etc. The other row name is <code>__oversized_defaults__</code> but will only be applied to Oversized cards.</p>\n	</section>\n	<section>\n		<h2>Examples</h2>\n		<p>Below are some examples of valid what to expect and valid spreadsheets to use.</p>\n		<p>For an example spreadsheet for use with this tool, check out my <a href=\"https://docs.google.com/spreadsheets/d/1C4sG2btMuTEaFaTlKtoSytHsuSTmM2uhnR2j-IEhsKk/edit?usp=sharing\">Overwatch Deck Building Game spreadsheet here</a>. You can download the first sheet as a CSV file and import it using this tool to generate your own copy of the deck.</p>\n		<img src=\"" + __webpack_require__(213) + "\" alt=\"card example\" title=\"Example of what column names effect what parts of the card.\"/>\n		<p>For any issues, especially technical ones, create an <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder/issues\">issue on GitHub</a>.</p>\n	</section>\n</div>\n";
 },"useData":true});
 
 /***/ }),
-
-/***/ 217:
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Handlebars = __webpack_require__(24);
+var Handlebars = __webpack_require__(25);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"live-editor\">\n	<div class=\"tables\">\n		<p>This tab allows you to edit cards live to get a feel for how this tool works. Feel free to play around with it, but for serious card generation please use the <a href=\"#deck-generator\">Deck Generator</a> tab to generation large batches of cards properly.</p>\n		<div class=\"defaults-table\">\n			<h2 title=\"These are default values for all custom cards.\">Card Defaults</h2>\n		</div>\n		<div class=\"custom-cards\">\n			<h2 title=\"These are custom cards you can create and play with to see how this builder works\">Custom Cards</h2>\n			<div class=\"cards-table\"></div>\n			<div class=\"custom-cards-bottom\">\n				<div class=\"canvases-scale\">\n					<label for=\"canvases-scale-slider\">Card Scale: </label>\n					<input id=\"canvases-scale-slider\" class=\"canvases-scale-slider\" type=\"range\" min=\"0.05\" max=\"1\" step=\"any\" value=\"0.5\"/>\n					<span class=\"canvases-scale-percent\"></span>\n				</div>\n				<button class=\"reset-to-defaults\" title=\"Resets the custom and default card rows to default values\">Reset to defaults</button>\n				<button class=\"add-row-button\">&#65291; Add Row</button>\n			</div>\n		</div>\n		<div class=\"too-many-cards collapsed\">\n			<span class=\"warning-block\">You've created a lot of custom cards. You should probably use the <a href=\"#deck-generator\">Deck Generator Tool</a> to handle all these cards instead.</span>\n		</div>\n	</div>\n	<div class=\"canvases\"></div>\n</div>\n";
 },"useData":true});
 
 /***/ }),
-
-/***/ 218:
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Handlebars = __webpack_require__(24);
+var Handlebars = __webpack_require__(25);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"tabular\">\n	<nav class=\"tabluar-tabs\">\n		<ul>\n		</ul>\n	</nav>\n	<div class=\"tabular-contents\"></div>\n</div>\n";
 },"useData":true});
 
 /***/ }),
-
-/***/ 219:
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Handlebars = __webpack_require__(24);
+var Handlebars = __webpack_require__(25);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var alias1=container.lambda, alias2=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -3409,52 +4578,174 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
     + "</span>\n			<span class=\"subtitle\">"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"subtitle") : depth0), depth0))
     + "</span>\n		</h1>\n	</div>\n	<main></main>\n	<footer>Cryptozoic engine &copy; "
-    + alias2(__default(__webpack_require__(165)).call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"currentYear","hash":{},"data":data,"loc":{"start":{"line":9,"column":34},"end":{"line":9,"column":49}}}))
+    + alias2(__default(__webpack_require__(167)).call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"currentYear","hash":{},"data":data,"loc":{"start":{"line":9,"column":34},"end":{"line":9,"column":49}}}))
     + " <a href=\"https://www.cryptozoic.com/\">Cryptozoic Entertainment</a>. This is a fan project by <a href=\"https://github.com/JacobFischer\">Jacob Fischer</a>. Source availible on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">Github</a>.</footer>\n</div>\n";
 },"useData":true});
 
 /***/ }),
-
-/***/ 22:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function __export(m) {
-    for (var p in m) {
-        if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-    }
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-var tab_1 = __webpack_require__(158);
-exports.Tab = tab_1.default;
-__webpack_require__(369);
-__export(__webpack_require__(159));
-
-/***/ }),
-
-/***/ 238:
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */
 /***/ (function(module, exports) {
 
 module.exports = "<h1 id=\"custom-deck-builder\">Custom Deck Builder</h1>\n<h2 id=\"about-this-tool\">About This Tool</h2>\n<p>This application is a <strong>fan creation</strong> by <a href=\"https://github.com/JacobFischer/\">Jacob Fischer</a> with the sole intent of making it easier to try custom cards in Cryptozoic&#39;s Game Engine. It is open source and available on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>.</p>\n<p>No cards produced using this tool should be used to profit from. Instead please buy <a href=\"https://www.cryptozoic.com/\">Cryptozoic</a>&#39;s own deck building games utilizing their engine such as the DC Deck Building game, they are excellent.</p>\n<p>This project was produced mostly as a tool to help its author more easily prototype custom cards to try in <a href=\"http://store.steampowered.com/app/286160/Tabletop_Simulator/\">Table Top Simulator</a> with and around Cryptozoic&#39;s own titles, as well as an excuse to brush up on some technical skills.</p>\n<h2 id=\"technical-details\">Technical Details</h2>\n<p>This application is an <a href=\"https://en.wikipedia.org/wiki/Single-page_application\" title=\"Single-page Application\">SPA</a>. Once you load the page you have everything you need to build some custom cards. <strong>No</strong> data is saved on a server somewhere. All the processing is done and saved on your machine via your web browser. I&#39;m not interested in tracking you or stealing your data.</p>\n<p>This project was made using a variety of frameworks:</p>\n<ul>\n<li><strong><a href=\"https://www.typescriptlang.org/\" title=\"JavaScript with types\">TypeScript</a></strong>: The coding language used for pretty much everything in this project.</li>\n<li><strong><a href=\"http://sass-lang.com/\" title=\"Syntactically Awesome Style Sheets\">SASS</a></strong>: Used to control the style and most animations on this page.</li>\n<li><strong><a href=\"http://handlebarsjs.com/\" title=\"Simple HTML Templates\">Handlebars</a></strong>: Used to template the HTML layout and elements for all page sections.</li>\n<li><strong><a href=\"http://www.pixijs.com/\" title=\"2D graphics library for easily drawing cards\">PixiJS</a></strong>: Currently the best browser library for manipulating 2D graphics and images on canvases. Used to render the custom cards.</li>\n<li><strong><a href=\"https://www.npmjs.com/\" title=\"Node Package Manager\">NPM</a></strong>: The biggest and most popular JavaScript package manager, that hosts many of the smaller modules not explicitly mentioned here, but are still necessary to run.</li>\n<li><strong><a href=\"https://webpack.js.org/\">Webpack 2</a></strong>: What wraps all these things together into a single page. I used this opportunity to transition Webpack 1.x skills to 2.0.</li>\n</ul>\n<p>All the source code, commits, and resources are available freely on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>. All classes, methods, and exports and documented using well formed docstrings; so if you wish to modify this tool, do so to your heart&#39;s content!</p>\n<hr>\n<p>A live version of application is kept up to date on <a href=\"https://jacobfischer.github.io/Custom-Deck-Builder/\">https://jacobfischer.github.io/Custom-Deck-Builder/</a>. Check out that version if you are not interested in developing it yourself.</p>\n<h2 id=\"how-to-build\">How to Build</h2>\n<p>As this is a webpack project, you just need to build and deploy it. As with most projects ensure you have <a href=\"https://nodejs.org/\">Node.js</a> installed, then just:</p>\n<pre><code>npm install\nnpm run dev\n</code></pre><p>Then just in your browser navigate to <a href=\"http://localhost:8080/\">http://localhost:8080/</a></p>\n<p>Alternatively run <code>npm run build</code> to run webpack and save the output in the <code>built/</code> directory, and you can deploy the static assets at your will.</p>\n<p>2026 Package dependancies are outdated. Steps to run currently:</p>\n<p>nvm install 12\nnvm use 12\nnpm install\nnpm run dev</p>\n";
 
 /***/ }),
-
-/***/ 342:
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */
 /***/ (function(module, exports) {
 
 module.exports = "Congratulations on building your custom deck! This file helps to explain what you can do with your cool new cards.\n\nThe intended use for these images is to import into a card program, like Tabletop Simulator.\n\n## Tabletop Simulator\n\nTabletop Simulator can build custom decks of cards from textures (images) that contains a grid of cards. If you already know how to import custom decks into Tabletop Simulator, great! Otherwise this readme can help you.\n\nFor reference, your Deck was generated with {width} cards horizontally and {height} cards vertically, though the last sheets of normal and oversized cards may have less.\n\n## Other Notes\n\nThis file and the textures were generated using the Cryptozoic Deck Building Game Custom Card Builder tool created by Jacob Fischer.\n\nhttps://jacobfischer.github.io/Custom-Deck-Builder/\n\nSource Code for this tool is open source and available at GitHub: https://github.com/JacobFischer/Custom-Deck-Builder\n"
 
 /***/ }),
-
-/***/ 366:
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */,
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(170);
+var content = __webpack_require__(172);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -3462,7 +4753,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(13)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -3479,14 +4770,13 @@ if(false) {
 }
 
 /***/ }),
-
-/***/ 367:
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(171);
+var content = __webpack_require__(173);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -3494,7 +4784,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(13)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -3511,14 +4801,13 @@ if(false) {
 }
 
 /***/ }),
-
-/***/ 368:
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(172);
+var content = __webpack_require__(174);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -3526,7 +4815,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(13)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -3543,14 +4832,13 @@ if(false) {
 }
 
 /***/ }),
-
-/***/ 369:
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(173);
+var content = __webpack_require__(175);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -3558,7 +4846,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(13)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -3575,14 +4863,13 @@ if(false) {
 }
 
 /***/ }),
-
-/***/ 370:
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(174);
+var content = __webpack_require__(176);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -3590,7 +4877,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(13)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -3607,14 +4894,13 @@ if(false) {
 }
 
 /***/ }),
-
-/***/ 371:
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(175);
+var content = __webpack_require__(177);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -3622,7 +4908,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(13)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -3639,967 +4925,36 @@ if(false) {
 }
 
 /***/ }),
-
-/***/ 385:
+/* 385 */,
+/* 386 */,
+/* 387 */,
+/* 388 */,
+/* 389 */,
+/* 390 */,
+/* 391 */,
+/* 392 */,
+/* 393 */,
+/* 394 */,
+/* 395 */,
+/* 396 */,
+/* 397 */,
+/* 398 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-
-/***/ 386:
+/* 399 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-
-/***/ 387:
+/* 400 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
-
-/***/ }),
-
-/***/ 63:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var path_1 = __webpack_require__(5);
-var PIXI = __webpack_require__(56);
-var fonts_1 = __webpack_require__(162);
-var wrapper = {
-    fontsLoaded: false,
-    pixiLoaded: false,
-    callback: false
-};
-function checkIfInitialized() {
-    if (wrapper.fontsLoaded && wrapper.pixiLoaded && wrapper.callback) {
-        wrapper.callback();
-    }
-}
-var textures = {};
-function requireAll(r) {
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = r.keys()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var key = _step.value;
-
-            var textureName = path_1.basename(key, ".png");
-            var texturePath = r(key);
-            textures[textureName] = texturePath;
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
-    }
-}
-requireAll(__webpack_require__(142));
-exports.initialTextures = textures;
-exports.initialTexturesToKey = new Map();
-function initialize(callback) {
-    wrapper.callback = callback;
-    PIXI.utils.skipHello();
-    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
-
-    try {
-        for (var _iterator2 = Object.keys(exports.initialTextures)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var key = _step2.value;
-
-            PIXI.loader.add(key, exports.initialTextures[key]);
-        }
-    } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                _iterator2.return();
-            }
-        } finally {
-            if (_didIteratorError2) {
-                throw _iteratorError2;
-            }
-        }
-    }
-
-    PIXI.loader.load(function () {
-        wrapper.pixiLoaded = true;
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
-
-        try {
-            for (var _iterator3 = Object.keys(exports.initialTextures)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                var key = _step3.value;
-
-                exports.initialTexturesToKey.set(PIXI.loader.resources[key].texture, key);
-            }
-        } catch (err) {
-            _didIteratorError3 = true;
-            _iteratorError3 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                    _iterator3.return();
-                }
-            } finally {
-                if (_didIteratorError3) {
-                    throw _iteratorError3;
-                }
-            }
-        }
-
-        checkIfInitialized();
-    });
-    requireAll(__webpack_require__(142));
-}
-exports.initialize = initialize;
-fonts_1.onFontsLoaded(function (error) {
-    if (error) {
-        console.error(error);
-    } else {
-        wrapper.fontsLoaded = true;
-        checkIfInitialized();
-    }
-});
-
-/***/ }),
-
-/***/ 64:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CardOptionsList = [{
-    name: "Name",
-    type: "text",
-    description: "The name of the card."
-}, {
-    name: "Type",
-    type: "text",
-    description: "The card type. Must be \"Equipment\", \"Hero\", \"Location\", " + "\"Starter\", \"Super Power\", \"Villain\", or \"Weakness\". " + "Alternatively \"Super Hero\" or \"Super Villain\" are " + "shorthand for their oversized versions"
-}, {
-    name: "Variant",
-    type: "checkbox",
-    description: "If enabled, the card's textbox will be black instead of " + "white, such as for the Villain Stack. If the type is " + "\"Hero\" or \"Villain\", then they also gain the special " + "\"Super Hero/Villain\" subtype. This option has no effect " + "on Oversized card"
-}, {
-    name: "Oversized",
-    type: "checkbox",
-    description: "If enabled, the card becomes an oversized player card. " + "This option is only valid for \"Hero\" and \"Villain\" types," + " and Sub Type, Cost, and Victory Points are ignored."
-}, {
-    name: "Type Prefix",
-    type: "text",
-    description: "Some text to place in front of the card's type. " + "Ignored on oversized cards."
-}, {
-    name: "Victory Points",
-    type: "number",
-    description: "The number of Victory Points this is worth at the end. " + "Can be negative or \"*\". Ignored on Oversized cards."
-}, {
-    name: "Cost",
-    type: "number",
-    description: "How much this card costs. Ignored on Oversized cards."
-}, {
-    name: "Text",
-    type: "text",
-    description: "The card text describing what this card does. It will " + "auto format in both font size and bold/italics. Words " + "like \"+2 Power\", \"Attack\", and other common <abbr " + "title=\"Cryptozoic Game Engine\">CGE</abbr> terms will " + "automatically be bolded or italics. To manually bold text" + " use [b]bold this[/b], and to italic use [i]italic " + "this[/i]. Newlines can be used, and two sequential " + "newlines indicate a break between sections of text."
-}, {
-    name: "Image URL",
-    type: "url",
-    description: "URL to the image for this card. We recommend using a site" + " like <a href=\"https://imgur.com/\">imgur</a> to manage " + "your images. The image will be automatically centered on " + "the card. Normal cards will be 750px \xD7 523px in size, and" + " Oversized ones will be 900px \xD7 741px."
-}, {
-    name: "Logo URL",
-    type: "url",
-    description: "URL to the image for the logo in the top right of this " + "card. For both sizes of cards the image will be rendered " + "at 175px \xD7 175px."
-}, {
-    name: "Logo Scale",
-    type: "number",
-    description: "A number between 0.00 to 1.00 that scales the logo down " + "so it better fits on cards."
-}, {
-    name: "Copyright",
-    type: "text",
-    description: "The year and company the card is Copyright from. The \xA9 " + "symbol is added automatically, and if this is omitted " + "just the year will be displayed, e.g. " + ("\"\xA9" + new Date().getFullYear() + "\".")
-}, {
-    name: "Legal",
-    type: "text",
-    description: "The legal disclaimer at the bottom of the card. Often has" + " a set notation such as \"(s01)\"."
-}, {
-    name: "Subtype",
-    type: "text",
-    description: "An additional type describing the card, such as its owner" + " in the Street Fighter Deck Building Game."
-}, {
-    name: "Set",
-    type: "text",
-    description: "The set this card is a part of."
-}, {
-    name: "Set Text Color",
-    type: "color",
-    description: "The hex color to use for the text on the set indicator."
-}, {
-    name: "Set Background Color",
-    type: "color",
-    description: "The hex color to use for the background rectangle for the" + " set indication."
-}, {
-    name: "Preferred Text Size",
-    type: "number",
-    description: "The text size to start at when fitting text on the card. " + "Defaults to 38. <em>Note</em>: if the text does not fit " + "at this size it will be downsized until it fits."
-}, {
-    name: "Also Bold",
-    type: "text list",
-    description: "List of words separated by commas and a space \", \" of " + "words to bold even if they lack bold tags ([b]word[/b])."
-}, {
-    name: "Round Corners",
-    type: "checkbox",
-    description: "If the corners should be rounded. By default disabled " + "for the deck building tool, and enabled for the live " + "editor."
-}];
-exports.CardOptions = {};
-var _iteratorNormalCompletion = true;
-var _didIteratorError = false;
-var _iteratorError = undefined;
-
-try {
-    for (var _iterator = exports.CardOptionsList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var cardOption = _step.value;
-
-        exports.CardOptions[cardOption.name] = cardOption;
-    }
-} catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-} finally {
-    try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-        }
-    } finally {
-        if (_didIteratorError) {
-            throw _iteratorError;
-        }
-    }
-}
-
-/***/ }),
-
-/***/ 65:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function __export(m) {
-    for (var p in m) {
-        if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-    }
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(147));
-
-/***/ }),
-
-/***/ 66:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var events_1 = __webpack_require__(18);
-var string_1 = __webpack_require__(68);
-var uuid = __webpack_require__(141);
-
-var EditableTable = function (_events_1$EventEmitte) {
-    _inherits(EditableTable, _events_1$EventEmitte);
-
-    function EditableTable(parent, columns, rows) {
-        _classCallCheck(this, EditableTable);
-
-        var _this = _possibleConstructorReturn(this, (EditableTable.__proto__ || Object.getPrototypeOf(EditableTable)).call(this));
-
-        _this.table = document.createElement("table");
-        _this.headingsRow = document.createElement("tr");
-        _this.headings = new Map();
-        _this.parent = parent;
-        _this.columns = [];
-        _this.rows = [];
-        _this.table.classList.add("gui-table");
-        _this.table.appendChild(_this.headingsRow);
-        _this.parent.appendChild(_this.table);
-        if (columns) {
-            _this.addColumns(columns);
-        }
-        if (rows) {
-            _this.addRows(rows);
-        }
-        return _this;
-    }
-
-    _createClass(EditableTable, [{
-        key: "addColumns",
-        value: function addColumns(columns) {
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = columns[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var column = _step.value;
-
-                    this.formatColumn(column);
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
-            }
-
-            this.updateColumns();
-        }
-    }, {
-        key: "addColumn",
-        value: function addColumn(column) {
-            this.formatColumn(column);
-            this.updateColumns();
-        }
-    }, {
-        key: "addRows",
-        value: function addRows(rows) {
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
-
-            try {
-                for (var _iterator2 = rows[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var row = _step2.value;
-
-                    this.formatRow(row);
-                }
-            } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
-                    }
-                } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
-                    }
-                }
-            }
-
-            this.updateRows(true);
-        }
-    }, {
-        key: "addRow",
-        value: function addRow(row) {
-            this.formatRow(row);
-            this.updateRows(true);
-        }
-    }, {
-        key: "getRow",
-        value: function getRow(index) {
-            if (index > -1 && index < this.rows.length) {
-                return this.rows[index];
-            }
-            throw new RangeError(index + " not in range of table with " + this.rows.length + " rows.");
-        }
-    }, {
-        key: "getAllRows",
-        value: function getAllRows() {
-            return this.rows.slice();
-        }
-    }, {
-        key: "deleteRow",
-        value: function deleteRow(index) {
-            if ((typeof index === "undefined" ? "undefined" : _typeof(index)) === "object") {
-                index = index.index;
-            }
-            this.getRow(index);
-            var row = this.rows[index];
-            this.rows.splice(index, 1);
-            for (var i = index; i < this.rows.length; i++) {
-                this.rows[i].index = i;
-            }
-            row.tr.remove();
-            this.emit(EditableTable.EventSymbols.rowDeleted, row);
-        }
-    }, {
-        key: "formatColumn",
-        value: function formatColumn(column) {
-            if (typeof column === "string") {
-                column = {
-                    id: column
-                };
-            }
-            if (!column.name) {
-                column.name = column.id;
-            }
-            if (!column.id) {
-                column.id = string_1.toCamelCase(column.name);
-            }
-            column.type = column.type || "string";
-            switch (column.type) {
-                case "string":
-                    column.defaultValue = "";
-                    column.transform = column.transform || String;
-                    break;
-                case "number":
-                    column.defaultValue = 0;
-                    column.transform = column.transform || Number;
-                    break;
-                case "boolean":
-                    column.transform = column.transform || Boolean;
-                    if (column.defaultValue === undefined) {
-                        column.defaultValue = Boolean(column.defaultValue);
-                    }
-                    break;
-                case "node":
-                    column.notEditable = true;
-                    column.transform = function (val) {
-                        return val;
-                    };
-                    if (!column.defaultValue) {
-                        throw new Error("Node values require default value to clone from");
-                    }
-                    break;
-            }
-            this.columns.push(column);
-        }
-    }, {
-        key: "updateColumns",
-        value: function updateColumns() {
-            if (this.headings.size < this.columns.length) {
-                var newColumns = this.columns.slice(this.headings.size);
-                var _iteratorNormalCompletion3 = true;
-                var _didIteratorError3 = false;
-                var _iteratorError3 = undefined;
-
-                try {
-                    for (var _iterator3 = newColumns[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                        var column = _step3.value;
-
-                        var hr = document.createElement("th");
-                        hr.innerHTML = column.name;
-                        this.headingsRow.appendChild(hr);
-                        this.headings.set(column.id, hr);
-                    }
-                } catch (err) {
-                    _didIteratorError3 = true;
-                    _iteratorError3 = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                            _iterator3.return();
-                        }
-                    } finally {
-                        if (_didIteratorError3) {
-                            throw _iteratorError3;
-                        }
-                    }
-                }
-
-                this.updateRows(false);
-            }
-        }
-    }, {
-        key: "formatRow",
-        value: function formatRow(values) {
-            if (values instanceof Array) {
-                var obj = {};
-                for (var i = 0; i < this.columns.length; i++) {
-                    var column = this.columns[i];
-                    obj[column.id] = values[i];
-                }
-                values = obj;
-            }
-            var row = {
-                index: this.rows.length,
-                values: values,
-                tr: document.createElement("tr"),
-                tds: []
-            };
-            this.rows.push(row);
-            var _iteratorNormalCompletion4 = true;
-            var _didIteratorError4 = false;
-            var _iteratorError4 = undefined;
-
-            try {
-                for (var _iterator4 = this.columns[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                    var _column = _step4.value;
-
-                    if (_column.type === "node") {
-                        var cloning = _column.defaultValue;
-                        var clone = cloning.cloneNode();
-                        clone.innerHTML = cloning.innerHTML;
-                        row.values[_column.id] = clone;
-                    }
-                    if (_column.allowedValues) {
-                        if (_column.allowedValues.indexOf(row.values[_column.id]) === -1) {
-                            row.values[_column.id] = _column.allowedValues[0];
-                        }
-                    }
-                    if (row.values[_column.id] === undefined) {
-                        row.values[_column.id] = _column.defaultValue;
-                    }
-                    row.values[_column.id] = _column.transform(row.values[_column.id], row);
-                }
-            } catch (err) {
-                _didIteratorError4 = true;
-                _iteratorError4 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                        _iterator4.return();
-                    }
-                } finally {
-                    if (_didIteratorError4) {
-                        throw _iteratorError4;
-                    }
-                }
-            }
-
-            this.emit(EditableTable.EventSymbols.rowAdded, row.values, row);
-        }
-    }, {
-        key: "updateRows",
-        value: function updateRows(added) {
-            var _this2 = this;
-
-            var _iteratorNormalCompletion5 = true;
-            var _didIteratorError5 = false;
-            var _iteratorError5 = undefined;
-
-            try {
-                var _loop = function _loop() {
-                    var row = _step5.value;
-
-                    if (!row.tr.parentElement) {
-                        _this2.table.appendChild(row.tr);
-                    }
-
-                    var _loop2 = function _loop2(i) {
-                        var id = "cell-" + uuid();
-                        var column = _this2.columns[i];
-                        var td = document.createElement("td");
-                        td.setAttribute("class", "column-" + column.id);
-                        var wrapper = document.createElement("div");
-                        td.appendChild(wrapper);
-                        if (column.type === "node") {
-                            wrapper.appendChild(row.values[column.id]);
-                        }
-                        if (!column.notEditable) {
-                            var child = void 0;
-                            var event = "change";
-                            var checkbox = false;
-                            if (column.allowedValues) {
-                                child = document.createElement("select");
-                                var _iteratorNormalCompletion6 = true;
-                                var _didIteratorError6 = false;
-                                var _iteratorError6 = undefined;
-
-                                try {
-                                    for (var _iterator6 = column.allowedValues[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                                        var value = _step6.value;
-
-                                        var option = document.createElement("option");
-                                        option.setAttribute("value", String(value));
-                                        option.innerText = String(value);
-                                        child.appendChild(option);
-                                    }
-                                } catch (err) {
-                                    _didIteratorError6 = true;
-                                    _iteratorError6 = err;
-                                } finally {
-                                    try {
-                                        if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                                            _iterator6.return();
-                                        }
-                                    } finally {
-                                        if (_didIteratorError6) {
-                                            throw _iteratorError6;
-                                        }
-                                    }
-                                }
-                            } else if (column.longText) {
-                                child = document.createElement("textarea");
-                            } else {
-                                child = document.createElement("input");
-                                var inputType = "text";
-                                switch (column.type) {
-                                    case "boolean":
-                                        inputType = "checkbox";
-                                        event = "click";
-                                        checkbox = true;
-                                        var label = document.createElement("label");
-                                        label.setAttribute("for", id);
-                                        wrapper.appendChild(label);
-                                        break;
-                                    case "number":
-                                        inputType = "number";
-                                        break;
-                                    case "string":
-                                        if (column.color) {
-                                            inputType = "color";
-                                        }
-                                        break;
-                                }
-                                child.setAttribute("type", inputType);
-                            }
-                            if (checkbox) {
-                                child.checked = row.values[column.id];
-                            } else {
-                                child.value = String(row.values[column.id]);
-                            }
-                            if (column.inputAttributes) {
-                                var _iteratorNormalCompletion7 = true;
-                                var _didIteratorError7 = false;
-                                var _iteratorError7 = undefined;
-
-                                try {
-                                    for (var _iterator7 = Object.keys(column.inputAttributes)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-                                        var attribute = _step7.value;
-
-                                        child.setAttribute(attribute, String(column.inputAttributes[attribute]));
-                                    }
-                                } catch (err) {
-                                    _didIteratorError7 = true;
-                                    _iteratorError7 = err;
-                                } finally {
-                                    try {
-                                        if (!_iteratorNormalCompletion7 && _iterator7.return) {
-                                            _iterator7.return();
-                                        }
-                                    } finally {
-                                        if (_didIteratorError7) {
-                                            throw _iteratorError7;
-                                        }
-                                    }
-                                }
-                            }
-                            child.id = id;
-                            wrapper.insertBefore(child, wrapper.firstChild);
-                            var lastValue = child.value;
-                            child.addEventListener(event, function () {
-                                var newValue = child.value;
-                                if (checkbox) {
-                                    newValue = child.checked;
-                                }
-                                var untransformed = newValue;
-                                newValue = column.transform(newValue, row);
-                                if (lastValue !== newValue) {
-                                    row.values[column.id] = column.transform(newValue, row);
-                                    _this2.emit(EditableTable.EventSymbols.cellChanged, row, column, newValue);
-                                    lastValue = newValue;
-                                }
-                                if (newValue !== untransformed) {
-                                    if (checkbox) {
-                                        child.checked = newValue;
-                                    } else {
-                                        child.value = newValue;
-                                    }
-                                }
-                            });
-                        } else if (column.type !== "node") {
-                            wrapper.innerHTML = String(row.values[column.id]);
-                        }
-                        if (column.rowsTitle) {
-                            td.title = column.rowsTitle;
-                        }
-                        row.tds.push(td);
-                        row.tr.appendChild(td);
-                    };
-
-                    for (var i = row.tds.length; i < _this2.columns.length; i++) {
-                        _loop2(i);
-                    }
-                };
-
-                for (var _iterator5 = this.rows[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                    _loop();
-                }
-            } catch (err) {
-                _didIteratorError5 = true;
-                _iteratorError5 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion5 && _iterator5.return) {
-                        _iterator5.return();
-                    }
-                } finally {
-                    if (_didIteratorError5) {
-                        throw _iteratorError5;
-                    }
-                }
-            }
-        }
-    }]);
-
-    return EditableTable;
-}(events_1.EventEmitter);
-
-EditableTable.EventSymbols = {
-    rowAdded: Symbol("rowAdded"),
-    cellChanged: Symbol("cellChanged"),
-    rowDeleted: Symbol("rowDeleted")
-};
-exports.EditableTable = EditableTable;
-
-/***/ }),
-
-/***/ 67:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", { value: true });
-function clamp(val, min, max) {
-    return Math.max(min, Math.min(max, val));
-}
-exports.clamp = clamp;
-function doRectanglesOverlap(r1, r2) {
-    return !(r2.x > r1.x + r1.width || r2.x + r2.width < r1.x || r2.y > r1.y + r1.height || r2.y + r2.height < r1.y);
-}
-exports.doRectanglesOverlap = doRectanglesOverlap;
-function doesCircleOverlapRectangle(rect, circle) {
-    var distX = Math.abs(circle.x - rect.x - rect.width / 2);
-    var distY = Math.abs(circle.y - rect.y - rect.height / 2);
-    if (distX > rect.width / 2 + circle.radius || distY > rect.height / 2 + circle.radius) {
-        return false;
-    }
-    if (distX <= rect.width / 2 || distY <= rect.height / 2) {
-        return true;
-    }
-    var dx = distX - rect.width / 2;
-    var dy = distY - rect.height / 2;
-    return dx * dx + dy * dy <= circle.radius * circle.radius;
-}
-exports.doesCircleOverlapRectangle = doesCircleOverlapRectangle;
-
-/***/ }),
-
-/***/ 68:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", { value: true });
-function tryToCast(value) {
-    if (typeof value === "string") {
-        var asNum = Number(value);
-        if (!isNaN(asNum)) {
-            value = asNum;
-        } else {
-            var lowered = value.toLowerCase();
-            if (lowered === "false") {
-                value = false;
-            } else if (lowered === "true") {
-                value = true;
-            }
-        }
-    }
-    return value;
-}
-exports.tryToCast = tryToCast;
-function toCamelCase(str) {
-    return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (matched, index) {
-        if (+matched === 0) {
-            return "";
-        }
-        return index === 0 ? matched.toLowerCase() : matched.toUpperCase();
-    });
-}
-exports.toCamelCase = toCamelCase;
-function toDashCase(str) {
-    if (!str) {
-        return "";
-    }
-    str = str[0].toLowerCase() + str.substr(1);
-    str = replaceAll(str, " ", "");
-    return str.replace(/([A-Z])/g, function (sub) {
-        return "-" + sub.toLowerCase();
-    });
-}
-exports.toDashCase = toDashCase;
-function escapeRegExp(str) {
-    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-}
-exports.escapeRegExp = escapeRegExp;
-function removeTags(str) {
-    var replacement = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
-
-    return str.replace(/(<([^>]+)>)/ig, replacement);
-}
-exports.removeTags = removeTags;
-function stripTagsFromString(str) {
-    var div = document.createElement("div");
-    div.innerHTML = str;
-    return div.textContent || div.innerText || "";
-}
-exports.stripTagsFromString = stripTagsFromString;
-function replaceAll(target, search) {
-    var replacement = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
-
-    return target.replace(new RegExp(escapeRegExp(search), "g"), replacement);
-}
-exports.replaceAll = replaceAll;
-function surroundText(search, regex, front, end) {
-    var matches = [];
-    while (true) {
-        var result = regex.exec(search);
-        if (result) {
-            matches.push({
-                start: result.index,
-                end: result.index + result[0].length,
-                str: result[0]
-            });
-        } else {
-            break;
-        }
-    }
-    var addLength = front.length + end.length;
-    var addedLength = 0;
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = matches[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var match = _step.value;
-
-            search = [search.substring(0, match.start + addedLength), front, match.str, end, search.substring(match.end + addedLength)].join("");
-            addedLength += addLength;
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
-    }
-
-    return search;
-}
-exports.surroundText = surroundText;
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function __export(m) {
-    for (var p in m) {
-        if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-    }
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(163));
-__export(__webpack_require__(67));
-__export(__webpack_require__(164));
-__export(__webpack_require__(68));
-function cloneExceptEmpty() {
-    var result = {};
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-    }
-
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = args[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var arg = _step.value;
-
-            for (var key in arg) {
-                if (Object.prototype.hasOwnProperty.call(arg, key) && arg[key] !== "") {
-                    result[key] = arg[key];
-                }
-            }
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
-    }
-
-    return result;
-}
-exports.cloneExceptEmpty = cloneExceptEmpty;
-function clone() {
-    var _Object$assign;
-
-    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-    }
-
-    return (_Object$assign = Object.assign).call.apply(_Object$assign, [Object, {}].concat(args));
-}
-exports.clone = clone;
 
 /***/ })
-
-},[161]);
+],[163]);
 //# sourceMappingURL=index.js.map
