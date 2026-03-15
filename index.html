@@ -10,12 +10,14 @@
             margin: 0;
             padding: 0;
             height: 100vh;
-            overflow: hidden;  /* ← THIS KILLS SCROLL */
+            overflow: hidden;
         }
         #app {
-            width: 100%;
+            width: 100vw;
             height: 100vh;
-            position: relative;
+            position: fixed;  /* ← THIS eliminates scroll */
+            top: 0;
+            left: 0;
         }
         .unloaded-message {
             position: fixed;
@@ -23,6 +25,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 999;
+            pointer-events: none;
         }
     </style>
 </head>
