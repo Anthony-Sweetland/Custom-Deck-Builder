@@ -2810,7 +2810,7 @@ exports.defaultsHeadings = [{
 addTitlesTo(exports.defaultsHeadings);
 exports.defaultsRows = [{
     name: "__defaults__",
-    logoURL: "https://static.dc.com/2024-08/dc-logo-313x313.svg",
+    logoURL: "https://i.imgur.com/J6SuXcE.png",
     set: "Teen Titans",
     setTextColor: "#ffec34",
     setBackgroundColor: "#ed1c24",
