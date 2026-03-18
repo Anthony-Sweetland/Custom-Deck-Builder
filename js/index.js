@@ -1394,9 +1394,6 @@ var styles = {
         }
     },
     equipmenttransformed: {
-        name: {
-            fill: "#000000"
-        },
         type: {
             fill: "#000000"
         },
