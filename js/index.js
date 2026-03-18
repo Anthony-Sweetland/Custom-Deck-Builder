@@ -319,6 +319,10 @@ exports.CardOptionsList = [{
     type: "checkbox",
     description: "If enabled, the card's textbox will be black instead of " + "white, such as for the Villain Stack. If the type is " + "\"Hero\" or \"Villain\", then they also gain the special " + "\"Super Hero/Villain\" subtype. This option has no effect " + "on Oversized card"
 }, {
+    name: "Bannerrows",
+    type: "text",
+    description: "A value, "
+}, {
     name: "Oversized",
     type: "checkbox",
     description: "If enabled, the card becomes an oversized player card. " + "This option is only valid for \"Hero\" and \"Villain\" types," + " and Sub Type, Cost, and Victory Points are ignored."
@@ -1125,8 +1129,8 @@ var map = {
 	"./background-vp-normal.png": 190,
 	"./basic.png": 191,
 	"./crisis.png": 192,
-	"./equipment .png": 193,
-	"./equipment.png": 194,
+	"./equipment.png": 193,
+	"./equipmenttransformed.png": 194,
 	"./hero .png": 195,
 	"./hero.png": 196,
 	"./hostage.png": 197,
@@ -1389,6 +1393,26 @@ var styles = {
             dropShadowDistance: 2
         }
     },
+    equipmenttransformed: {
+        name: {
+            fill: "#000000"
+        },
+        type: {
+            fill: "#000000"
+        },
+        text: {
+            fill: "#ffffff",
+            fontFamily: "TradeGothic",
+            fontSize: 38,
+            letterSpacing: -0.84,
+            padding: 0,
+            dropShadow: true,
+            dropShadowAngle: 60 * Math.PI / 180,
+            dropShadowBlur: 12,
+            dropShadowColor: "#000000",
+            dropShadowDistance: 2
+        }
+    },
     Weakness: {
         name: {
             fill: "#8dc73f"
@@ -1448,8 +1472,9 @@ var Card = function () {
         this.pxWidth = exports.CARD_MAX_WIDTH;
         this.pxHeight = exports.CARD_MAX_HEIGHT;
         this.name = "Card Name";
-        this.type = "Starter" | "startertransformed";
+        this.type = "Starter" | "startertransformed" | "equipment-transformed";
         this.variant = false;
+        this.Bannerrows = 1;
         this.oversized = false;
         this.typePrefix = "";
         this.victoryPoints = 1;
@@ -1634,6 +1659,49 @@ var Card = function () {
                 graphics.endFill();
                 this.container.addChild(graphics);
             }
+            if (this.Bannerrows == 2 && !this.oversized) {
+                var _graphics = new PIXI.Graphics();
+                _graphics.beginFill(0x00BAF1);
+                _graphics.drawRect(0, 719, 750, 92);
+                _graphics.endFill();
+                this.container.addChild(_graphics);
+            } else {
+                if (this.Bannerrows == 1 && !this.oversized) {
+                    var _graphics2 = new PIXI.Graphics();
+                    _graphics2.beginFill(0x00BAF1);
+                    _graphics2.drawRect(0, 719, 750, 54);
+                    _graphics2.endFill();
+                    this.container.addChild(_graphics2);
+                }
+            }
+            {
+                if (this.Bannerrows == 3 && !this.oversized) {
+                    var _graphics3 = new PIXI.Graphics();
+                    _graphics3.beginFill(0x00BAF1);
+                    _graphics3.drawRect(0, 719, 750, 130);
+                    _graphics3.endFill();
+                    this.container.addChild(_graphics3);
+                }
+            }
+            {
+                if (this.Bannerrows == -1 && !this.oversized) {
+                    var _graphics4 = new PIXI.Graphics();
+                    _graphics4.beginFill(0x7CC141);
+                    _graphics4.drawRect(0, 719, 750, 54);
+                    _graphics4.endFill();
+                    this.container.addChild(_graphics4);
+                }
+            }
+            {
+                if (this.Bannerrows == 4 && !this.oversized) {
+                    var _graphics5 = new PIXI.Graphics();
+                    _graphics5.beginFill(0xF5B345);
+                    _graphics5.drawRect(0, 719, 750, 54);
+                    _graphics5.endFill();
+                    this.container.addChild(_graphics5);
+                }
+            }
+            ;
         }
     }, {
         key: "renderLogo",
@@ -1685,7 +1753,7 @@ var Card = function () {
     }, {
         key: "renderType",
         value: function renderType() {
-            if (this.oversized || this.type === "Weakness" || this.type === "Hostage" || this.type === "Crisis" || this.type === "Basic" || this.type === "Typeless" || this.type === "startertransformed") {
+            if (this.oversized || this.type === "Weakness" || this.type === "Hostage" || this.type === "Crisis" || this.type === "Basic" || this.type === "Typeless" || this.type === "startertransformed" || this.type === "equipmenttransformed") {
                 return;
             }
             var text = this.type.toUpperCase();
@@ -2822,7 +2890,7 @@ exports.cardsHeadings = [{
     name: "Name"
 }, {
     name: "Type",
-    allowedValues: ["Equipment", "Hero", "Hostage", "Location", "Starter", "Crisis", "Super Power", "Villain", "Typeless", "Basic", "Weakness", "startertransformed"]
+    allowedValues: ["Equipment", "Hero", "Hostage", "Location", "Starter", "Crisis", "Super Power", "Villain", "Typeless", "Basic", "Weakness", "startertransformed", "equipmenttransformed"]
 }, {
     name: "Text",
     longText: true
@@ -2838,6 +2906,10 @@ exports.cardsHeadings = [{
 }, {
     name: "Variant",
     type: "boolean"
+}, {
+    name: "Bannerrows",
+    id: "Bannerrows",
+    type: "number"
 }, {
     name: "Oversized",
     type: "boolean",
@@ -4350,13 +4422,13 @@ module.exports = __webpack_require__.p + "resources/de6d3b4350d95e575bf730434feb
 /* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/e7fc178699c482ca82b6b9de1af1bf4a.png";
+module.exports = __webpack_require__.p + "resources/e70e315b98145495760f797e802cbed1.png";
 
 /***/ }),
 /* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/e70e315b98145495760f797e802cbed1.png";
+module.exports = __webpack_require__.p + "resources/e7fc178699c482ca82b6b9de1af1bf4a.png";
 
 /***/ }),
 /* 195 */
