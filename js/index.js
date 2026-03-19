@@ -321,7 +321,7 @@ exports.CardOptionsList = [{
 }, {
     name: "Bannerrows",
     type: "text",
-    description: "A value, "
+    description: "GOLD - Effects when you gain a card. " + "BLUE - card interactions (discard, control, seal). " + "GREEN Mandatory rule (must be played first/before ending turn). Pink (depreciated) ongoing, BURGUNDY-Nemesis Stack ongoing. YELLOW - Recruit"
 }, {
     name: "Oversized",
     type: "checkbox",
@@ -1250,7 +1250,7 @@ var styles = {
             padding: 100
         },
         subtype: {
-            fontSize: 33.333,
+            fontSize: 33.33,
             letterSpacing: 1.375
         },
         type: {
@@ -1690,12 +1690,84 @@ var Card = function () {
                 }
             }
             {
-                if (this.Bannerrows == 4 && !this.oversized) {
+                if (this.Bannerrows == -2 && !this.oversized) {
                     var _graphics5 = new PIXI.Graphics();
-                    _graphics5.beginFill(0xF5B345);
-                    _graphics5.drawRect(0, 719, 750, 54);
+                    _graphics5.beginFill(0x7CC141);
+                    _graphics5.drawRect(0, 719, 750, 92);
                     _graphics5.endFill();
                     this.container.addChild(_graphics5);
+                }
+            }
+            {
+                if (this.Bannerrows == 4 && !this.oversized) {
+                    var _graphics6 = new PIXI.Graphics();
+                    _graphics6.beginFill(0xF5B345);
+                    _graphics6.drawRect(0, 719, 750, 54);
+                    _graphics6.endFill();
+                    this.container.addChild(_graphics6);
+                }
+            }
+            {
+                if (this.Bannerrows == 5 && !this.oversized) {
+                    var _graphics7 = new PIXI.Graphics();
+                    _graphics7.beginFill(0xF5B345);
+                    _graphics7.drawRect(0, 719, 750, 92);
+                    _graphics7.endFill();
+                    this.container.addChild(_graphics7);
+                }
+            }
+            {
+                if (this.Bannerrows == 7 && !this.oversized) {
+                    var _graphics8 = new PIXI.Graphics();
+                    _graphics8.beginFill(0x7A1316);
+                    _graphics8.drawRect(0, 719, 750, 54);
+                    _graphics8.endFill();
+                    this.container.addChild(_graphics8);
+                }
+            }
+            {
+                if (this.Bannerrows == 9 && !this.oversized) {
+                    var _graphics9 = new PIXI.Graphics();
+                    _graphics9.beginFill(0xF7EB00);
+                    _graphics9.drawRect(0, 719, 750, 54);
+                    _graphics9.endFill();
+                    this.container.addChild(_graphics9);
+                }
+            }
+            {
+                if (this.Bannerrows == 9 && this.oversized) {
+                    var _graphics10 = new PIXI.Graphics();
+                    _graphics10.beginFill(0xF7EB00);
+                    _graphics10.drawRect(0, 966, 900, 54);
+                    _graphics10.endFill();
+                    this.container.addChild(_graphics10);
+                }
+            }
+            {
+                if (this.Bannerrows == 6 && !this.oversized) {
+                    var _graphics11 = new PIXI.Graphics();
+                    _graphics11.beginFill(0xE6118B);
+                    _graphics11.drawRect(0, 719, 750, 54);
+                    _graphics11.endFill();
+                    this.container.addChild(_graphics11);
+                }
+            }
+            {
+                if (this.Bannerrows == 8 && !this.oversized) {
+                    var _graphics12 = new PIXI.Graphics();
+                    _graphics12.beginFill(0x77CEDA);
+                    _graphics12.drawRect(0, 719, 750, 54);
+                    _graphics12.endFill();
+                    this.container.addChild(_graphics12);
+                }
+            }
+            {
+                if (this.Bannerrows == 10 && !this.oversized) {
+                    var _graphics13 = new PIXI.Graphics();
+                    _graphics13.beginFill(0x8454A1);
+                    _graphics13.drawRect(0, 719, 750, 54);
+                    _graphics13.endFill();
+                    this.container.addChild(_graphics13);
                 }
             }
             ;
