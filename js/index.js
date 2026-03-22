@@ -1950,7 +1950,7 @@ var Card = function () {
     }, {
         key: "renderNL",
         value: function renderNL() {
-            if (this.oversized || this.type !== "Villain" || this.cost < "8") {
+            if (this.oversized || this.cost < "8" || !this.variant) {
                 return;
             }
             if (this.cost == "8") {
@@ -1960,14 +1960,25 @@ var Card = function () {
             } else if (this.cost == "11" || this.cost == "12" || this.cost == "13") {
                 this.nlu = "3";
             } else this.nlu = "4";
-            utils_1.newSprite("backgroundsvlevel", this.container);
-            var NLStyle = this.getStyle("backgroundsvlevel");
-            var cardCostFrontText = new PIXI.Text(String("LEVEL " + this.nlu), NLStyle);
-            cardCostFrontText.pivot.x = cardCostFrontText.width / 2;
-            cardCostFrontText.pivot.y = cardCostFrontText.height / 2;
-            cardCostFrontText.skew.x = -0.180;
-            cardCostFrontText.position.set(510, 720);
-            this.container.addChild(cardCostFrontText);
+            if (this.type == "Villain") {
+                utils_1.newSprite("backgroundsvlevel", this.container);
+                var NLStyle = this.getStyle("backgroundsvlevel");
+                var cardCostFrontText = new PIXI.Text(String("LEVEL " + this.nlu), NLStyle);
+                cardCostFrontText.pivot.x = cardCostFrontText.width / 2;
+                cardCostFrontText.pivot.y = cardCostFrontText.height / 2;
+                cardCostFrontText.skew.x = -0.180;
+                cardCostFrontText.position.set(510, 722);
+                this.container.addChild(cardCostFrontText);
+            } else if (this.type == "Hero") {
+                utils_1.newSprite("backgroundshlevel", this.container);
+                var _NLStyle = this.getStyle("backgroundsvlevel");
+                var _cardCostFrontText = new PIXI.Text(String("LEVEL " + this.nlu), _NLStyle);
+                _cardCostFrontText.pivot.x = _cardCostFrontText.width / 2;
+                _cardCostFrontText.pivot.y = _cardCostFrontText.height / 2;
+                _cardCostFrontText.skew.x = -0.180;
+                _cardCostFrontText.position.set(535, 718);
+                this.container.addChild(_cardCostFrontText);
+            }
         }
     }, {
         key: "renderVP",
@@ -4579,7 +4590,7 @@ module.exports = __webpack_require__.p + "resources/5de2753b1848fb6afa8f2c1c50cd
 /* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/abf4aef6bfb2e736f8510be02b6f544d.png";
+module.exports = __webpack_require__.p + "resources/68ac190d443e3a23a134750b0bc96c3a.png";
 
 /***/ }),
 /* 193 */
