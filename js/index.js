@@ -1284,14 +1284,14 @@ var styles = {
             padding: 100
         },
         subtype: {
-            fill: "#ffffff",
+            fill: "#000000",
             fontFamily: "CompactaBdBT",
-            fontSize: 62,
+            fontSize: 60,
             fontWeight: "bold",
             letterSpacing: 0.06,
             padding: 100,
             stroke: "#ffffff",
-            strokeThickness: 13
+            strokeThickness: 10
         },
         type: {
             fill: "#ffffff",
