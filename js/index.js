@@ -132,7 +132,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var tab_1 = __webpack_require__(160);
 exports.Tab = tab_1.default;
-__webpack_require__(390);
+__webpack_require__(391);
 __export(__webpack_require__(161));
 
 /***/ }),
@@ -320,8 +320,8 @@ exports.CardOptionsList = [{
     description: "If enabled, the card's textbox will be black instead of " + "white, such as for the Villain Stack. If the type is " + "\"Hero\" or \"Villain\", then they also gain the special " + "\"Super Hero/Villain\" subtype. This option has no effect " + "on Oversized card"
 }, {
     name: "Bannerrows",
-    type: "text",
-    description: "GOLD - Effects when you gain a card. " + "BLUE - card interactions (discard, control, seal). " + "GREEN Mandatory rule (must be played first/before ending turn). Pink (depreciated) ongoing, BURGUNDY-    sis Stack ongoing. YELLOW - Recruit"
+    type: "number",
+    description: "GOLD - Effects when you gain a card. " + "BLUE - card interactions (discard, control, seal). " + "GREEN Mandatory rule (must be played first/before ending turn). Pink (depreciated) ongoing, BURGUNDY-Crisis Stack ongoing. YELLOW - Recruit"
 }, {
     name: "destination",
     type: "number",
@@ -369,7 +369,7 @@ exports.CardOptionsList = [{
 }, {
     name: "Subtype",
     type: "text",
-    description: "An additional type describing the card, " + " Try METAL or CONSTRUCT in caps."
+    description: "An additional type describing the card, " + " Try METAL or CONSTRUCT or CONDITIONAL COST or CONDITIONAL VP in caps, CURSED (weakness variant)."
 }, {
     name: "Set",
     type: "text",
@@ -1132,32 +1132,33 @@ var map = {
 	"./background-vp-negative.png": 189,
 	"./background-vp-normal.png": 190,
 	"./backgroundbribe.png": 191,
-	"./backgroundmetal.png": 192,
-	"./backgroundshlevel.png": 193,
-	"./backgroundsvlevel.png": 194,
-	"./basic.png": 195,
-	"./construct.png": 196,
-	"./crisis.png": 197,
-	"./destination.png": 198,
-	"./equipment.png": 199,
-	"./equipmenttransformed.png": 200,
-	"./hero.png": 201,
-	"./herotransformed.png": 202,
-	"./hostage.png": 203,
-	"./location.png": 204,
-	"./nemesislevel.png": 205,
-	"./oversized-super-hero.png": 206,
-	"./oversized-super-villain.png": 207,
-	"./starter.png": 208,
-	"./startertransformed.png": 209,
-	"./super-hero.png": 210,
-	"./super-power.png": 211,
-	"./super-villain.png": 212,
-	"./typeless.png": 213,
-	"./villain.png": 214,
-	"./villaintransformed.png": 215,
-	"./vp-variable.png": 216,
-	"./weakness.png": 217
+	"./backgroundcursed.png": 192,
+	"./backgroundmetal.png": 193,
+	"./backgroundshlevel.png": 194,
+	"./backgroundsvlevel.png": 195,
+	"./basic.png": 196,
+	"./construct.png": 197,
+	"./crisis.png": 198,
+	"./destination.png": 199,
+	"./equipment.png": 200,
+	"./equipmenttransformed.png": 201,
+	"./hero.png": 202,
+	"./herotransformed.png": 203,
+	"./hostage.png": 204,
+	"./location.png": 205,
+	"./nemesislevel.png": 206,
+	"./oversized-super-hero.png": 207,
+	"./oversized-super-villain.png": 208,
+	"./starter.png": 209,
+	"./startertransformed.png": 210,
+	"./super-hero.png": 211,
+	"./super-power.png": 212,
+	"./super-villain.png": 213,
+	"./typeless.png": 214,
+	"./villain.png": 215,
+	"./villaintransformed.png": 216,
+	"./vp-variable.png": 217,
+	"./weakness.png": 218
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -1545,7 +1546,7 @@ var Card = function () {
         this.name = "Card Name";
         this.type = "Starter" | "startertransformed" | "equipment-transformed" | "hero-transformed" | "villain-transformed";
         this.variant = false;
-        this.Bannerrows = 1;
+        this.Bannerrows = 0;
         this.destination = 1;
         this.oversized = false;
         this.typePrefix = "";
@@ -1924,6 +1925,25 @@ var Card = function () {
                 utils_1.newSprite("construct", this.container);
             } else if (this.subtype == "METAL" && this.variant == false) {
                 utils_1.newSprite("backgroundmetal", this.container);
+            } else if (this.subtype == "CURSED" && this.variant == true && this.type === "Weakness") {
+                utils_1.newSprite("backgroundcursed", this.container);
+            } else if (this.subtype == "CONDITIONAL VP") {
+                return;
+            } else if (this.subtype == "CONDITIONAL COST") {
+                var cardCostBackStyle = this.getStyle("cost");
+                var cardCostBackText = new PIXI.Text(String("*"), cardCostBackStyle);
+                cardCostBackText.pivot.x = cardCostBackText.width / 2;
+                cardCostBackText.pivot.y = cardCostBackText.height / 2;
+                cardCostBackText.position.set(700, 940);
+                this.container.addChild(cardCostBackText);
+                var cardCostFrontStyle = cardCostBackStyle.clone();
+                cardCostFrontStyle.stroke = "#ffffff";
+                cardCostFrontStyle.strokeThickness = 10;
+                var cardCostFrontText = new PIXI.Text(String("*"), cardCostFrontStyle);
+                cardCostFrontText.pivot.x = cardCostFrontText.width / 2;
+                cardCostFrontText.pivot.y = cardCostFrontText.height / 2;
+                cardCostFrontText.position.set(700, 940);
+                this.container.addChild(cardCostFrontText);
             } else {
                 var x = 710;
                 var y = 700;
@@ -2020,6 +2040,8 @@ var Card = function () {
             var vpSign = this.victoryPoints < 0 ? "negative" : "normal";
             utils_1.newSprite("background-vp-" + vpSign, this.container);
             if (this.victoryPoints === "*") {
+                utils_1.newSprite("vp-variable", this.container);
+            } else if (this.subtype == "CONDITIONAL VP") {
                 utils_1.newSprite("vp-variable", this.container);
             } else {
                 var scalar = 2;
@@ -2171,7 +2193,7 @@ var Card = function () {
     return Card;
 }();
 
-Card.autoBoldKeywords = ["+Power", ":", "Assist", "Attacked", "Attack", "Block", "Bombshell Attack", "Confrontation", "Defense", "First Appearance — Attack", "Ongoing", "Ninjutsu", "Retaliation", "Weakness", "Speedster", "Surge"];
+Card.autoBoldKeywords = ["+Power", "Assist", "Attacked", "Attack ", "Attack:", "Attack.", "Block", "Bombshell Attack", "Confrontation", "Defense", "First Appearance — Attack", "Ongoing", "Ninjutsu", "Retaliation", "Weakness", "Speedster", "Surge", "Transform ", "Transform.", "Transform:", "Seal ", "Seal.", "Seal:", ":"];
 exports.Card = Card;
 
 /***/ }),
@@ -2192,12 +2214,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 Object.defineProperty(exports, "__esModule", { value: true });
 var csvParse = __webpack_require__(179);
 var events_1 = __webpack_require__(19);
-var JSZip = __webpack_require__(261);
+var JSZip = __webpack_require__(262);
 var PIXI = __webpack_require__(57);
 var initialize_1 = __webpack_require__(64);
 var utils_1 = __webpack_require__(9);
 var card_1 = __webpack_require__(66);
-var readmeText = __webpack_require__(363);
+var readmeText = __webpack_require__(364);
 var MAX_TEXTURE_LENGTH = 4096;
 
 var DeckBuilder = function (_events_1$EventEmitte) {
@@ -2605,7 +2627,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tabular_1 = __webpack_require__(23);
-var entireReadme = __webpack_require__(259);
+var entireReadme = __webpack_require__(260);
 
 var AboutTab = function (_tabular_1$Tab) {
     _inherits(AboutTab, _tabular_1$Tab);
@@ -2668,14 +2690,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var filesaver = __webpack_require__(231);
+var filesaver = __webpack_require__(232);
 var path_1 = __webpack_require__(5);
 var deck_builder_1 = __webpack_require__(150);
 var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
 var store = __webpack_require__(139);
-var hbs = __webpack_require__(236);
-__webpack_require__(387);
+var hbs = __webpack_require__(237);
+__webpack_require__(388);
 var tabTemplate = utils_1.template(hbs);
 
 var DeckGeneratorTab = function (_tabular_1$Tab) {
@@ -2886,8 +2908,8 @@ var card_options_1 = __webpack_require__(65);
 var table_1 = __webpack_require__(67);
 var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
-var hbs = __webpack_require__(237);
-__webpack_require__(388);
+var hbs = __webpack_require__(238);
+__webpack_require__(389);
 var tabTemplate = utils_1.template(hbs);
 var typeTitles = {
     "text": "Normal alphanumeric text.",
@@ -3170,8 +3192,8 @@ var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
 var store = __webpack_require__(139);
 var live_editor_tables_1 = __webpack_require__(158);
-var hbs = __webpack_require__(238);
-__webpack_require__(389);
+var hbs = __webpack_require__(239);
+__webpack_require__(390);
 var tabTemplate = utils_1.template(hbs);
 
 var LiveEditorTab = function (_tabular_1$Tab) {
@@ -3554,7 +3576,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = __webpack_require__(19);
 var utils_1 = __webpack_require__(9);
-var hbs = __webpack_require__(239);
+var hbs = __webpack_require__(240);
 var tabularTemplate = utils_1.template(hbs);
 
 var Tabular = function (_events_1$EventEmitte) {
@@ -3793,8 +3815,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tabs_1 = __webpack_require__(156);
 var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
-var hbs = __webpack_require__(240);
-__webpack_require__(391);
+var hbs = __webpack_require__(241);
+__webpack_require__(392);
 var uiTemplate = utils_1.template(hbs);
 
 var UI = function UI(element) {
@@ -3812,7 +3834,7 @@ var UI = function UI(element) {
     document.documentElement.setAttribute("data-browser", navigator.userAgent);
     document.title = this.title + " - " + this.subtitle;
     var faviconLink = document.createElement("link");
-    faviconLink.href = __webpack_require__(222);
+    faviconLink.href = __webpack_require__(223);
     faviconLink.rel = "icon";
     faviconLink.type = "image/png";
     document.head.appendChild(faviconLink);
@@ -3877,8 +3899,8 @@ initialize_1.initialize(function () {
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var FontFaceObserver = __webpack_require__(232);
-__webpack_require__(392);
+var FontFaceObserver = __webpack_require__(233);
+__webpack_require__(393);
 var fonts = {
     CompactaBT: ["regular", "bold", "italics"],
     CompactaBdBT: ["regular", "bold"],
@@ -4550,7 +4572,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, ".input-like, .custom-deck-builder input, .custom-deck-builder textarea, .custom-deck-builder select, .custom-deck-builder option, .custom-deck-builder button {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .custom-deck-builder input:hover, .custom-deck-builder textarea:hover, .custom-deck-builder select:hover, .custom-deck-builder option:hover, .custom-deck-builder button:hover, .input-like:focus, .custom-deck-builder input:focus, .custom-deck-builder textarea:focus, .custom-deck-builder select:focus, .custom-deck-builder option:focus, .custom-deck-builder button:focus {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus, .custom-deck-builder input:focus, .custom-deck-builder textarea:focus, .custom-deck-builder select:focus, .custom-deck-builder option:focus, .custom-deck-builder button:focus {\n    background-color: #ffffff; }\n  .input-like:disabled, .custom-deck-builder input:disabled, .custom-deck-builder textarea:disabled, .custom-deck-builder select:disabled, .custom-deck-builder option:disabled, .custom-deck-builder button:disabled {\n    background-color: #999;\n    cursor: default; }\n\ninput[type=range] {\n  -webkit-appearance: none; }\n  input[type=range]:focus {\n    outline: none; }\n  input[type=range]::-webkit-slider-runnable-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-webkit-slider-runnable-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-webkit-slider-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer;\n    -webkit-appearance: none;\n    margin-top: -7px; }\n    input[type=range]::-webkit-slider-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-webkit-slider-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-webkit-slider-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]:focus::-webkit-slider-runnable-track {\n    background: #a2a2a2; }\n  input[type=range]::-moz-range-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-moz-range-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-moz-range-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer; }\n    input[type=range]::-moz-range-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-moz-range-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-moz-range-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]::-ms-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    background: transparent;\n    border-color: transparent;\n    border-width: 7px 0;\n    color: transparent; }\n    input[type=range]::-ms-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-ms-fill-lower {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #a2a2a2;\n    border: 0 solid transparent;\n    border-radius: 0; }\n  input[type=range]::-ms-fill-upper {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-ms-fill-upper:disabled {\n      background: #ddd; }\n  input[type=range]::-ms-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer; }\n    input[type=range]::-ms-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-ms-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-ms-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]:focus::-ms-fill-lower {\n    background: #bbb; }\n    input[type=range]:focus::-ms-fill-lower:disabled {\n      background: #ddd; }\n  input[type=range]:focus::-ms-fill-upper {\n    background: #a2a2a2; }\n  input[type=range]:disabled {\n    cursor: default;\n    background: #ddd;\n    opacity: 0.5; }\n\nhtml {\n  overflow-y: scroll; }\n\nbody {\n  background: url(" + escape(__webpack_require__(218)) + ") no-repeat center center fixed;\n  -webkit-background-size: cover;\n  -moz-background-size: cover;\n  -o-background-size: cover;\n  background-size: cover; }\n\n.card-name, .custom-deck-builder h1, .custom-deck-builder h2, .custom-deck-builder h3, .custom-deck-builder h4, .custom-deck-builder h5, .custom-deck-builder h6, .custom-deck-builder .tabular nav ul li {\n  font-size: 2.5em;\n  font-family: CompactaBT, Impact, Charcoal, sans-serif;\n  letter-spacing: -0.025em;\n  margin: 0;\n  color: #FFC60E;\n  text-shadow: 2px 2px #000000;\n  text-transform: uppercase;\n  transform: skewX(-15deg) scaleY(0.75);\n  -webkit-transform: skewX(-15deg) scaleY(0.75);\n  -ms-transform: skewX(-15deg) scaleY(0.75);\n  -moz-transform: skewX(-15deg) scaleY(0.75);\n  -o-transform: skewX(-15deg) scaleY(0.75); }\n\n.expandable {\n  height: 0;\n  overflow: hidden;\n  visibility: hidden;\n  opacity: 0;\n  pointer-events: none; }\n  .expandable.measuring {\n    -webkit-transition: none;\n    -moz-transition: none;\n    -ms-transition: none;\n    -o-transition: none;\n    transition: none;\n    height: auto;\n    position: absolute; }\n  .expandable.expanded {\n    opacity: 1;\n    visibility: visible;\n    height: auto;\n    pointer-events: all; }\n\n.custom-deck-builder {\n  color: #ffffff;\n  width: calc(1280px - 2em);\n  margin: 2em auto 1em auto;\n  font-family: TradeGothic, Verdana, Geneva, sans-serif;\n  font-size: 1em;\n  letter-spacing: -0.025em; }\n  .custom-deck-builder a, .custom-deck-builder a:visited {\n    color: #00adea;\n    text-decoration: underline; }\n    .custom-deck-builder a:hover, .custom-deck-builder a:focus, .custom-deck-builder a:visited:hover, .custom-deck-builder a:visited:focus {\n      color: #CD9D00; }\n  .custom-deck-builder .page-title h1 > span {\n    font-size: 5rem;\n    text-shadow: 5px 5px #000000;\n    display: block;\n    text-align: center; }\n  .custom-deck-builder .page-title h1 .subtitle {\n    color: #FFDC6A;\n    font-size: 3.75rem; }\n  .custom-deck-builder h2, .custom-deck-builder h3, .custom-deck-builder h4, .custom-deck-builder h5, .custom-deck-builder h6 {\n    color: #06C1FF;\n    margin-left: 0.075em; }\n  .custom-deck-builder input, .custom-deck-builder textarea, .custom-deck-builder select, .custom-deck-builder option, .custom-deck-builder button {\n    font-family: TradeGothic, Verdana, Geneva, sans-serif;\n    font-size: 1em;\n    letter-spacing: -0.025em; }\n  .custom-deck-builder button {\n    background-color: #007AA2;\n    border: none;\n    box-shadow: 3px 3px #000000;\n    color: #ffffff;\n    padding: 0.375em 0.5em;\n    cursor: pointer;\n    margin-bottom: 3px; }\n    .custom-deck-builder button:hover, .custom-deck-builder button:focus {\n      background-color: #06C1FF; }\n    .custom-deck-builder button:disabled {\n      background-color: #999;\n      cursor: default; }\n  .custom-deck-builder abbr[title] {\n    text-decoration: none;\n    cursor: help; }\n  .custom-deck-builder .tabular nav {\n    display: block;\n    background: url(" + escape(__webpack_require__(220)) + ") no-repeat center center;\n    -webkit-background-size: cover;\n    -moz-background-size: cover;\n    -o-background-size: cover;\n    background-size: cover;\n    color: #ffffff;\n    border-radius: 1em 1em 0 0;\n    border-bottom: 0.375rem solid #00adea; }\n    .custom-deck-builder .tabular nav ul {\n      padding: 1em 0;\n      margin: 0;\n      list-style-type: none; }\n      .custom-deck-builder .tabular nav ul li {\n        cursor: pointer;\n        font-size: 3.5em;\n        text-shadow: 4px 4px #000000;\n        display: inline-block;\n        margin: 0 0.5em; }\n        .custom-deck-builder .tabular nav ul li:not(.current) {\n          color: #A17B00; }\n        .custom-deck-builder .tabular nav ul li:hover, .custom-deck-builder .tabular nav ul li:focus {\n          color: #FFDC6A; }\n  .custom-deck-builder .tabular .tabular-contents {\n    background: #ffffff;\n    color: #000000;\n    padding: 1em; }\n  .custom-deck-builder dl dt {\n    font-weight: bold;\n    color: #007AA2; }\n    .custom-deck-builder dl dt + dd {\n      margin-left: 1em;\n      color: #005F7F; }\n      .custom-deck-builder dl dt + dd + dt {\n        margin-top: 1em; }\n  .custom-deck-builder table {\n    border: none;\n    border-collapse: collapse;\n    border-spacing: 0; }\n    .custom-deck-builder table tr:nth-child(even) > td {\n      background-color: #ddd; }\n    .custom-deck-builder table td {\n      padding: 0.5em; }\n  .custom-deck-builder tr:first-child > th {\n    background-color: #FFDC6A;\n    border-bottom: 0.25em solid #FFC60E;\n    padding: 0.5em 0.5em 0.25em 0.5em; }\n    .custom-deck-builder tr:first-child > th:first-child {\n      border-radius: 0.625em 0 0 0; }\n    .custom-deck-builder tr:first-child > th:last-child {\n      border-radius: 0 0.625em 0 0; }\n  .custom-deck-builder tr:last-child > td:first-child {\n    border-radius: 0 0 0 0.625em; }\n  .custom-deck-builder tr:last-child > td:last-child {\n    border-radius: 0 0 0.625em 0; }\n  .custom-deck-builder table, .custom-deck-builder tr, .custom-deck-builder th, .custom-deck-builder td {\n    border: none; }\n  .custom-deck-builder footer {\n    text-align: center;\n    font-size: 1.25em;\n    padding: 1em 0;\n    border-top: 0.375rem solid #00adea;\n    border-radius: 0 0 1em 1em;\n    background: url(" + escape(__webpack_require__(219)) + ") no-repeat center center;\n    -webkit-background-size: cover;\n    -moz-background-size: cover;\n    -o-background-size: cover;\n    background-size: cover; }\n    .custom-deck-builder footer a, .custom-deck-builder footer a:visited {\n      color: #FFC60E; }\n", ""]);
+exports.push([module.i, ".input-like, .custom-deck-builder input, .custom-deck-builder textarea, .custom-deck-builder select, .custom-deck-builder option, .custom-deck-builder button {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .custom-deck-builder input:hover, .custom-deck-builder textarea:hover, .custom-deck-builder select:hover, .custom-deck-builder option:hover, .custom-deck-builder button:hover, .input-like:focus, .custom-deck-builder input:focus, .custom-deck-builder textarea:focus, .custom-deck-builder select:focus, .custom-deck-builder option:focus, .custom-deck-builder button:focus {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus, .custom-deck-builder input:focus, .custom-deck-builder textarea:focus, .custom-deck-builder select:focus, .custom-deck-builder option:focus, .custom-deck-builder button:focus {\n    background-color: #ffffff; }\n  .input-like:disabled, .custom-deck-builder input:disabled, .custom-deck-builder textarea:disabled, .custom-deck-builder select:disabled, .custom-deck-builder option:disabled, .custom-deck-builder button:disabled {\n    background-color: #999;\n    cursor: default; }\n\ninput[type=range] {\n  -webkit-appearance: none; }\n  input[type=range]:focus {\n    outline: none; }\n  input[type=range]::-webkit-slider-runnable-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-webkit-slider-runnable-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-webkit-slider-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer;\n    -webkit-appearance: none;\n    margin-top: -7px; }\n    input[type=range]::-webkit-slider-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-webkit-slider-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-webkit-slider-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]:focus::-webkit-slider-runnable-track {\n    background: #a2a2a2; }\n  input[type=range]::-moz-range-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-moz-range-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-moz-range-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer; }\n    input[type=range]::-moz-range-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-moz-range-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-moz-range-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]::-ms-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    background: transparent;\n    border-color: transparent;\n    border-width: 7px 0;\n    color: transparent; }\n    input[type=range]::-ms-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-ms-fill-lower {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #a2a2a2;\n    border: 0 solid transparent;\n    border-radius: 0; }\n  input[type=range]::-ms-fill-upper {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-ms-fill-upper:disabled {\n      background: #ddd; }\n  input[type=range]::-ms-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer; }\n    input[type=range]::-ms-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-ms-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-ms-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]:focus::-ms-fill-lower {\n    background: #bbb; }\n    input[type=range]:focus::-ms-fill-lower:disabled {\n      background: #ddd; }\n  input[type=range]:focus::-ms-fill-upper {\n    background: #a2a2a2; }\n  input[type=range]:disabled {\n    cursor: default;\n    background: #ddd;\n    opacity: 0.5; }\n\nhtml {\n  overflow-y: scroll; }\n\nbody {\n  background: url(" + escape(__webpack_require__(219)) + ") no-repeat center center fixed;\n  -webkit-background-size: cover;\n  -moz-background-size: cover;\n  -o-background-size: cover;\n  background-size: cover; }\n\n.card-name, .custom-deck-builder h1, .custom-deck-builder h2, .custom-deck-builder h3, .custom-deck-builder h4, .custom-deck-builder h5, .custom-deck-builder h6, .custom-deck-builder .tabular nav ul li {\n  font-size: 2.5em;\n  font-family: CompactaBT, Impact, Charcoal, sans-serif;\n  letter-spacing: -0.025em;\n  margin: 0;\n  color: #FFC60E;\n  text-shadow: 2px 2px #000000;\n  text-transform: uppercase;\n  transform: skewX(-15deg) scaleY(0.75);\n  -webkit-transform: skewX(-15deg) scaleY(0.75);\n  -ms-transform: skewX(-15deg) scaleY(0.75);\n  -moz-transform: skewX(-15deg) scaleY(0.75);\n  -o-transform: skewX(-15deg) scaleY(0.75); }\n\n.expandable {\n  height: 0;\n  overflow: hidden;\n  visibility: hidden;\n  opacity: 0;\n  pointer-events: none; }\n  .expandable.measuring {\n    -webkit-transition: none;\n    -moz-transition: none;\n    -ms-transition: none;\n    -o-transition: none;\n    transition: none;\n    height: auto;\n    position: absolute; }\n  .expandable.expanded {\n    opacity: 1;\n    visibility: visible;\n    height: auto;\n    pointer-events: all; }\n\n.custom-deck-builder {\n  color: #ffffff;\n  width: calc(1280px - 2em);\n  margin: 2em auto 1em auto;\n  font-family: TradeGothic, Verdana, Geneva, sans-serif;\n  font-size: 1em;\n  letter-spacing: -0.025em; }\n  .custom-deck-builder a, .custom-deck-builder a:visited {\n    color: #00adea;\n    text-decoration: underline; }\n    .custom-deck-builder a:hover, .custom-deck-builder a:focus, .custom-deck-builder a:visited:hover, .custom-deck-builder a:visited:focus {\n      color: #CD9D00; }\n  .custom-deck-builder .page-title h1 > span {\n    font-size: 5rem;\n    text-shadow: 5px 5px #000000;\n    display: block;\n    text-align: center; }\n  .custom-deck-builder .page-title h1 .subtitle {\n    color: #FFDC6A;\n    font-size: 3.75rem; }\n  .custom-deck-builder h2, .custom-deck-builder h3, .custom-deck-builder h4, .custom-deck-builder h5, .custom-deck-builder h6 {\n    color: #06C1FF;\n    margin-left: 0.075em; }\n  .custom-deck-builder input, .custom-deck-builder textarea, .custom-deck-builder select, .custom-deck-builder option, .custom-deck-builder button {\n    font-family: TradeGothic, Verdana, Geneva, sans-serif;\n    font-size: 1em;\n    letter-spacing: -0.025em; }\n  .custom-deck-builder button {\n    background-color: #007AA2;\n    border: none;\n    box-shadow: 3px 3px #000000;\n    color: #ffffff;\n    padding: 0.375em 0.5em;\n    cursor: pointer;\n    margin-bottom: 3px; }\n    .custom-deck-builder button:hover, .custom-deck-builder button:focus {\n      background-color: #06C1FF; }\n    .custom-deck-builder button:disabled {\n      background-color: #999;\n      cursor: default; }\n  .custom-deck-builder abbr[title] {\n    text-decoration: none;\n    cursor: help; }\n  .custom-deck-builder .tabular nav {\n    display: block;\n    background: url(" + escape(__webpack_require__(221)) + ") no-repeat center center;\n    -webkit-background-size: cover;\n    -moz-background-size: cover;\n    -o-background-size: cover;\n    background-size: cover;\n    color: #ffffff;\n    border-radius: 1em 1em 0 0;\n    border-bottom: 0.375rem solid #00adea; }\n    .custom-deck-builder .tabular nav ul {\n      padding: 1em 0;\n      margin: 0;\n      list-style-type: none; }\n      .custom-deck-builder .tabular nav ul li {\n        cursor: pointer;\n        font-size: 3.5em;\n        text-shadow: 4px 4px #000000;\n        display: inline-block;\n        margin: 0 0.5em; }\n        .custom-deck-builder .tabular nav ul li:not(.current) {\n          color: #A17B00; }\n        .custom-deck-builder .tabular nav ul li:hover, .custom-deck-builder .tabular nav ul li:focus {\n          color: #FFDC6A; }\n  .custom-deck-builder .tabular .tabular-contents {\n    background: #ffffff;\n    color: #000000;\n    padding: 1em; }\n  .custom-deck-builder dl dt {\n    font-weight: bold;\n    color: #007AA2; }\n    .custom-deck-builder dl dt + dd {\n      margin-left: 1em;\n      color: #005F7F; }\n      .custom-deck-builder dl dt + dd + dt {\n        margin-top: 1em; }\n  .custom-deck-builder table {\n    border: none;\n    border-collapse: collapse;\n    border-spacing: 0; }\n    .custom-deck-builder table tr:nth-child(even) > td {\n      background-color: #ddd; }\n    .custom-deck-builder table td {\n      padding: 0.5em; }\n  .custom-deck-builder tr:first-child > th {\n    background-color: #FFDC6A;\n    border-bottom: 0.25em solid #FFC60E;\n    padding: 0.5em 0.5em 0.25em 0.5em; }\n    .custom-deck-builder tr:first-child > th:first-child {\n      border-radius: 0.625em 0 0 0; }\n    .custom-deck-builder tr:first-child > th:last-child {\n      border-radius: 0 0.625em 0 0; }\n  .custom-deck-builder tr:last-child > td:first-child {\n    border-radius: 0 0 0 0.625em; }\n  .custom-deck-builder tr:last-child > td:last-child {\n    border-radius: 0 0 0.625em 0; }\n  .custom-deck-builder table, .custom-deck-builder tr, .custom-deck-builder th, .custom-deck-builder td {\n    border: none; }\n  .custom-deck-builder footer {\n    text-align: center;\n    font-size: 1.25em;\n    padding: 1em 0;\n    border-top: 0.375rem solid #00adea;\n    border-radius: 0 0 1em 1em;\n    background: url(" + escape(__webpack_require__(220)) + ") no-repeat center center;\n    -webkit-background-size: cover;\n    -moz-background-size: cover;\n    -o-background-size: cover;\n    background-size: cover; }\n    .custom-deck-builder footer a, .custom-deck-builder footer a:visited {\n      color: #FFC60E; }\n", ""]);
 
 // exports
 
@@ -4565,7 +4587,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: CompactaBT;\n  src: url(" + escape(__webpack_require__(227)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBT;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(225)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBT;\n  font-style: italic;\n  src: url(" + escape(__webpack_require__(226)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBdBT;\n  src: url(" + escape(__webpack_require__(224)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: CompactaBdBT;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(223)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  src: url(" + escape(__webpack_require__(230)) + ") format(\"woff\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(228)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  font-style: italic;\n  src: url(" + escape(__webpack_require__(229)) + ") format(\"opentype\"); }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: CompactaBT;\n  src: url(" + escape(__webpack_require__(228)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBT;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(226)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBT;\n  font-style: italic;\n  src: url(" + escape(__webpack_require__(227)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBdBT;\n  src: url(" + escape(__webpack_require__(225)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: CompactaBdBT;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(224)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  src: url(" + escape(__webpack_require__(231)) + ") format(\"woff\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(229)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  font-style: italic;\n  src: url(" + escape(__webpack_require__(230)) + ") format(\"opentype\"); }\n", ""]);
 
 // exports
 
@@ -4621,243 +4643,249 @@ module.exports = __webpack_require__.p + "resources/5de2753b1848fb6afa8f2c1c50cd
 /* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/2cc1620713d1f679e3fdc4ac4880a25d.png";
+module.exports = __webpack_require__.p + "resources/af242bb6acd8a9654097de6fa5c42bc3.png";
 
 /***/ }),
 /* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/68ac190d443e3a23a134750b0bc96c3a.png";
+module.exports = __webpack_require__.p + "resources/2cc1620713d1f679e3fdc4ac4880a25d.png";
 
 /***/ }),
 /* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/ab597deed1f469bb71b3698c18f563b6.png";
+module.exports = __webpack_require__.p + "resources/68ac190d443e3a23a134750b0bc96c3a.png";
 
 /***/ }),
 /* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/0d7c6bd038e48f928733363ce6c1955e.png";
+module.exports = __webpack_require__.p + "resources/ab597deed1f469bb71b3698c18f563b6.png";
 
 /***/ }),
 /* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/e1e9dfd52285a273adf366f7e0abb904.png";
+module.exports = __webpack_require__.p + "resources/0d7c6bd038e48f928733363ce6c1955e.png";
 
 /***/ }),
 /* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/de6d3b4350d95e575bf730434febc000.png";
+module.exports = __webpack_require__.p + "resources/e1e9dfd52285a273adf366f7e0abb904.png";
 
 /***/ }),
 /* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/045c02458ce3519f9adebb7c22c1ec9f.png";
+module.exports = __webpack_require__.p + "resources/de6d3b4350d95e575bf730434febc000.png";
 
 /***/ }),
 /* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/e70e315b98145495760f797e802cbed1.png";
+module.exports = __webpack_require__.p + "resources/045c02458ce3519f9adebb7c22c1ec9f.png";
 
 /***/ }),
 /* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/e7fc178699c482ca82b6b9de1af1bf4a.png";
+module.exports = __webpack_require__.p + "resources/e70e315b98145495760f797e802cbed1.png";
 
 /***/ }),
 /* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/cf1e8982bc803e66867e0dfc7cb18282.png";
+module.exports = __webpack_require__.p + "resources/e7fc178699c482ca82b6b9de1af1bf4a.png";
 
 /***/ }),
 /* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/1ac94711e8b6b5158b4d3c4e74d13013.png";
+module.exports = __webpack_require__.p + "resources/cf1e8982bc803e66867e0dfc7cb18282.png";
 
 /***/ }),
 /* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/d7ae3fd2087dcd05df0b392add3f3cda.png";
+module.exports = __webpack_require__.p + "resources/1ac94711e8b6b5158b4d3c4e74d13013.png";
 
 /***/ }),
 /* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/275d6b6a5e57f4596aaf5fab085677f3.png";
+module.exports = __webpack_require__.p + "resources/d7ae3fd2087dcd05df0b392add3f3cda.png";
 
 /***/ }),
 /* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/4fc55ce83a90ddb8e2b1b90d56759f95.png";
+module.exports = __webpack_require__.p + "resources/275d6b6a5e57f4596aaf5fab085677f3.png";
 
 /***/ }),
 /* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/756c7885cca3251f091065a561a180b3.png";
+module.exports = __webpack_require__.p + "resources/4fc55ce83a90ddb8e2b1b90d56759f95.png";
 
 /***/ }),
 /* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/ee0f44576fb1df659f72845b5086cd36.png";
+module.exports = __webpack_require__.p + "resources/756c7885cca3251f091065a561a180b3.png";
 
 /***/ }),
 /* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/3915a476e2a284486169827114c529c6.png";
+module.exports = __webpack_require__.p + "resources/ee0f44576fb1df659f72845b5086cd36.png";
 
 /***/ }),
 /* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/a86cb8bba70acee3c4e074ed385b29dc.png";
+module.exports = __webpack_require__.p + "resources/3915a476e2a284486169827114c529c6.png";
 
 /***/ }),
 /* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/846e29413d904668b0f43d477a328b2c.png";
+module.exports = __webpack_require__.p + "resources/a86cb8bba70acee3c4e074ed385b29dc.png";
 
 /***/ }),
 /* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/abca638dc6f1e221196134e1275aaad0.png";
+module.exports = __webpack_require__.p + "resources/846e29413d904668b0f43d477a328b2c.png";
 
 /***/ }),
 /* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/c3903aac7f8a93a31e03ac79d81b0578.png";
+module.exports = __webpack_require__.p + "resources/abca638dc6f1e221196134e1275aaad0.png";
 
 /***/ }),
 /* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/0526136f10583f57bf74cc5f63f82529.png";
+module.exports = __webpack_require__.p + "resources/c3903aac7f8a93a31e03ac79d81b0578.png";
 
 /***/ }),
 /* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/bef059bef4ae3590ac55c1900b94912c.png";
+module.exports = __webpack_require__.p + "resources/0526136f10583f57bf74cc5f63f82529.png";
 
 /***/ }),
 /* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/169e42795f87d10c73d4d8bec3a41520.png";
+module.exports = __webpack_require__.p + "resources/bef059bef4ae3590ac55c1900b94912c.png";
 
 /***/ }),
 /* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/d0ca5136df4e523818e139423571bfb0.png";
+module.exports = __webpack_require__.p + "resources/169e42795f87d10c73d4d8bec3a41520.png";
 
 /***/ }),
 /* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/205c0a75321d91c1035bb7e7defb5ba7.png";
+module.exports = __webpack_require__.p + "resources/d0ca5136df4e523818e139423571bfb0.png";
 
 /***/ }),
 /* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/27963f10586f4adb3ee60ddd844bafee.jpg";
+module.exports = __webpack_require__.p + "resources/205c0a75321d91c1035bb7e7defb5ba7.png";
 
 /***/ }),
 /* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/2f647df6adf0f9337da5ed968d8d9ba3.jpg";
+module.exports = __webpack_require__.p + "resources/27963f10586f4adb3ee60ddd844bafee.jpg";
 
 /***/ }),
 /* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/6529039b5bd390a8b2260f48418cb112.jpg";
+module.exports = __webpack_require__.p + "resources/2f647df6adf0f9337da5ed968d8d9ba3.jpg";
 
 /***/ }),
 /* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/13386f2b64779e1c52f6626d5bb1015f.png";
+module.exports = __webpack_require__.p + "resources/6529039b5bd390a8b2260f48418cb112.jpg";
 
 /***/ }),
 /* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/60debde16cc531620d0edfb6608f1043.png";
+module.exports = __webpack_require__.p + "resources/13386f2b64779e1c52f6626d5bb1015f.png";
 
 /***/ }),
 /* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/4ecdb5886bf7f71b67b26b7acaa68653.ttf";
+module.exports = __webpack_require__.p + "resources/60debde16cc531620d0edfb6608f1043.png";
 
 /***/ }),
 /* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/035e8b4b319c1c6e843f8cbcc85d42e0.ttf";
+module.exports = __webpack_require__.p + "resources/4ecdb5886bf7f71b67b26b7acaa68653.ttf";
 
 /***/ }),
 /* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/f0d74efcb3514ddd8b40798b589948d1.otf";
+module.exports = __webpack_require__.p + "resources/035e8b4b319c1c6e843f8cbcc85d42e0.ttf";
 
 /***/ }),
 /* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/f82cba211182fbb07d3510cbe89c7ccb.otf";
+module.exports = __webpack_require__.p + "resources/f0d74efcb3514ddd8b40798b589948d1.otf";
 
 /***/ }),
 /* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/3596833b8852b6ea37b94e4f6b572e5b.otf";
+module.exports = __webpack_require__.p + "resources/f82cba211182fbb07d3510cbe89c7ccb.otf";
 
 /***/ }),
 /* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/cdfd0160e30988fa0f6330f01c1bb710.ttf";
+module.exports = __webpack_require__.p + "resources/3596833b8852b6ea37b94e4f6b572e5b.otf";
 
 /***/ }),
 /* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/e614413a37093b678d900978f5c3ef1c.otf";
+module.exports = __webpack_require__.p + "resources/cdfd0160e30988fa0f6330f01c1bb710.ttf";
 
 /***/ }),
 /* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__.p + "resources/e614413a37093b678d900978f5c3ef1c.otf";
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
 module.exports = __webpack_require__.p + "resources/4ceca9b16de3f3089eb490977af7b391.woff";
 
 /***/ }),
-/* 231 */,
 /* 232 */,
 /* 233 */,
 /* 234 */,
 /* 235 */,
-/* 236 */
+/* 236 */,
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Handlebars = __webpack_require__(25);
@@ -4881,23 +4909,13 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 },"useData":true});
 
 /***/ }),
-/* 237 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Handlebars = __webpack_require__(25);
-function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
-module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"help-tab\">\n	<p>This tab is intended for help with using this tool, specifically uding the <a href=\"#deck-generator\">Deck Generator</a> functionality.</p>\n	<section class=\"availible-options\">\n		<h2>Your Custom Spreadsheet</h2>\n		<p>Most of the funtionality of this tool is in creating your down <abbr title=\"Cryptozoic Game Engine\">CGE</abbr> deck. To do that all you need to create is a spreadsheet in your office sheet of choice, and follow these rules when formatting it.</p>\n		<p>The first row of your spreadsheet <strong>must</strong> be the headers for each column of options. The list of availible options is below:</p>\n		<div class=\"card-options\"></div>\n		<p>After you make your first row, all entries after count as a card. You can create blank rows and they will be skipped over. Columns that do not match one of the above options are skipped as well, so feel free to add columns to help you organize your cards.</p>\n		<p>Additionally there are two special rows. If you name your card <code>__defaults__</code>, then <strong>all</strong> cards after it will default to the values of that row. This is useful for setting all the values for shared options such as Set, Legal, Copyright, etc. The other row name is <code>__oversized_defaults__</code> but will only be applied to Oversized cards.</p>\n	</section>\n	<section>\n		<h2>Examples</h2>\n		<p>Below are some examples of valid what to expect and valid spreadsheets to use.</p>\n		<p>For an example spreadsheet for use with this tool, check out my <a href=\"https://docs.google.com/spreadsheets/d/1C4sG2btMuTEaFaTlKtoSytHsuSTmM2uhnR2j-IEhsKk/edit?usp=sharing\">Overwatch Deck Building Game spreadsheet here</a>. You can download the first sheet as a CSV file and import it using this tool to generate your own copy of the deck.</p>\n		<img src=\"" + __webpack_require__(221) + "\" alt=\"card example\" title=\"Example of what column names effect what parts of the card.\"/>\n		<p>For any issues, especially technical ones, create an <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder/issues\">issue on GitHub</a>.</p>\n	</section>\n</div>\n";
-},"useData":true});
-
-/***/ }),
 /* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Handlebars = __webpack_require__(25);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"live-editor\">\n	<div class=\"tables\">\n		<p>This tab allows you to edit cards live to get a feel for how this tool works. Feel free to play around with it, but for serious card generation please use the <a href=\"#deck-generator\">Deck Generator</a> tab to generation large batches of cards properly.</p>\n		<div class=\"defaults-table\">\n			<h2 title=\"These are default values for all custom cards.\">Card Defaults</h2>\n		</div>\n		<div class=\"custom-cards\">\n			<h2 title=\"These are custom cards you can create and play with to see how this builder works\">Custom Cards</h2>\n			<div class=\"cards-table\"></div>\n			<div class=\"custom-cards-bottom\">\n				<div class=\"canvases-scale\">\n					<label for=\"canvases-scale-slider\">Card Scale: </label>\n					<input id=\"canvases-scale-slider\" class=\"canvases-scale-slider\" type=\"range\" min=\"0.05\" max=\"1\" step=\"any\" value=\"0.5\"/>\n					<span class=\"canvases-scale-percent\"></span>\n				</div>\n				<button class=\"reset-to-defaults\" title=\"Resets the custom and default card rows to default values\">Reset to defaults</button>\n				<button class=\"add-row-button\">&#65291; Add Row</button>\n			</div>\n		</div>\n		<div class=\"too-many-cards collapsed\">\n			<span class=\"warning-block\">You've created a lot of custom cards. You should probably use the <a href=\"#deck-generator\">Deck Generator Tool</a> to handle all these cards instead.</span>\n		</div>\n	</div>\n	<div class=\"canvases\"></div>\n</div>\n";
+    return "<div class=\"help-tab\">\n	<p>This tab is intended for help with using this tool, specifically uding the <a href=\"#deck-generator\">Deck Generator</a> functionality.</p>\n	<section class=\"availible-options\">\n		<h2>Your Custom Spreadsheet</h2>\n		<p>Most of the funtionality of this tool is in creating your down <abbr title=\"Cryptozoic Game Engine\">CGE</abbr> deck. To do that all you need to create is a spreadsheet in your office sheet of choice, and follow these rules when formatting it.</p>\n		<p>The first row of your spreadsheet <strong>must</strong> be the headers for each column of options. The list of availible options is below:</p>\n		<div class=\"card-options\"></div>\n		<p>After you make your first row, all entries after count as a card. You can create blank rows and they will be skipped over. Columns that do not match one of the above options are skipped as well, so feel free to add columns to help you organize your cards.</p>\n		<p>Additionally there are two special rows. If you name your card <code>__defaults__</code>, then <strong>all</strong> cards after it will default to the values of that row. This is useful for setting all the values for shared options such as Set, Legal, Copyright, etc. The other row name is <code>__oversized_defaults__</code> but will only be applied to Oversized cards.</p>\n	</section>\n	<section>\n		<h2>Examples</h2>\n		<p>Below are some examples of valid what to expect and valid spreadsheets to use.</p>\n		<p>For an example spreadsheet for use with this tool, check out my <a href=\"https://docs.google.com/spreadsheets/d/1C4sG2btMuTEaFaTlKtoSytHsuSTmM2uhnR2j-IEhsKk/edit?usp=sharing\">Overwatch Deck Building Game spreadsheet here</a>. You can download the first sheet as a CSV file and import it using this tool to generate your own copy of the deck.</p>\n		<img src=\"" + __webpack_require__(222) + "\" alt=\"card example\" title=\"Example of what column names effect what parts of the card.\"/>\n		<p>For any issues, especially technical ones, create an <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder/issues\">issue on GitHub</a>.</p>\n	</section>\n</div>\n";
 },"useData":true});
 
 /***/ }),
@@ -4907,11 +4925,21 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 var Handlebars = __webpack_require__(25);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"tabular\">\n	<nav class=\"tabluar-tabs\">\n		<ul>\n		</ul>\n	</nav>\n	<div class=\"tabular-contents\"></div>\n</div>\n";
+    return "<div class=\"live-editor\">\n	<div class=\"tables\">\n		<p>This tab allows you to edit cards live to get a feel for how this tool works. Feel free to play around with it, but for serious card generation please use the <a href=\"#deck-generator\">Deck Generator</a> tab to generation large batches of cards properly.</p>\n		<div class=\"defaults-table\">\n			<h2 title=\"These are default values for all custom cards.\">Card Defaults</h2>\n		</div>\n		<div class=\"custom-cards\">\n			<h2 title=\"These are custom cards you can create and play with to see how this builder works\">Custom Cards</h2>\n			<div class=\"cards-table\"></div>\n			<div class=\"custom-cards-bottom\">\n				<div class=\"canvases-scale\">\n					<label for=\"canvases-scale-slider\">Card Scale: </label>\n					<input id=\"canvases-scale-slider\" class=\"canvases-scale-slider\" type=\"range\" min=\"0.05\" max=\"1\" step=\"any\" value=\"0.5\"/>\n					<span class=\"canvases-scale-percent\"></span>\n				</div>\n				<button class=\"reset-to-defaults\" title=\"Resets the custom and default card rows to default values\">Reset to defaults</button>\n				<button class=\"add-row-button\">&#65291; Add Row</button>\n			</div>\n		</div>\n		<div class=\"too-many-cards collapsed\">\n			<span class=\"warning-block\">You've created a lot of custom cards. You should probably use the <a href=\"#deck-generator\">Deck Generator Tool</a> to handle all these cards instead.</span>\n		</div>\n	</div>\n	<div class=\"canvases\"></div>\n</div>\n";
 },"useData":true});
 
 /***/ }),
 /* 240 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Handlebars = __webpack_require__(25);
+function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"tabular\">\n	<nav class=\"tabluar-tabs\">\n		<ul>\n		</ul>\n	</nav>\n	<div class=\"tabular-contents\"></div>\n</div>\n";
+},"useData":true});
+
+/***/ }),
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Handlebars = __webpack_require__(25);
@@ -4934,7 +4962,6 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 },"useData":true});
 
 /***/ }),
-/* 241 */,
 /* 242 */,
 /* 243 */,
 /* 244 */,
@@ -4952,13 +4979,13 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 /* 256 */,
 /* 257 */,
 /* 258 */,
-/* 259 */
+/* 259 */,
+/* 260 */
 /***/ (function(module, exports) {
 
 module.exports = "<h1 id=\"custom-deck-builder\">Custom Deck Builder</h1>\n<h2 id=\"about-this-tool\">About This Tool</h2>\n<p>This application is a <strong>fan creation</strong> by <a href=\"https://github.com/JacobFischer/\">Jacob Fischer</a> with the sole intent of making it easier to try custom cards in Cryptozoic&#39;s Game Engine. It is open source and available on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>.</p>\n<p>No cards produced using this tool should be used to profit from. Instead please buy <a href=\"https://www.cryptozoic.com/\">Cryptozoic</a>&#39;s own deck building games utilizing their engine such as the DC Deck Building game, they are excellent.</p>\n<p>This project was produced mostly as a tool to help its author more easily prototype custom cards to try in <a href=\"http://store.steampowered.com/app/286160/Tabletop_Simulator/\">Table Top Simulator</a> with and around Cryptozoic&#39;s own titles, as well as an excuse to brush up on some technical skills.</p>\n<h2 id=\"technical-details\">Technical Details</h2>\n<p>This application is an <a href=\"https://en.wikipedia.org/wiki/Single-page_application\" title=\"Single-page Application\">SPA</a>. Once you load the page you have everything you need to build some custom cards. <strong>No</strong> data is saved on a server somewhere. All the processing is done and saved on your machine via your web browser. I&#39;m not interested in tracking you or stealing your data.</p>\n<p>This project was made using a variety of frameworks:</p>\n<ul>\n<li><strong><a href=\"https://www.typescriptlang.org/\" title=\"JavaScript with types\">TypeScript</a></strong>: The coding language used for pretty much everything in this project.</li>\n<li><strong><a href=\"http://sass-lang.com/\" title=\"Syntactically Awesome Style Sheets\">SASS</a></strong>: Used to control the style and most animations on this page.</li>\n<li><strong><a href=\"http://handlebarsjs.com/\" title=\"Simple HTML Templates\">Handlebars</a></strong>: Used to template the HTML layout and elements for all page sections.</li>\n<li><strong><a href=\"http://www.pixijs.com/\" title=\"2D graphics library for easily drawing cards\">PixiJS</a></strong>: Currently the best browser library for manipulating 2D graphics and images on canvases. Used to render the custom cards.</li>\n<li><strong><a href=\"https://www.npmjs.com/\" title=\"Node Package Manager\">NPM</a></strong>: The biggest and most popular JavaScript package manager, that hosts many of the smaller modules not explicitly mentioned here, but are still necessary to run.</li>\n<li><strong><a href=\"https://webpack.js.org/\">Webpack 2</a></strong>: What wraps all these things together into a single page. I used this opportunity to transition Webpack 1.x skills to 2.0.</li>\n</ul>\n<p>All the source code, commits, and resources are available freely on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>. All classes, methods, and exports and documented using well formed docstrings; so if you wish to modify this tool, do so to your heart&#39;s content!</p>\n<hr>\n<p>A live version of application is kept up to date on <a href=\"https://jacobfischer.github.io/Custom-Deck-Builder/\">https://jacobfischer.github.io/Custom-Deck-Builder/</a>. Check out that version if you are not interested in developing it yourself.</p>\n<h2 id=\"how-to-build\">How to Build</h2>\n<p>As this is a webpack project, you just need to build and deploy it. As with most projects ensure you have <a href=\"https://nodejs.org/\">Node.js</a> installed, then just:</p>\n<pre><code>npm install\nnpm run dev\n</code></pre><p>Then just in your browser navigate to <a href=\"http://localhost:8080/\">http://localhost:8080/</a></p>\n<p>Alternatively run <code>npm run build</code> to run webpack and save the output in the <code>built/</code> directory, and you can deploy the static assets at your will.</p>\n<p>2026 Package dependancies are outdated. Steps to run currently:</p>\n<p>nvm use\nnpm run build\nmkdir -p built/css\ncp node_modules/normalize.css/normalize.css built/css/normalize.css\nnpx <a href=\"mailto:gh-pages@2.2.0\">gh-pages@2.2.0</a> -d built --dotfiles</p>\n";
 
 /***/ }),
-/* 260 */,
 /* 261 */,
 /* 262 */,
 /* 263 */,
@@ -5061,13 +5088,13 @@ module.exports = "<h1 id=\"custom-deck-builder\">Custom Deck Builder</h1>\n<h2 i
 /* 360 */,
 /* 361 */,
 /* 362 */,
-/* 363 */
+/* 363 */,
+/* 364 */
 /***/ (function(module, exports) {
 
 module.exports = "Congratulations on building your custom deck! This file helps to explain what you can do with your cool new cards.\n\nThe intended use for these images is to import into a card program, like Tabletop Simulator.\n\n## Tabletop Simulator\n\nTabletop Simulator can build custom decks of cards from textures (images) that contains a grid of cards. If you already know how to import custom decks into Tabletop Simulator, great! Otherwise this readme can help you.\n\nFor reference, your Deck was generated with {width} cards horizontally and {height} cards vertically, though the last sheets of normal and oversized cards may have less.\n\n## Other Notes\n\nThis file and the textures were generated using the Cryptozoic Deck Building Game Custom Card Builder tool created by Jacob Fischer.\n\nhttps://jacobfischer.github.io/Custom-Deck-Builder/\n\nSource Code for this tool is open source and available at GitHub: https://github.com/JacobFischer/Custom-Deck-Builder\n"
 
 /***/ }),
-/* 364 */,
 /* 365 */,
 /* 366 */,
 /* 367 */,
@@ -5090,7 +5117,8 @@ module.exports = "Congratulations on building your custom deck! This file helps 
 /* 384 */,
 /* 385 */,
 /* 386 */,
-/* 387 */
+/* 387 */,
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5121,7 +5149,7 @@ if(false) {
 }
 
 /***/ }),
-/* 388 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5152,7 +5180,7 @@ if(false) {
 }
 
 /***/ }),
-/* 389 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5183,7 +5211,7 @@ if(false) {
 }
 
 /***/ }),
-/* 390 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5214,7 +5242,7 @@ if(false) {
 }
 
 /***/ }),
-/* 391 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5245,7 +5273,7 @@ if(false) {
 }
 
 /***/ }),
-/* 392 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5276,7 +5304,6 @@ if(false) {
 }
 
 /***/ }),
-/* 393 */,
 /* 394 */,
 /* 395 */,
 /* 396 */,
@@ -5289,12 +5316,7 @@ if(false) {
 /* 403 */,
 /* 404 */,
 /* 405 */,
-/* 406 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
+/* 406 */,
 /* 407 */
 /***/ (function(module, exports) {
 
@@ -5302,6 +5324,12 @@ if(false) {
 
 /***/ }),
 /* 408 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+/* 409 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
