@@ -321,11 +321,11 @@ exports.CardOptionsList = [{
 }, {
     name: "Bannerrows",
     type: "number",
-    description: "GOLD - Effects when you gain a card. " + "BLUE - card interactions (discard, control, seal). " + "GREEN Mandatory rule (must be played first/before ending turn). Pink (depreciated) ongoing, BURGUNDY-Crisis Stack ongoing. YELLOW - Recruit"
+    description: "Input a number: (-2 or -1) GREEN Mandatory rule (must be played first/before ending turn). " + "(0) No Banner. (1-3) BLUE - card interactions (discard, control, seal). " + "(4-6) GOLD - Effects when you gain a card. " + "(7-9)BURGUNDY-Crisis Stack ongoing. (10) YELLOW - Recruit {also workd for oversized}, (11)Pink {depreciated} ongoing, (12+13) specific to Hush"
 }, {
     name: "destination",
     type: "number",
-    description: "for Villian for rebirth 1-5"
+    description: "For Villians for rebirth 1-5"
 }, {
     name: "Oversized",
     type: "checkbox",
@@ -1325,7 +1325,7 @@ var styles = {
             strokeThickness: 6
         },
         copyright: {
-            fill: "#000000",
+            fill: "#ffffff",
             fontFamily: "TradeGothic",
             fontSize: 21,
             letterSpacing: -0.20
@@ -1800,42 +1800,60 @@ var Card = function () {
                 _graphics6.drawRect(0, 719, 750, 92);
                 _graphics6.endFill();
                 this.container.addChild(_graphics6);
-            } else if (this.Bannerrows == 7 && !this.oversized) {
+            } else if (this.Bannerrows == 6 && !this.oversized) {
                 var _graphics7 = new PIXI.Graphics();
-                _graphics7.beginFill(0x7A1316);
-                _graphics7.drawRect(0, 719, 750, 54);
+                _graphics7.beginFill(0xF5B345);
+                _graphics7.drawRect(0, 719, 750, 130);
                 _graphics7.endFill();
                 this.container.addChild(_graphics7);
-            } else if (this.Bannerrows == 9 && !this.oversized) {
+            } else if (this.Bannerrows == 7 && !this.oversized) {
                 var _graphics8 = new PIXI.Graphics();
-                _graphics8.beginFill(0xF7EB00);
+                _graphics8.beginFill(0x7A1316);
                 _graphics8.drawRect(0, 719, 750, 54);
                 _graphics8.endFill();
                 this.container.addChild(_graphics8);
-            } else if (this.Bannerrows == 9 && this.oversized) {
+            } else if (this.Bannerrows == 8 && !this.oversized) {
                 var _graphics9 = new PIXI.Graphics();
-                _graphics9.beginFill(0xF7EB00);
-                _graphics9.drawRect(0, 966, 900, 54);
+                _graphics9.beginFill(0x7A1316);
+                _graphics9.drawRect(0, 719, 750, 92);
                 _graphics9.endFill();
                 this.container.addChild(_graphics9);
-            } else if (this.Bannerrows == 6 && !this.oversized) {
+            } else if (this.Bannerrows == 9 && !this.oversized) {
                 var _graphics10 = new PIXI.Graphics();
-                _graphics10.beginFill(0xE6118B);
-                _graphics10.drawRect(0, 719, 750, 54);
+                _graphics10.beginFill(0x7A1316);
+                _graphics10.drawRect(0, 719, 750, 130);
                 _graphics10.endFill();
                 this.container.addChild(_graphics10);
-            } else if (this.Bannerrows == 8 && !this.oversized) {
+            } else if (this.Bannerrows == 10 && !this.oversized) {
                 var _graphics11 = new PIXI.Graphics();
-                _graphics11.beginFill(0x77CEDA);
+                _graphics11.beginFill(0xF7EB00);
                 _graphics11.drawRect(0, 719, 750, 54);
                 _graphics11.endFill();
                 this.container.addChild(_graphics11);
-            } else if (this.Bannerrows == 10 && !this.oversized) {
+            } else if (this.Bannerrows == 10 && this.oversized) {
                 var _graphics12 = new PIXI.Graphics();
-                _graphics12.beginFill(0x8454A1);
-                _graphics12.drawRect(0, 719, 750, 54);
+                _graphics12.beginFill(0xF7EB00);
+                _graphics12.drawRect(0, 966, 900, 54);
                 _graphics12.endFill();
                 this.container.addChild(_graphics12);
+            } else if (this.Bannerrows == 11 && !this.oversized) {
+                var _graphics13 = new PIXI.Graphics();
+                _graphics13.beginFill(0xE6118B);
+                _graphics13.drawRect(0, 719, 750, 54);
+                _graphics13.endFill();
+                this.container.addChild(_graphics13);
+            } else if (this.Bannerrows == 12 && !this.oversized) {
+                var _graphics14 = new PIXI.Graphics();
+                _graphics14.beginFill(0x77CEDA);
+                _graphics14.drawRect(0, 719, 750, 54);
+                _graphics14.endFill();
+                this.container.addChild(_graphics14);
+            } else if (this.Bannerrows == 13 && !this.oversized) {
+                var _graphics15 = new PIXI.Graphics();
+                _graphics15.beginFill(0x8454A1);
+                _graphics15.drawRect(0, 719, 750, 54);
+                _graphics15.endFill();
+                this.container.addChild(_graphics15);
             }
             ;
         }
@@ -2033,6 +2051,7 @@ var Card = function () {
                 this.nlu = "3";
             } else this.nlu = "4";
             {}
+            ;
             if (this.type == "Villain") {
                 utils_1.newSprite("backgroundsvlevel", this.container);
                 var NLStyle = this.getStyle("backgroundsvlevel");
@@ -2147,18 +2166,15 @@ var Card = function () {
     }, {
         key: "renderCopyright",
         value: function renderCopyright() {
-            var maxWidth = 332;
-            var x = 223;
-            var y = 941;
+            var maxWidth = 150;
+            var x = 450;
+            var y = 980;
             if (this.oversized) {
                 maxWidth = 182;
                 x = 900 - 37;
                 y = 1136;
             }
             var style = this.getStyle("copyright");
-            if (this.variant && !this.oversized) {
-                style.fill = "#ffffff";
-            }
             var copyright = utils_1.wrapStyledText("\xA9" + this.copyright, maxWidth, style);
             if (this.oversized) {
                 copyright.pivot.x = copyright.width;
@@ -2172,8 +2188,8 @@ var Card = function () {
     }, {
         key: "renderLegal",
         value: function renderLegal(set, copyright) {
-            var maxWidth = 332;
-            var x = 223;
+            var maxWidth = 280;
+            var x = 150;
             var y = 954;
             var style = this.getStyle("legal");
             var legal = void 0;
@@ -3158,7 +3174,12 @@ exports.cardsHeadings = [{
 }, {
     name: "destination",
     id: "destination",
-    type: "number"
+    type: "number",
+    inputAttributes: {
+        min: 0,
+        max: 5,
+        step: 1
+    }
 }, {
     name: "Oversized",
     type: "boolean",
