@@ -1551,6 +1551,8 @@ var utils_1 = __webpack_require__(9);
 var card_styles_1 = __webpack_require__(148);
 exports.CARD_MAX_WIDTH = 900;
 exports.CARD_MAX_HEIGHT = 1200;
+exports.LANDSCAPE_CARD_MAX_WIDTH = 1200;
+exports.LANDSCAPE_CARD_MAX_HEIGHT = 900;
 
 var Card = function () {
     function Card(args) {
@@ -1711,6 +1713,11 @@ var Card = function () {
                 imageMaxWidth = 900;
                 imageMaxHeight = 741;
                 imageTop = 216;
+            }
+            if (this.type === "Crisis") {
+                imageMaxWidth = 750;
+                imageMaxHeight = 600;
+                imageTop = 80;
             }
             var backgroundImage = utils_1.newSprite(this.imageURL, this.container);
             backgroundImage.position.x = imageMaxWidth / 2;
@@ -1910,22 +1917,32 @@ var Card = function () {
             if (this.oversized || this.type === "Weakness" || this.type === "Hostage" || this.type === "Crisis" || this.type === "Basic" || this.type === "Typeless" || this.type === "startertransformed" || this.type === "equipmenttransformed" || this.type === "herotransformed" || this.type === "villaintransformed") {
                 return;
             }
-            var text = this.type.toUpperCase();
-            if (this.typePrefix) {
-                text = this.typePrefix + " " + text;
+            if (this.subtype === "SIDE MISSION") {
+                var cardTypeText = new PIXI.Text("SIDE MISSION", this.getStyle("type"));
+                cardTypeText.x = 45;
+                cardTypeText.y = 666;
+                cardTypeText.scale.y *= 0.75;
+                cardTypeText.scale.x *= 0.96;
+                cardTypeText.skew.x = -0.265;
+                this.container.addChild(cardTypeText);
+            } else {
+                var text = this.type.toUpperCase();
+                if (this.typePrefix) {
+                    text = this.typePrefix + " " + text;
+                }
+                var _cardTypeText = new PIXI.Text(text, this.getStyle("type"));
+                _cardTypeText.x = 45;
+                _cardTypeText.y = 666;
+                _cardTypeText.scale.y *= 0.75;
+                _cardTypeText.scale.x *= 0.96;
+                _cardTypeText.skew.x = -0.265;
+                this.container.addChild(_cardTypeText);
             }
-            var cardTypeText = new PIXI.Text(text, this.getStyle("type"));
-            cardTypeText.x = 45;
-            cardTypeText.y = 666;
-            cardTypeText.scale.y *= 0.75;
-            cardTypeText.scale.x *= 0.96;
-            cardTypeText.skew.x = -0.265;
-            this.container.addChild(cardTypeText);
         }
     }, {
         key: "renderSubType",
         value: function renderSubType() {
-            if (!this.subtype) {
+            if (!this.subtype || this.subtype === "SIDE MISSION") {
                 return;
             }
             if (this.subtype == "CONSTRUCT") {
@@ -1934,7 +1951,7 @@ var Card = function () {
                 utils_1.newSprite("backgroundmetal", this.container);
             } else if (this.subtype == "CURSED" && this.variant == true && this.type === "Weakness") {
                 utils_1.newSprite("backgroundcursed", this.container);
-            } else if (this.subtype == "CONDITIONAL VP" || this.subtype == "CONDITIONAL COST") {
+            } else if (this.subtype == "CONDITIONAL VP" || this.subtype == "CONDITIONAL COST" || this.subtype == "SIDE MISSION") {
                 return;
             } else {
                 var x = 710;
@@ -1959,7 +1976,7 @@ var Card = function () {
     }, {
         key: "renderCost",
         value: function renderCost() {
-            if (this.oversized || this.type == "Super Move" || this.type == "Crisis") {
+            if (this.oversized || this.type == "Super Move" || this.type == "Crisis" || this.subtype == "SIDE MISSION") {
                 return;
             }
             utils_1.newSprite("background-cost", this.container);
@@ -2047,7 +2064,7 @@ var Card = function () {
                 this.nlu = "1";
             } else if (this.cost == "9" || this.cost == "10") {
                 this.nlu = "2";
-            } else if (this.cost == "11" || this.cost == "12" || this.cost == "13") {
+            } else if (this.cost == "11" || this.cost == "12") {
                 this.nlu = "3";
             } else this.nlu = "4";
             {}
@@ -2075,7 +2092,7 @@ var Card = function () {
     }, {
         key: "renderVP",
         value: function renderVP() {
-            if (this.oversized || this.type == "Super Move" || this.type == "Crisis") {
+            if (this.oversized || this.type == "Super Move" || this.type == "Crisis" || this.subtype === "SIDE MISSION") {
                 return;
             }
             var vpSign = this.victoryPoints < 0 ? "negative" : "normal";
@@ -2231,7 +2248,7 @@ var Card = function () {
     return Card;
 }();
 
-Card.autoBoldKeywords = ["+Power", "Assist", "Attacked", "Attack ", "Attack:", "Attack.", "Block", "Bombshell Attack", "Confrontation", "Defense", "First Appearance — Attack", "Ongoing", "Ninjutsu", "Retaliation", "Weakness", "Speedster", "Surge", "Transform ", "Transform.", "Transform:", "Seal ", "Seal.", "Seal:", "Reward:", ":"];
+Card.autoBoldKeywords = ["+Power", "Assist", "Attacked", "Attack ", "Attack:", "Attack.", "Block", "Bombshell Attack", "Confrontation", "Defense:", "First Appearance — Attack", "Ongoing:", "Ninjutsu;", "Retaliation:", "Weakness", "Speedster", "Surge", "Transform ", "Transform.", "Transform:", "Seal ", "Seal.", "Seal:", "Reward:", ":"];
 exports.Card = Card;
 
 /***/ }),
