@@ -132,7 +132,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var tab_1 = __webpack_require__(160);
 exports.Tab = tab_1.default;
-__webpack_require__(403);
+__webpack_require__(405);
 __export(__webpack_require__(161));
 
 /***/ }),
@@ -349,7 +349,7 @@ exports.CardOptionsList = [{
 }, {
     name: "Image URL",
     type: "url",
-    description: "URL to the image for this card. We recommend using a site" + " like <a href=\"https://imgur.com/\">imgur</a> to manage " + "your images. The image will be automatically centered on " + "the card. Normal cards will be 750px \xD7 523px in size, and" + " Oversized ones will be 900px \xD7 741px."
+    description: "URL to the image for this card. We recommend using a site" + " like <a href=\"https://imgur.com/\">imgur</a> to manage " + "your images. The image will be automatically centered on " + "the card. Normal cards will be 750px \xD7 523px in size, and" + " Oversized ones will be 900px \xD7 741px. Oversized locations 1200px \xD7 490px"
 }, {
     name: "Logo URL",
     type: "url",
@@ -1159,18 +1159,20 @@ var map = {
 	"./oversized-super-villain.png": 216,
 	"./oversizedcrisishero.png": 217,
 	"./oversizedcrisisvillain.png": 218,
-	"./starter.png": 219,
-	"./startertransformed.png": 220,
-	"./super-hero.png": 221,
-	"./super-move.png": 222,
-	"./super-power.png": 223,
-	"./super-villain.png": 224,
-	"./supermove.png": 225,
-	"./typeless.png": 226,
-	"./villain.png": 227,
-	"./villaintransformed.png": 228,
-	"./vp-variable.png": 229,
-	"./weakness.png": 230
+	"./oversizedlocation.png": 219,
+	"./oversizedlocationv.png": 220,
+	"./starter.png": 221,
+	"./startertransformed.png": 222,
+	"./super-hero.png": 223,
+	"./super-move.png": 224,
+	"./super-power.png": 225,
+	"./super-villain.png": 226,
+	"./supermove.png": 227,
+	"./typeless.png": 228,
+	"./villain.png": 229,
+	"./villaintransformed.png": 230,
+	"./vp-variable.png": 231,
+	"./weakness.png": 232
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -1608,11 +1610,14 @@ var Card = function () {
                 this.type = "Villain";
                 this.oversized = true;
             }
-            var isHeroOrVillain = this.type === "Hero" || this.type === "Villain";
-            if (this.oversized && !isHeroOrVillain) {
+            var isHeroOrVillain = this.type === "Hero" || this.type === "Villain" || this.type === "Location";
+            if (this.oversized && !isHeroOrVillain && this.type !== "Location") {
                 this.oversized = false;
             }
-            if (this.oversized) {
+            if (this.oversized && this.type === "Location") {
+                this.pxWidth = exports.LANDSCAPE_CARD_MAX_WIDTH;
+                this.pxHeight = exports.LANDSCAPE_CARD_MAX_HEIGHT;
+            } else if (this.oversized) {
                 this.pxWidth = exports.CARD_MAX_WIDTH;
                 this.pxHeight = exports.CARD_MAX_HEIGHT;
             } else {
@@ -1718,6 +1723,11 @@ var Card = function () {
                 imageMaxHeight = 741;
                 imageTop = 216;
             }
+            if (this.oversized && this.type === "Location") {
+                imageMaxWidth = 1200;
+                imageMaxHeight = 500;
+                imageTop = 136;
+            }
             if (this.type === "Crisis") {
                 imageMaxWidth = 750;
                 imageMaxHeight = 600;
@@ -1749,6 +1759,8 @@ var Card = function () {
                 utils_1.newSprite("oversizedcrisishero", this.container);
             } else if (this.variant && this.oversized && this.type === "Villain") {
                 utils_1.newSprite("oversizedcrisisvillain", this.container);
+            } else if (this.type === "Location" && this.oversized) {
+                utils_1.newSprite("oversizedlocation", this.container);
             } else {
                 var backgroundType = this.type;
                 if (this.variant || this.oversized) {
@@ -1768,6 +1780,13 @@ var Card = function () {
                     this.container.addChild(graphics);
                 }
             }
+            if (this.variant && this.oversized && this.type === "Location") {
+                var _graphics = new PIXI.Graphics();
+                _graphics.beginFill(0x000000);
+                _graphics.drawRect(0, 689, 1200, 120);
+                _graphics.endFill();
+                this.container.addChild(_graphics);
+            }
         }
     }, {
         key: "renderBanners",
@@ -1775,102 +1794,103 @@ var Card = function () {
             if (!this.type) {
                 return;
             }
-            if (this.Bannerrows === 2 && !this.oversized) {
+            var banners = String(this.Bannerrows);
+            if (banners === "2" && !this.oversized) {
                 var graphics = new PIXI.Graphics();
                 graphics.beginFill(0x00BAF1);
                 graphics.drawRect(0, 719, 750, 92);
                 graphics.endFill();
                 this.container.addChild(graphics);
             } else if (this.Bannerrows === 1 && !this.oversized) {
-                var _graphics = new PIXI.Graphics();
-                _graphics.beginFill(0x00BAF1);
-                _graphics.drawRect(0, 719, 750, 54);
-                _graphics.endFill();
-                this.container.addChild(_graphics);
-            } else if (this.Bannerrows === 3 && !this.oversized) {
                 var _graphics2 = new PIXI.Graphics();
                 _graphics2.beginFill(0x00BAF1);
-                _graphics2.drawRect(0, 719, 750, 130);
+                _graphics2.drawRect(0, 719, 750, 54);
                 _graphics2.endFill();
                 this.container.addChild(_graphics2);
-            } else if (this.Bannerrows === -1 && !this.oversized) {
+            } else if (this.Bannerrows === 3 && !this.oversized) {
                 var _graphics3 = new PIXI.Graphics();
-                _graphics3.beginFill(0x7CC141);
-                _graphics3.drawRect(0, 719, 750, 54);
+                _graphics3.beginFill(0x00BAF1);
+                _graphics3.drawRect(0, 719, 750, 130);
                 _graphics3.endFill();
                 this.container.addChild(_graphics3);
-            } else if (this.Bannerrows === -2 && !this.oversized) {
+            } else if (this.Bannerrows === -1 && !this.oversized) {
                 var _graphics4 = new PIXI.Graphics();
                 _graphics4.beginFill(0x7CC141);
-                _graphics4.drawRect(0, 719, 750, 92);
+                _graphics4.drawRect(0, 719, 750, 54);
                 _graphics4.endFill();
                 this.container.addChild(_graphics4);
-            } else if (this.Bannerrows === 4 && !this.oversized) {
+            } else if (this.Bannerrows === -2 && !this.oversized) {
                 var _graphics5 = new PIXI.Graphics();
-                _graphics5.beginFill(0xF5B345);
-                _graphics5.drawRect(0, 719, 750, 54);
+                _graphics5.beginFill(0x7CC141);
+                _graphics5.drawRect(0, 719, 750, 92);
                 _graphics5.endFill();
                 this.container.addChild(_graphics5);
-            } else if (this.Bannerrows === 5 && !this.oversized) {
+            } else if (this.Bannerrows === 4 && !this.oversized) {
                 var _graphics6 = new PIXI.Graphics();
                 _graphics6.beginFill(0xF5B345);
-                _graphics6.drawRect(0, 719, 750, 92);
+                _graphics6.drawRect(0, 719, 750, 54);
                 _graphics6.endFill();
                 this.container.addChild(_graphics6);
-            } else if (this.Bannerrows === 6 && !this.oversized) {
+            } else if (this.Bannerrows === 5 && !this.oversized) {
                 var _graphics7 = new PIXI.Graphics();
                 _graphics7.beginFill(0xF5B345);
-                _graphics7.drawRect(0, 719, 750, 130);
+                _graphics7.drawRect(0, 719, 750, 92);
                 _graphics7.endFill();
                 this.container.addChild(_graphics7);
-            } else if (this.Bannerrows === 7 && !this.oversized) {
+            } else if (this.Bannerrows === 6 && !this.oversized) {
                 var _graphics8 = new PIXI.Graphics();
-                _graphics8.beginFill(0x7A1316);
-                _graphics8.drawRect(0, 719, 750, 54);
+                _graphics8.beginFill(0xF5B345);
+                _graphics8.drawRect(0, 719, 750, 130);
                 _graphics8.endFill();
                 this.container.addChild(_graphics8);
-            } else if (this.Bannerrows === 8 && !this.oversized) {
+            } else if (this.Bannerrows === 7 && !this.oversized) {
                 var _graphics9 = new PIXI.Graphics();
                 _graphics9.beginFill(0x7A1316);
-                _graphics9.drawRect(0, 719, 750, 92);
+                _graphics9.drawRect(0, 719, 750, 54);
                 _graphics9.endFill();
                 this.container.addChild(_graphics9);
-            } else if (this.Bannerrows === 9 && !this.oversized) {
+            } else if (this.Bannerrows === 8 && !this.oversized) {
                 var _graphics10 = new PIXI.Graphics();
                 _graphics10.beginFill(0x7A1316);
-                _graphics10.drawRect(0, 719, 750, 130);
+                _graphics10.drawRect(0, 719, 750, 92);
                 _graphics10.endFill();
                 this.container.addChild(_graphics10);
-            } else if (this.Bannerrows === 10 && !this.oversized) {
+            } else if (this.Bannerrows === 9 && !this.oversized) {
                 var _graphics11 = new PIXI.Graphics();
-                _graphics11.beginFill(0xF7EB00);
-                _graphics11.drawRect(0, 719, 750, 54);
+                _graphics11.beginFill(0x7A1316);
+                _graphics11.drawRect(0, 719, 750, 130);
                 _graphics11.endFill();
                 this.container.addChild(_graphics11);
-            } else if (this.Bannerrows === 10 && this.oversized) {
+            } else if (this.Bannerrows === 10 && !this.oversized) {
                 var _graphics12 = new PIXI.Graphics();
                 _graphics12.beginFill(0xF7EB00);
-                _graphics12.drawRect(0, 966, 900, 54);
+                _graphics12.drawRect(0, 719, 750, 54);
                 _graphics12.endFill();
                 this.container.addChild(_graphics12);
-            } else if (this.Bannerrows === 11 && !this.oversized) {
+            } else if (this.Bannerrows === 10 && this.oversized) {
                 var _graphics13 = new PIXI.Graphics();
-                _graphics13.beginFill(0xE6118B);
-                _graphics13.drawRect(0, 719, 750, 54);
+                _graphics13.beginFill(0xF7EB00);
+                _graphics13.drawRect(0, 966, 900, 54);
                 _graphics13.endFill();
                 this.container.addChild(_graphics13);
-            } else if (this.Bannerrows === 12 && !this.oversized) {
+            } else if (this.Bannerrows === 11 && !this.oversized) {
                 var _graphics14 = new PIXI.Graphics();
-                _graphics14.beginFill(0x77CEDA);
+                _graphics14.beginFill(0xE6118B);
                 _graphics14.drawRect(0, 719, 750, 54);
                 _graphics14.endFill();
                 this.container.addChild(_graphics14);
-            } else if (this.Bannerrows === 13 && !this.oversized) {
+            } else if (this.Bannerrows === 12 && !this.oversized) {
                 var _graphics15 = new PIXI.Graphics();
-                _graphics15.beginFill(0x8454A1);
+                _graphics15.beginFill(0x77CEDA);
                 _graphics15.drawRect(0, 719, 750, 54);
                 _graphics15.endFill();
                 this.container.addChild(_graphics15);
+            } else if (this.Bannerrows === 13 && !this.oversized) {
+                var _graphics16 = new PIXI.Graphics();
+                _graphics16.beginFill(0x8454A1);
+                _graphics16.drawRect(0, 719, 750, 54);
+                _graphics16.endFill();
+                this.container.addChild(_graphics16);
             }
             ;
         }
@@ -1896,7 +1916,10 @@ var Card = function () {
             }
             var x = 714;
             var y = 26;
-            if (this.oversized) {
+            if (this.oversized && this.type === "Location") {
+                x = exports.LANDSCAPE_CARD_MAX_WIDTH - 40;
+                y = 25;
+            } else if (this.oversized) {
                 x = exports.CARD_MAX_WIDTH - 40;
                 y = 25;
             }
@@ -1915,6 +1938,19 @@ var Card = function () {
                 y = 55;
             }
             var cardName = new PIXI.Text(this.name.toUpperCase(), this.getStyle("name"));
+            var maxWidth = 590;
+            if (this.oversized && this.type === "Location") {
+                cardName.style.fill = "#8dc73f";
+                maxWidth = 1000;
+            }
+            if (this.oversized && this.type !== "Location") {
+                maxWidth = 690;
+            }
+            cardName.updateText();
+            if (cardName.width > maxWidth) {
+                var scale = maxWidth / cardName.width;
+                cardName.style.fontSize = Math.floor(cardName.style.fontSize * scale);
+            }
             cardName.position.set(x, y);
             cardName.scale.y *= 0.75;
             cardName.scale.x *= 0.96;
@@ -2150,9 +2186,17 @@ var Card = function () {
             } else {
                 collisions.push(vpCircle);
             }
+            if (this.oversized && this.type === "Location") {
+                y = 695;
+                maxWidth = 1100;
+                maxHeight = 120 - 14 * 2;
+            }
             var style = this.getStyle("text");
             if (this.variant && !this.oversized) {
                 style.fill = "#ffffff";
+            }
+            if (!this.variant && this.oversized && this.type === "Location") {
+                style.fill = "#000000";
             }
             if (this.preferredTextSize > 0) {
                 style.fontSize = this.preferredTextSize;
@@ -2175,6 +2219,9 @@ var Card = function () {
             if (this.oversized) {
                 set.position.x = copyright.x - copyright.width - 16;
                 set.position.y = 1171 - set.height;
+            } else if (this.oversized && this.type === "Location") {
+                set.position.x = copyright.x - copyright.width - 16;
+                set.position.y = 810 - set.height;
             } else {
                 set.position.set(550, 934);
             }
@@ -2201,6 +2248,11 @@ var Card = function () {
                 x = 900 - 37;
                 y = 1136;
             }
+            if (this.oversized && this.type === "Location") {
+                maxWidth = 182;
+                x = 900 - 37;
+                y = 830;
+            }
             var style = this.getStyle("copyright");
             var copyright = utils_1.wrapStyledText("\xA9" + this.copyright, maxWidth, style);
             if (this.oversized) {
@@ -2224,6 +2276,11 @@ var Card = function () {
                 maxWidth = 824;
                 x = 37;
                 y = 1136;
+                if (this.oversized && this.type === "Location") {
+                    maxWidth = 824;
+                    x = 37;
+                    y = 830;
+                }
                 if (set) {
                     maxWidth -= set.width + 16;
                 }
@@ -2279,12 +2336,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 Object.defineProperty(exports, "__esModule", { value: true });
 var csvParse = __webpack_require__(179);
 var events_1 = __webpack_require__(19);
-var JSZip = __webpack_require__(274);
+var JSZip = __webpack_require__(276);
 var PIXI = __webpack_require__(57);
 var initialize_1 = __webpack_require__(64);
 var utils_1 = __webpack_require__(9);
 var card_1 = __webpack_require__(66);
-var readmeText = __webpack_require__(376);
+var readmeText = __webpack_require__(378);
 var MAX_TEXTURE_LENGTH = 4096;
 
 var DeckBuilder = function (_events_1$EventEmitte) {
@@ -2692,7 +2749,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tabular_1 = __webpack_require__(23);
-var entireReadme = __webpack_require__(272);
+var entireReadme = __webpack_require__(274);
 
 var AboutTab = function (_tabular_1$Tab) {
     _inherits(AboutTab, _tabular_1$Tab);
@@ -2755,14 +2812,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var filesaver = __webpack_require__(244);
+var filesaver = __webpack_require__(246);
 var path_1 = __webpack_require__(5);
 var deck_builder_1 = __webpack_require__(150);
 var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
 var store = __webpack_require__(139);
-var hbs = __webpack_require__(249);
-__webpack_require__(400);
+var hbs = __webpack_require__(251);
+__webpack_require__(402);
 var tabTemplate = utils_1.template(hbs);
 
 var DeckGeneratorTab = function (_tabular_1$Tab) {
@@ -2973,8 +3030,8 @@ var card_options_1 = __webpack_require__(65);
 var table_1 = __webpack_require__(67);
 var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
-var hbs = __webpack_require__(250);
-__webpack_require__(401);
+var hbs = __webpack_require__(252);
+__webpack_require__(403);
 var tabTemplate = utils_1.template(hbs);
 var typeTitles = {
     "text": "Normal alphanumeric text.",
@@ -3211,7 +3268,7 @@ exports.cardsHeadings = [{
     name: "Oversized",
     type: "boolean",
     transform: function transform(checked, row) {
-        if (checked && row.values.type !== "Hero" && row.values.type !== "Villain") {
+        if (checked && row.values.type !== "Hero" && row.values.type !== "Villain" && row.values.type !== "Location") {
             return false;
         }
         return checked;
@@ -3262,8 +3319,8 @@ var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
 var store = __webpack_require__(139);
 var live_editor_tables_1 = __webpack_require__(158);
-var hbs = __webpack_require__(251);
-__webpack_require__(402);
+var hbs = __webpack_require__(253);
+__webpack_require__(404);
 var tabTemplate = utils_1.template(hbs);
 
 var LiveEditorTab = function (_tabular_1$Tab) {
@@ -3312,7 +3369,7 @@ var LiveEditorTab = function (_tabular_1$Tab) {
             _this.updateStore(_this.cardsTable);
             _this.rowDeleted(row);
         });
-        _this.app = new PIXI.Application(card_1.CARD_MAX_WIDTH, card_1.CARD_MAX_HEIGHT, { antialias: true, transparent: true });
+        _this.app = new PIXI.Application(card_1.LANDSCAPE_CARD_MAX_WIDTH, card_1.CARD_MAX_HEIGHT, { antialias: true, transparent: true });
         _this.clearGraphics = new PIXI.Graphics();
         _this.app.stage.addChild(_this.clearGraphics);
         _this.cardsTable.addColumns(live_editor_tables_1.cardsHeadings);
@@ -3646,7 +3703,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = __webpack_require__(19);
 var utils_1 = __webpack_require__(9);
-var hbs = __webpack_require__(252);
+var hbs = __webpack_require__(254);
 var tabularTemplate = utils_1.template(hbs);
 
 var Tabular = function (_events_1$EventEmitte) {
@@ -3885,8 +3942,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tabs_1 = __webpack_require__(156);
 var tabular_1 = __webpack_require__(23);
 var utils_1 = __webpack_require__(9);
-var hbs = __webpack_require__(253);
-__webpack_require__(404);
+var hbs = __webpack_require__(255);
+__webpack_require__(406);
 var uiTemplate = utils_1.template(hbs);
 
 var UI = function UI(element) {
@@ -3904,7 +3961,7 @@ var UI = function UI(element) {
     document.documentElement.setAttribute("data-browser", navigator.userAgent);
     document.title = this.title + " - " + this.subtitle;
     var faviconLink = document.createElement("link");
-    faviconLink.href = __webpack_require__(235);
+    faviconLink.href = __webpack_require__(237);
     faviconLink.rel = "icon";
     faviconLink.type = "image/png";
     document.head.appendChild(faviconLink);
@@ -3969,8 +4026,8 @@ initialize_1.initialize(function () {
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var FontFaceObserver = __webpack_require__(245);
-__webpack_require__(405);
+var FontFaceObserver = __webpack_require__(247);
+__webpack_require__(407);
 var fonts = {
     CompactaBT: ["regular", "bold", "italics"],
     CompactaBdBT: ["regular", "bold"],
@@ -4642,7 +4699,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, ".input-like, .custom-deck-builder input, .custom-deck-builder textarea, .custom-deck-builder select, .custom-deck-builder option, .custom-deck-builder button {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .custom-deck-builder input:hover, .custom-deck-builder textarea:hover, .custom-deck-builder select:hover, .custom-deck-builder option:hover, .custom-deck-builder button:hover, .input-like:focus, .custom-deck-builder input:focus, .custom-deck-builder textarea:focus, .custom-deck-builder select:focus, .custom-deck-builder option:focus, .custom-deck-builder button:focus {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus, .custom-deck-builder input:focus, .custom-deck-builder textarea:focus, .custom-deck-builder select:focus, .custom-deck-builder option:focus, .custom-deck-builder button:focus {\n    background-color: #ffffff; }\n  .input-like:disabled, .custom-deck-builder input:disabled, .custom-deck-builder textarea:disabled, .custom-deck-builder select:disabled, .custom-deck-builder option:disabled, .custom-deck-builder button:disabled {\n    background-color: #999;\n    cursor: default; }\n\ninput[type=range] {\n  -webkit-appearance: none; }\n  input[type=range]:focus {\n    outline: none; }\n  input[type=range]::-webkit-slider-runnable-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-webkit-slider-runnable-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-webkit-slider-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer;\n    -webkit-appearance: none;\n    margin-top: -7px; }\n    input[type=range]::-webkit-slider-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-webkit-slider-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-webkit-slider-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]:focus::-webkit-slider-runnable-track {\n    background: #a2a2a2; }\n  input[type=range]::-moz-range-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-moz-range-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-moz-range-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer; }\n    input[type=range]::-moz-range-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-moz-range-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-moz-range-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]::-ms-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    background: transparent;\n    border-color: transparent;\n    border-width: 7px 0;\n    color: transparent; }\n    input[type=range]::-ms-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-ms-fill-lower {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #a2a2a2;\n    border: 0 solid transparent;\n    border-radius: 0; }\n  input[type=range]::-ms-fill-upper {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-ms-fill-upper:disabled {\n      background: #ddd; }\n  input[type=range]::-ms-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer; }\n    input[type=range]::-ms-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-ms-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-ms-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]:focus::-ms-fill-lower {\n    background: #bbb; }\n    input[type=range]:focus::-ms-fill-lower:disabled {\n      background: #ddd; }\n  input[type=range]:focus::-ms-fill-upper {\n    background: #a2a2a2; }\n  input[type=range]:disabled {\n    cursor: default;\n    background: #ddd;\n    opacity: 0.5; }\n\nhtml {\n  overflow-y: scroll; }\n\nbody {\n  background: url(" + escape(__webpack_require__(231)) + ") no-repeat center center fixed;\n  -webkit-background-size: cover;\n  -moz-background-size: cover;\n  -o-background-size: cover;\n  background-size: cover; }\n\n.card-name, .custom-deck-builder h1, .custom-deck-builder h2, .custom-deck-builder h3, .custom-deck-builder h4, .custom-deck-builder h5, .custom-deck-builder h6, .custom-deck-builder .tabular nav ul li {\n  font-size: 2.5em;\n  font-family: CompactaBT, Impact, Charcoal, sans-serif;\n  letter-spacing: -0.025em;\n  margin: 0;\n  color: #FFC60E;\n  text-shadow: 2px 2px #000000;\n  text-transform: uppercase;\n  transform: skewX(-15deg) scaleY(0.75);\n  -webkit-transform: skewX(-15deg) scaleY(0.75);\n  -ms-transform: skewX(-15deg) scaleY(0.75);\n  -moz-transform: skewX(-15deg) scaleY(0.75);\n  -o-transform: skewX(-15deg) scaleY(0.75); }\n\n.expandable {\n  height: 0;\n  overflow: hidden;\n  visibility: hidden;\n  opacity: 0;\n  pointer-events: none; }\n  .expandable.measuring {\n    -webkit-transition: none;\n    -moz-transition: none;\n    -ms-transition: none;\n    -o-transition: none;\n    transition: none;\n    height: auto;\n    position: absolute; }\n  .expandable.expanded {\n    opacity: 1;\n    visibility: visible;\n    height: auto;\n    pointer-events: all; }\n\n.custom-deck-builder {\n  color: #ffffff;\n  width: calc(1280px - 2em);\n  margin: 2em auto 1em auto;\n  font-family: TradeGothic, Verdana, Geneva, sans-serif;\n  font-size: 1em;\n  letter-spacing: -0.025em; }\n  .custom-deck-builder a, .custom-deck-builder a:visited {\n    color: #00adea;\n    text-decoration: underline; }\n    .custom-deck-builder a:hover, .custom-deck-builder a:focus, .custom-deck-builder a:visited:hover, .custom-deck-builder a:visited:focus {\n      color: #CD9D00; }\n  .custom-deck-builder .page-title h1 > span {\n    font-size: 5rem;\n    text-shadow: 5px 5px #000000;\n    display: block;\n    text-align: center; }\n  .custom-deck-builder .page-title h1 .subtitle {\n    color: #FFDC6A;\n    font-size: 3.75rem; }\n  .custom-deck-builder h2, .custom-deck-builder h3, .custom-deck-builder h4, .custom-deck-builder h5, .custom-deck-builder h6 {\n    color: #06C1FF;\n    margin-left: 0.075em; }\n  .custom-deck-builder input, .custom-deck-builder textarea, .custom-deck-builder select, .custom-deck-builder option, .custom-deck-builder button {\n    font-family: TradeGothic, Verdana, Geneva, sans-serif;\n    font-size: 1em;\n    letter-spacing: -0.025em; }\n  .custom-deck-builder button {\n    background-color: #007AA2;\n    border: none;\n    box-shadow: 3px 3px #000000;\n    color: #ffffff;\n    padding: 0.375em 0.5em;\n    cursor: pointer;\n    margin-bottom: 3px; }\n    .custom-deck-builder button:hover, .custom-deck-builder button:focus {\n      background-color: #06C1FF; }\n    .custom-deck-builder button:disabled {\n      background-color: #999;\n      cursor: default; }\n  .custom-deck-builder abbr[title] {\n    text-decoration: none;\n    cursor: help; }\n  .custom-deck-builder .tabular nav {\n    display: block;\n    background: url(" + escape(__webpack_require__(233)) + ") no-repeat center center;\n    -webkit-background-size: cover;\n    -moz-background-size: cover;\n    -o-background-size: cover;\n    background-size: cover;\n    color: #ffffff;\n    border-radius: 1em 1em 0 0;\n    border-bottom: 0.375rem solid #00adea; }\n    .custom-deck-builder .tabular nav ul {\n      padding: 1em 0;\n      margin: 0;\n      list-style-type: none; }\n      .custom-deck-builder .tabular nav ul li {\n        cursor: pointer;\n        font-size: 3.5em;\n        text-shadow: 4px 4px #000000;\n        display: inline-block;\n        margin: 0 0.5em; }\n        .custom-deck-builder .tabular nav ul li:not(.current) {\n          color: #A17B00; }\n        .custom-deck-builder .tabular nav ul li:hover, .custom-deck-builder .tabular nav ul li:focus {\n          color: #FFDC6A; }\n  .custom-deck-builder .tabular .tabular-contents {\n    background: #ffffff;\n    color: #000000;\n    padding: 1em; }\n  .custom-deck-builder dl dt {\n    font-weight: bold;\n    color: #007AA2; }\n    .custom-deck-builder dl dt + dd {\n      margin-left: 1em;\n      color: #005F7F; }\n      .custom-deck-builder dl dt + dd + dt {\n        margin-top: 1em; }\n  .custom-deck-builder table {\n    border: none;\n    border-collapse: collapse;\n    border-spacing: 0; }\n    .custom-deck-builder table tr:nth-child(even) > td {\n      background-color: #ddd; }\n    .custom-deck-builder table td {\n      padding: 0.5em; }\n  .custom-deck-builder tr:first-child > th {\n    background-color: #FFDC6A;\n    border-bottom: 0.25em solid #FFC60E;\n    padding: 0.5em 0.5em 0.25em 0.5em; }\n    .custom-deck-builder tr:first-child > th:first-child {\n      border-radius: 0.625em 0 0 0; }\n    .custom-deck-builder tr:first-child > th:last-child {\n      border-radius: 0 0.625em 0 0; }\n  .custom-deck-builder tr:last-child > td:first-child {\n    border-radius: 0 0 0 0.625em; }\n  .custom-deck-builder tr:last-child > td:last-child {\n    border-radius: 0 0 0.625em 0; }\n  .custom-deck-builder table, .custom-deck-builder tr, .custom-deck-builder th, .custom-deck-builder td {\n    border: none; }\n  .custom-deck-builder footer {\n    text-align: center;\n    font-size: 1.25em;\n    padding: 1em 0;\n    border-top: 0.375rem solid #00adea;\n    border-radius: 0 0 1em 1em;\n    background: url(" + escape(__webpack_require__(232)) + ") no-repeat center center;\n    -webkit-background-size: cover;\n    -moz-background-size: cover;\n    -o-background-size: cover;\n    background-size: cover; }\n    .custom-deck-builder footer a, .custom-deck-builder footer a:visited {\n      color: #FFC60E; }\n", ""]);
+exports.push([module.i, ".input-like, .custom-deck-builder input, .custom-deck-builder textarea, .custom-deck-builder select, .custom-deck-builder option, .custom-deck-builder button {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .custom-deck-builder input:hover, .custom-deck-builder textarea:hover, .custom-deck-builder select:hover, .custom-deck-builder option:hover, .custom-deck-builder button:hover, .input-like:focus, .custom-deck-builder input:focus, .custom-deck-builder textarea:focus, .custom-deck-builder select:focus, .custom-deck-builder option:focus, .custom-deck-builder button:focus {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus, .custom-deck-builder input:focus, .custom-deck-builder textarea:focus, .custom-deck-builder select:focus, .custom-deck-builder option:focus, .custom-deck-builder button:focus {\n    background-color: #ffffff; }\n  .input-like:disabled, .custom-deck-builder input:disabled, .custom-deck-builder textarea:disabled, .custom-deck-builder select:disabled, .custom-deck-builder option:disabled, .custom-deck-builder button:disabled {\n    background-color: #999;\n    cursor: default; }\n\ninput[type=range] {\n  -webkit-appearance: none; }\n  input[type=range]:focus {\n    outline: none; }\n  input[type=range]::-webkit-slider-runnable-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-webkit-slider-runnable-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-webkit-slider-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer;\n    -webkit-appearance: none;\n    margin-top: -7px; }\n    input[type=range]::-webkit-slider-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-webkit-slider-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-webkit-slider-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]:focus::-webkit-slider-runnable-track {\n    background: #a2a2a2; }\n  input[type=range]::-moz-range-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-moz-range-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-moz-range-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer; }\n    input[type=range]::-moz-range-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-moz-range-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-moz-range-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]::-ms-track {\n    height: 8px;\n    cursor: pointer;\n    transition: all .2s ease;\n    background: transparent;\n    border-color: transparent;\n    border-width: 7px 0;\n    color: transparent; }\n    input[type=range]::-ms-track:disabled {\n      cursor: default;\n      background: #ddd;\n      opacity: 0.5; }\n  input[type=range]::-ms-fill-lower {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #a2a2a2;\n    border: 0 solid transparent;\n    border-radius: 0; }\n  input[type=range]::-ms-fill-upper {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    background: #bbb;\n    border: 0 solid transparent;\n    border-radius: 0; }\n    input[type=range]::-ms-fill-upper:disabled {\n      background: #ddd; }\n  input[type=range]::-ms-thumb {\n    box-shadow: 0 0 0 transparent, 0 0 0 rgba(0, 0, 0, 0);\n    border: 0 solid transparent;\n    height: 22px;\n    width: 7px;\n    border-radius: 0;\n    background: #007AA2;\n    cursor: pointer; }\n    input[type=range]::-ms-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n    input[type=range]::-ms-thumb:hover {\n      background: #06C1FF; }\n    input[type=range]::-ms-thumb:disabled {\n      cursor: default;\n      background: #27C7FC;\n      opacity: 0.5; }\n  input[type=range]:focus::-ms-fill-lower {\n    background: #bbb; }\n    input[type=range]:focus::-ms-fill-lower:disabled {\n      background: #ddd; }\n  input[type=range]:focus::-ms-fill-upper {\n    background: #a2a2a2; }\n  input[type=range]:disabled {\n    cursor: default;\n    background: #ddd;\n    opacity: 0.5; }\n\nhtml {\n  overflow-y: scroll; }\n\nbody {\n  background: url(" + escape(__webpack_require__(233)) + ") no-repeat center center fixed;\n  -webkit-background-size: cover;\n  -moz-background-size: cover;\n  -o-background-size: cover;\n  background-size: cover; }\n\n.card-name, .custom-deck-builder h1, .custom-deck-builder h2, .custom-deck-builder h3, .custom-deck-builder h4, .custom-deck-builder h5, .custom-deck-builder h6, .custom-deck-builder .tabular nav ul li {\n  font-size: 2.5em;\n  font-family: CompactaBT, Impact, Charcoal, sans-serif;\n  letter-spacing: -0.025em;\n  margin: 0;\n  color: #FFC60E;\n  text-shadow: 2px 2px #000000;\n  text-transform: uppercase;\n  transform: skewX(-15deg) scaleY(0.75);\n  -webkit-transform: skewX(-15deg) scaleY(0.75);\n  -ms-transform: skewX(-15deg) scaleY(0.75);\n  -moz-transform: skewX(-15deg) scaleY(0.75);\n  -o-transform: skewX(-15deg) scaleY(0.75); }\n\n.expandable {\n  height: 0;\n  overflow: hidden;\n  visibility: hidden;\n  opacity: 0;\n  pointer-events: none; }\n  .expandable.measuring {\n    -webkit-transition: none;\n    -moz-transition: none;\n    -ms-transition: none;\n    -o-transition: none;\n    transition: none;\n    height: auto;\n    position: absolute; }\n  .expandable.expanded {\n    opacity: 1;\n    visibility: visible;\n    height: auto;\n    pointer-events: all; }\n\n.custom-deck-builder {\n  color: #ffffff;\n  width: calc(1280px - 2em);\n  margin: 2em auto 1em auto;\n  font-family: TradeGothic, Verdana, Geneva, sans-serif;\n  font-size: 1em;\n  letter-spacing: -0.025em; }\n  .custom-deck-builder a, .custom-deck-builder a:visited {\n    color: #00adea;\n    text-decoration: underline; }\n    .custom-deck-builder a:hover, .custom-deck-builder a:focus, .custom-deck-builder a:visited:hover, .custom-deck-builder a:visited:focus {\n      color: #CD9D00; }\n  .custom-deck-builder .page-title h1 > span {\n    font-size: 5rem;\n    text-shadow: 5px 5px #000000;\n    display: block;\n    text-align: center; }\n  .custom-deck-builder .page-title h1 .subtitle {\n    color: #FFDC6A;\n    font-size: 3.75rem; }\n  .custom-deck-builder h2, .custom-deck-builder h3, .custom-deck-builder h4, .custom-deck-builder h5, .custom-deck-builder h6 {\n    color: #06C1FF;\n    margin-left: 0.075em; }\n  .custom-deck-builder input, .custom-deck-builder textarea, .custom-deck-builder select, .custom-deck-builder option, .custom-deck-builder button {\n    font-family: TradeGothic, Verdana, Geneva, sans-serif;\n    font-size: 1em;\n    letter-spacing: -0.025em; }\n  .custom-deck-builder button {\n    background-color: #007AA2;\n    border: none;\n    box-shadow: 3px 3px #000000;\n    color: #ffffff;\n    padding: 0.375em 0.5em;\n    cursor: pointer;\n    margin-bottom: 3px; }\n    .custom-deck-builder button:hover, .custom-deck-builder button:focus {\n      background-color: #06C1FF; }\n    .custom-deck-builder button:disabled {\n      background-color: #999;\n      cursor: default; }\n  .custom-deck-builder abbr[title] {\n    text-decoration: none;\n    cursor: help; }\n  .custom-deck-builder .tabular nav {\n    display: block;\n    background: url(" + escape(__webpack_require__(235)) + ") no-repeat center center;\n    -webkit-background-size: cover;\n    -moz-background-size: cover;\n    -o-background-size: cover;\n    background-size: cover;\n    color: #ffffff;\n    border-radius: 1em 1em 0 0;\n    border-bottom: 0.375rem solid #00adea; }\n    .custom-deck-builder .tabular nav ul {\n      padding: 1em 0;\n      margin: 0;\n      list-style-type: none; }\n      .custom-deck-builder .tabular nav ul li {\n        cursor: pointer;\n        font-size: 3.5em;\n        text-shadow: 4px 4px #000000;\n        display: inline-block;\n        margin: 0 0.5em; }\n        .custom-deck-builder .tabular nav ul li:not(.current) {\n          color: #A17B00; }\n        .custom-deck-builder .tabular nav ul li:hover, .custom-deck-builder .tabular nav ul li:focus {\n          color: #FFDC6A; }\n  .custom-deck-builder .tabular .tabular-contents {\n    background: #ffffff;\n    color: #000000;\n    padding: 1em; }\n  .custom-deck-builder dl dt {\n    font-weight: bold;\n    color: #007AA2; }\n    .custom-deck-builder dl dt + dd {\n      margin-left: 1em;\n      color: #005F7F; }\n      .custom-deck-builder dl dt + dd + dt {\n        margin-top: 1em; }\n  .custom-deck-builder table {\n    border: none;\n    border-collapse: collapse;\n    border-spacing: 0; }\n    .custom-deck-builder table tr:nth-child(even) > td {\n      background-color: #ddd; }\n    .custom-deck-builder table td {\n      padding: 0.5em; }\n  .custom-deck-builder tr:first-child > th {\n    background-color: #FFDC6A;\n    border-bottom: 0.25em solid #FFC60E;\n    padding: 0.5em 0.5em 0.25em 0.5em; }\n    .custom-deck-builder tr:first-child > th:first-child {\n      border-radius: 0.625em 0 0 0; }\n    .custom-deck-builder tr:first-child > th:last-child {\n      border-radius: 0 0.625em 0 0; }\n  .custom-deck-builder tr:last-child > td:first-child {\n    border-radius: 0 0 0 0.625em; }\n  .custom-deck-builder tr:last-child > td:last-child {\n    border-radius: 0 0 0.625em 0; }\n  .custom-deck-builder table, .custom-deck-builder tr, .custom-deck-builder th, .custom-deck-builder td {\n    border: none; }\n  .custom-deck-builder footer {\n    text-align: center;\n    font-size: 1.25em;\n    padding: 1em 0;\n    border-top: 0.375rem solid #00adea;\n    border-radius: 0 0 1em 1em;\n    background: url(" + escape(__webpack_require__(234)) + ") no-repeat center center;\n    -webkit-background-size: cover;\n    -moz-background-size: cover;\n    -o-background-size: cover;\n    background-size: cover; }\n    .custom-deck-builder footer a, .custom-deck-builder footer a:visited {\n      color: #FFC60E; }\n", ""]);
 
 // exports
 
@@ -4657,7 +4714,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: CompactaBT;\n  src: url(" + escape(__webpack_require__(240)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBT;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(238)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBT;\n  font-style: italic;\n  src: url(" + escape(__webpack_require__(239)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBdBT;\n  src: url(" + escape(__webpack_require__(237)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: CompactaBdBT;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(236)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  src: url(" + escape(__webpack_require__(243)) + ") format(\"woff\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(241)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  font-style: italic;\n  src: url(" + escape(__webpack_require__(242)) + ") format(\"opentype\"); }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: CompactaBT;\n  src: url(" + escape(__webpack_require__(242)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBT;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(240)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBT;\n  font-style: italic;\n  src: url(" + escape(__webpack_require__(241)) + ") format(\"opentype\"); }\n\n@font-face {\n  font-family: CompactaBdBT;\n  src: url(" + escape(__webpack_require__(239)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: CompactaBdBT;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(238)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  src: url(" + escape(__webpack_require__(245)) + ") format(\"woff\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  font-weight: bold;\n  src: url(" + escape(__webpack_require__(243)) + ") format(\"truetype\"); }\n\n@font-face {\n  font-family: TradeGothic;\n  font-style: italic;\n  src: url(" + escape(__webpack_require__(244)) + ") format(\"opentype\"); }\n", ""]);
 
 // exports
 
@@ -4875,159 +4932,171 @@ module.exports = __webpack_require__.p + "resources/430ae0156ba024b4736e61823583
 /* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/3915a476e2a284486169827114c529c6.png";
+module.exports = __webpack_require__.p + "resources/7e2c3c7df9c7b143439bfef7e662c353.png";
 
 /***/ }),
 /* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/a86cb8bba70acee3c4e074ed385b29dc.png";
+module.exports = __webpack_require__.p + "resources/54f3e72991655c6b0342f33464d40449.png";
 
 /***/ }),
 /* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/846e29413d904668b0f43d477a328b2c.png";
+module.exports = __webpack_require__.p + "resources/3915a476e2a284486169827114c529c6.png";
 
 /***/ }),
 /* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/09081ce222f8399dfb2c84077cf189ca.png";
+module.exports = __webpack_require__.p + "resources/a86cb8bba70acee3c4e074ed385b29dc.png";
 
 /***/ }),
 /* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/abca638dc6f1e221196134e1275aaad0.png";
+module.exports = __webpack_require__.p + "resources/846e29413d904668b0f43d477a328b2c.png";
 
 /***/ }),
 /* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/c3903aac7f8a93a31e03ac79d81b0578.png";
+module.exports = __webpack_require__.p + "resources/09081ce222f8399dfb2c84077cf189ca.png";
 
 /***/ }),
 /* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/09081ce222f8399dfb2c84077cf189ca.png";
+module.exports = __webpack_require__.p + "resources/abca638dc6f1e221196134e1275aaad0.png";
 
 /***/ }),
 /* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/0526136f10583f57bf74cc5f63f82529.png";
+module.exports = __webpack_require__.p + "resources/c3903aac7f8a93a31e03ac79d81b0578.png";
 
 /***/ }),
 /* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/bef059bef4ae3590ac55c1900b94912c.png";
+module.exports = __webpack_require__.p + "resources/09081ce222f8399dfb2c84077cf189ca.png";
 
 /***/ }),
 /* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/169e42795f87d10c73d4d8bec3a41520.png";
+module.exports = __webpack_require__.p + "resources/0526136f10583f57bf74cc5f63f82529.png";
 
 /***/ }),
 /* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/d0ca5136df4e523818e139423571bfb0.png";
+module.exports = __webpack_require__.p + "resources/bef059bef4ae3590ac55c1900b94912c.png";
 
 /***/ }),
 /* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/205c0a75321d91c1035bb7e7defb5ba7.png";
+module.exports = __webpack_require__.p + "resources/169e42795f87d10c73d4d8bec3a41520.png";
 
 /***/ }),
 /* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/27963f10586f4adb3ee60ddd844bafee.jpg";
+module.exports = __webpack_require__.p + "resources/d0ca5136df4e523818e139423571bfb0.png";
 
 /***/ }),
 /* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/2f647df6adf0f9337da5ed968d8d9ba3.jpg";
+module.exports = __webpack_require__.p + "resources/205c0a75321d91c1035bb7e7defb5ba7.png";
 
 /***/ }),
 /* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/6529039b5bd390a8b2260f48418cb112.jpg";
+module.exports = __webpack_require__.p + "resources/27963f10586f4adb3ee60ddd844bafee.jpg";
 
 /***/ }),
 /* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/13386f2b64779e1c52f6626d5bb1015f.png";
+module.exports = __webpack_require__.p + "resources/2f647df6adf0f9337da5ed968d8d9ba3.jpg";
 
 /***/ }),
 /* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/60debde16cc531620d0edfb6608f1043.png";
+module.exports = __webpack_require__.p + "resources/6529039b5bd390a8b2260f48418cb112.jpg";
 
 /***/ }),
 /* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/4ecdb5886bf7f71b67b26b7acaa68653.ttf";
+module.exports = __webpack_require__.p + "resources/13386f2b64779e1c52f6626d5bb1015f.png";
 
 /***/ }),
 /* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/035e8b4b319c1c6e843f8cbcc85d42e0.ttf";
+module.exports = __webpack_require__.p + "resources/60debde16cc531620d0edfb6608f1043.png";
 
 /***/ }),
 /* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/f0d74efcb3514ddd8b40798b589948d1.otf";
+module.exports = __webpack_require__.p + "resources/4ecdb5886bf7f71b67b26b7acaa68653.ttf";
 
 /***/ }),
 /* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/f82cba211182fbb07d3510cbe89c7ccb.otf";
+module.exports = __webpack_require__.p + "resources/035e8b4b319c1c6e843f8cbcc85d42e0.ttf";
 
 /***/ }),
 /* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/3596833b8852b6ea37b94e4f6b572e5b.otf";
+module.exports = __webpack_require__.p + "resources/f0d74efcb3514ddd8b40798b589948d1.otf";
 
 /***/ }),
 /* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/cdfd0160e30988fa0f6330f01c1bb710.ttf";
+module.exports = __webpack_require__.p + "resources/f82cba211182fbb07d3510cbe89c7ccb.otf";
 
 /***/ }),
 /* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "resources/e614413a37093b678d900978f5c3ef1c.otf";
+module.exports = __webpack_require__.p + "resources/3596833b8852b6ea37b94e4f6b572e5b.otf";
 
 /***/ }),
 /* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__.p + "resources/cdfd0160e30988fa0f6330f01c1bb710.ttf";
+
+/***/ }),
+/* 244 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "resources/e614413a37093b678d900978f5c3ef1c.otf";
+
+/***/ }),
+/* 245 */
+/***/ (function(module, exports, __webpack_require__) {
+
 module.exports = __webpack_require__.p + "resources/4ceca9b16de3f3089eb490977af7b391.woff";
 
 /***/ }),
-/* 244 */,
-/* 245 */,
 /* 246 */,
 /* 247 */,
 /* 248 */,
-/* 249 */
+/* 249 */,
+/* 250 */,
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Handlebars = __webpack_require__(25);
@@ -5051,17 +5120,17 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 },"useData":true});
 
 /***/ }),
-/* 250 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Handlebars = __webpack_require__(25);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"help-tab\">\n	<p>This tab is intended for help with using this tool, specifically uding the <a href=\"#deck-generator\">Deck Generator</a> functionality.</p>\n	<section class=\"availible-options\">\n		<h2>Your Custom Spreadsheet</h2>\n		<p>Most of the funtionality of this tool is in creating your down <abbr title=\"Cryptozoic Game Engine\">CGE</abbr> deck. To do that all you need to create is a spreadsheet in your office sheet of choice, and follow these rules when formatting it.</p>\n		<p>The first row of your spreadsheet <strong>must</strong> be the headers for each column of options. The list of availible options is below:</p>\n		<div class=\"card-options\"></div>\n		<p>After you make your first row, all entries after count as a card. You can create blank rows and they will be skipped over. Columns that do not match one of the above options are skipped as well, so feel free to add columns to help you organize your cards.</p>\n		<p>Additionally there are two special rows. If you name your card <code>__defaults__</code>, then <strong>all</strong> cards after it will default to the values of that row. This is useful for setting all the values for shared options such as Set, Legal, Copyright, etc. The other row name is <code>__oversized_defaults__</code> but will only be applied to Oversized cards.</p>\n	</section>\n	<section>\n		<h2>Examples</h2>\n		<p>Below are some examples of valid what to expect and valid spreadsheets to use.</p>\n		<p>For an example spreadsheet for use with this tool, check out my <a href=\"https://docs.google.com/spreadsheets/d/1C4sG2btMuTEaFaTlKtoSytHsuSTmM2uhnR2j-IEhsKk/edit?usp=sharing\">Overwatch Deck Building Game spreadsheet here</a>. You can download the first sheet as a CSV file and import it using this tool to generate your own copy of the deck.</p>\n		<img src=\"" + __webpack_require__(234) + "\" alt=\"card example\" title=\"Example of what column names effect what parts of the card.\"/>\n		<p>For any issues, especially technical ones, create an <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder/issues\">issue on GitHub</a>.</p>\n	</section>\n</div>\n";
+    return "<div class=\"help-tab\">\n	<p>This tab is intended for help with using this tool, specifically uding the <a href=\"#deck-generator\">Deck Generator</a> functionality.</p>\n	<section class=\"availible-options\">\n		<h2>Your Custom Spreadsheet</h2>\n		<p>Most of the funtionality of this tool is in creating your down <abbr title=\"Cryptozoic Game Engine\">CGE</abbr> deck. To do that all you need to create is a spreadsheet in your office sheet of choice, and follow these rules when formatting it.</p>\n		<p>The first row of your spreadsheet <strong>must</strong> be the headers for each column of options. The list of availible options is below:</p>\n		<div class=\"card-options\"></div>\n		<p>After you make your first row, all entries after count as a card. You can create blank rows and they will be skipped over. Columns that do not match one of the above options are skipped as well, so feel free to add columns to help you organize your cards.</p>\n		<p>Additionally there are two special rows. If you name your card <code>__defaults__</code>, then <strong>all</strong> cards after it will default to the values of that row. This is useful for setting all the values for shared options such as Set, Legal, Copyright, etc. The other row name is <code>__oversized_defaults__</code> but will only be applied to Oversized cards.</p>\n	</section>\n	<section>\n		<h2>Examples</h2>\n		<p>Below are some examples of valid what to expect and valid spreadsheets to use.</p>\n		<p>For an example spreadsheet for use with this tool, check out my <a href=\"https://docs.google.com/spreadsheets/d/1C4sG2btMuTEaFaTlKtoSytHsuSTmM2uhnR2j-IEhsKk/edit?usp=sharing\">Overwatch Deck Building Game spreadsheet here</a>. You can download the first sheet as a CSV file and import it using this tool to generate your own copy of the deck.</p>\n		<img src=\"" + __webpack_require__(236) + "\" alt=\"card example\" title=\"Example of what column names effect what parts of the card.\"/>\n		<p>For any issues, especially technical ones, create an <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder/issues\">issue on GitHub</a>.</p>\n	</section>\n</div>\n";
 },"useData":true});
 
 /***/ }),
-/* 251 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Handlebars = __webpack_require__(25);
@@ -5071,7 +5140,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 },"useData":true});
 
 /***/ }),
-/* 252 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Handlebars = __webpack_require__(25);
@@ -5081,7 +5150,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 },"useData":true});
 
 /***/ }),
-/* 253 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Handlebars = __webpack_require__(25);
@@ -5104,8 +5173,6 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 },"useData":true});
 
 /***/ }),
-/* 254 */,
-/* 255 */,
 /* 256 */,
 /* 257 */,
 /* 258 */,
@@ -5122,14 +5189,14 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 /* 269 */,
 /* 270 */,
 /* 271 */,
-/* 272 */
+/* 272 */,
+/* 273 */,
+/* 274 */
 /***/ (function(module, exports) {
 
 module.exports = "<h1 id=\"custom-deck-builder\">Custom Deck Builder</h1>\n<h2 id=\"about-this-tool\">About This Tool</h2>\n<p>This application is a <strong>fan creation</strong> by <a href=\"https://github.com/JacobFischer/\">Jacob Fischer</a> with the sole intent of making it easier to try custom cards in Cryptozoic&#39;s Game Engine. It is open source and available on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>.</p>\n<p>No cards produced using this tool should be used to profit from. Instead please buy <a href=\"https://www.cryptozoic.com/\">Cryptozoic</a>&#39;s own deck building games utilizing their engine such as the DC Deck Building game, they are excellent.</p>\n<p>This project was produced mostly as a tool to help its author more easily prototype custom cards to try in <a href=\"http://store.steampowered.com/app/286160/Tabletop_Simulator/\">Table Top Simulator</a> with and around Cryptozoic&#39;s own titles, as well as an excuse to brush up on some technical skills.</p>\n<h2 id=\"technical-details\">Technical Details</h2>\n<p>This application is an <a href=\"https://en.wikipedia.org/wiki/Single-page_application\" title=\"Single-page Application\">SPA</a>. Once you load the page you have everything you need to build some custom cards. <strong>No</strong> data is saved on a server somewhere. All the processing is done and saved on your machine via your web browser. I&#39;m not interested in tracking you or stealing your data.</p>\n<p>This project was made using a variety of frameworks:</p>\n<ul>\n<li><strong><a href=\"https://www.typescriptlang.org/\" title=\"JavaScript with types\">TypeScript</a></strong>: The coding language used for pretty much everything in this project.</li>\n<li><strong><a href=\"http://sass-lang.com/\" title=\"Syntactically Awesome Style Sheets\">SASS</a></strong>: Used to control the style and most animations on this page.</li>\n<li><strong><a href=\"http://handlebarsjs.com/\" title=\"Simple HTML Templates\">Handlebars</a></strong>: Used to template the HTML layout and elements for all page sections.</li>\n<li><strong><a href=\"http://www.pixijs.com/\" title=\"2D graphics library for easily drawing cards\">PixiJS</a></strong>: Currently the best browser library for manipulating 2D graphics and images on canvases. Used to render the custom cards.</li>\n<li><strong><a href=\"https://www.npmjs.com/\" title=\"Node Package Manager\">NPM</a></strong>: The biggest and most popular JavaScript package manager, that hosts many of the smaller modules not explicitly mentioned here, but are still necessary to run.</li>\n<li><strong><a href=\"https://webpack.js.org/\">Webpack 2</a></strong>: What wraps all these things together into a single page. I used this opportunity to transition Webpack 1.x skills to 2.0.</li>\n</ul>\n<p>All the source code, commits, and resources are available freely on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>. All classes, methods, and exports and documented using well formed docstrings; so if you wish to modify this tool, do so to your heart&#39;s content!</p>\n<hr>\n<p>A live version of application is kept up to date on <a href=\"https://jacobfischer.github.io/Custom-Deck-Builder/\">https://jacobfischer.github.io/Custom-Deck-Builder/</a>. Check out that version if you are not interested in developing it yourself.</p>\n<h2 id=\"how-to-build\">How to Build</h2>\n<p>As this is a webpack project, you just need to build and deploy it. As with most projects ensure you have <a href=\"https://nodejs.org/\">Node.js</a> installed, then just:</p>\n<pre><code>npm install\nnpm run dev\n</code></pre><p>Then just in your browser navigate to <a href=\"http://localhost:8080/\">http://localhost:8080/</a></p>\n<p>Alternatively run <code>npm run build</code> to run webpack and save the output in the <code>built/</code> directory, and you can deploy the static assets at your will.</p>\n<p>2026 Package dependancies are outdated. Steps to run currently:</p>\n<p>nvm use\nnpm run build\nmkdir -p built/css\ncp node_modules/normalize.css/normalize.css built/css/normalize.css\nnpx <a href=\"mailto:gh-pages@2.2.0\">gh-pages@2.2.0</a> -d built --dotfiles</p>\n";
 
 /***/ }),
-/* 273 */,
-/* 274 */,
 /* 275 */,
 /* 276 */,
 /* 277 */,
@@ -5231,14 +5298,14 @@ module.exports = "<h1 id=\"custom-deck-builder\">Custom Deck Builder</h1>\n<h2 i
 /* 373 */,
 /* 374 */,
 /* 375 */,
-/* 376 */
+/* 376 */,
+/* 377 */,
+/* 378 */
 /***/ (function(module, exports) {
 
 module.exports = "Congratulations on building your custom deck! This file helps to explain what you can do with your cool new cards.\n\nThe intended use for these images is to import into a card program, like Tabletop Simulator.\n\n## Tabletop Simulator\n\nTabletop Simulator can build custom decks of cards from textures (images) that contains a grid of cards. If you already know how to import custom decks into Tabletop Simulator, great! Otherwise this readme can help you.\n\nFor reference, your Deck was generated with {width} cards horizontally and {height} cards vertically, though the last sheets of normal and oversized cards may have less.\n\n## Other Notes\n\nThis file and the textures were generated using the Cryptozoic Deck Building Game Custom Card Builder tool created by Jacob Fischer.\n\nhttps://jacobfischer.github.io/Custom-Deck-Builder/\n\nSource Code for this tool is open source and available at GitHub: https://github.com/JacobFischer/Custom-Deck-Builder\n"
 
 /***/ }),
-/* 377 */,
-/* 378 */,
 /* 379 */,
 /* 380 */,
 /* 381 */,
@@ -5260,7 +5327,9 @@ module.exports = "Congratulations on building your custom deck! This file helps 
 /* 397 */,
 /* 398 */,
 /* 399 */,
-/* 400 */
+/* 400 */,
+/* 401 */,
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5291,7 +5360,7 @@ if(false) {
 }
 
 /***/ }),
-/* 401 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5322,7 +5391,7 @@ if(false) {
 }
 
 /***/ }),
-/* 402 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5353,7 +5422,7 @@ if(false) {
 }
 
 /***/ }),
-/* 403 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5384,7 +5453,7 @@ if(false) {
 }
 
 /***/ }),
-/* 404 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5415,7 +5484,7 @@ if(false) {
 }
 
 /***/ }),
-/* 405 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5446,8 +5515,6 @@ if(false) {
 }
 
 /***/ }),
-/* 406 */,
-/* 407 */,
 /* 408 */,
 /* 409 */,
 /* 410 */,
@@ -5459,19 +5526,21 @@ if(false) {
 /* 416 */,
 /* 417 */,
 /* 418 */,
-/* 419 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-/* 420 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
+/* 419 */,
+/* 420 */,
 /* 421 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+/* 422 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+/* 423 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
