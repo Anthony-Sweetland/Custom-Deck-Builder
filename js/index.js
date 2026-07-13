@@ -1274,6 +1274,16 @@ var styles = {
             stroke: "#646569",
             strokeThickness: 18
         },
+        bribe: {
+            fill: "#161616",
+            fontFamily: "CompactaBdBT",
+            fontSize: 45,
+            fontWeight: "bold",
+            letterSpacing: 0.06,
+            padding: 100,
+            stroke: "#99c92a",
+            strokeThickness: 8
+        },
         backgroundsvlevel: {
             fill: "#ffffff",
             fontFamily: "CompactaBdBT",
@@ -1571,6 +1581,7 @@ var Card = function () {
         this.variant = false;
         this.Bannerrows = 0;
         this.destination = 1;
+        this.bribe = this.destination;
         this.oversized = false;
         this.typePrefix = "";
         this.victoryPoints = 1;
@@ -1651,6 +1662,7 @@ var Card = function () {
             this.renderCost();
             this.renderSMCost();
             this.renderDestination();
+            this.renderbribe();
             this.renderNL();
             this.renderVP();
             this.renderName();
@@ -1997,7 +2009,7 @@ var Card = function () {
                 utils_1.newSprite("backgroundmetal", this.container);
             } else if (this.subtype === "CURSED" && this.variant === true && this.type === "Weakness") {
                 utils_1.newSprite("backgroundcursed", this.container);
-            } else if (this.subtype === "CONDITIONAL VP" || this.subtype === "CONDITIONAL COST" || this.subtype === "SIDE MISSION") {
+            } else if (this.subtype === "CONDITIONAL VP" || this.subtype === "CONDITIONAL COST" || this.subtype === "SIDE MISSION" || this.subtype === "BRIBE") {
                 return;
             } else {
                 var x = 710;
@@ -2100,6 +2112,20 @@ var Card = function () {
             this.container.addChild(cardCostFrontText);
         }
     }, {
+        key: "renderbribe",
+        value: function renderbribe() {
+            if (this.oversized || this.destination == 0 || this.subtype !== "BRIBE") {
+                return;
+            }
+            utils_1.newSprite("backgroundbribe", this.container);
+            var cardCostFrontStyle = this.getStyle("bribe");
+            var cardCostFrontText = new PIXI.Text(String(this.destination), cardCostFrontStyle);
+            cardCostFrontText.pivot.x = cardCostFrontText.width / 2;
+            cardCostFrontText.pivot.y = cardCostFrontText.height / 2;
+            cardCostFrontText.position.set(400, 735);
+            this.container.addChild(cardCostFrontText);
+        }
+    }, {
         key: "renderNL",
         value: function renderNL() {
             if (this.oversized || this.cost < "8" || !this.variant) {
@@ -2112,9 +2138,9 @@ var Card = function () {
                 this.nlu = "2";
             } else if (this.cost == "11" || this.cost == "12") {
                 this.nlu = "3";
-            } else this.nlu = "4";
-            {}
-            ;
+            } else {
+                this.nlu = "4";
+            }
             if (this.type == "Villain") {
                 utils_1.newSprite("backgroundsvlevel", this.container);
                 var NLStyle = this.getStyle("backgroundsvlevel");
@@ -3207,8 +3233,7 @@ exports.defaultsHeadings = [{
 }, {
     name: "Copyright"
 }, {
-    name: "Legal",
-    longText: true
+    name: "Legal"
 }, {
     name: "Logo URL"
 }, {
@@ -3228,7 +3253,7 @@ exports.defaultsRows = [{
     setTextColor: "#ffec34",
     setBackgroundColor: "#ed1c24",
     copyright: "2015 CZE",
-    legal: "TEEN TITANS and all related character and elements are trademarks and © DC Comics\n(s15)",
+    legal: "© & ™ DC Comics (s26)",
     logoScale: 0.975
 }];
 exports.cardsHeadings = [{
