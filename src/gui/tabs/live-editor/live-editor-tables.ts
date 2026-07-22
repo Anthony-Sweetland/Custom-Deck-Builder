@@ -20,6 +20,7 @@ function addTitlesTo(columns: IColumnData[]): void {
     }
 }
 
+
 const deleteButton = document.createElement("button");
 deleteButton.innerHTML = "&#x2716;";
 deleteButton.setAttribute("title", "Delete this row");
@@ -46,7 +47,7 @@ export const defaultsHeadings: IColumnData[] = [
     },
     {
         name: "Legal",
-        longText: true,
+       // longText: true,
     },
     {
         name: "Logo URL",
@@ -62,8 +63,9 @@ export const defaultsHeadings: IColumnData[] = [
     },
 ];
 
-addTitlesTo(defaultsHeadings);
 
+addTitlesTo(defaultsHeadings);
+//https://i.imgur.com/J6SuXcE.png
 /** the rows for the cards defaults table on the LiveEditorTable */
 export const defaultsRows: IRowValues[] = [
     {
@@ -73,7 +75,7 @@ export const defaultsRows: IRowValues[] = [
         setTextColor: "#ffec34",
         setBackgroundColor: "#ed1c24",
         copyright: "2015 CZE",
-        legal: "TEEN TITANS and all related character and elements are trademarks and © DC Comics\n(s15)",
+        legal: "© & ™ DC Comics (s26)",
         logoScale: 0.975,
     },
     /*{
@@ -91,7 +93,7 @@ export const cardsHeadings: IColumnData[] = [
     },
     {
         name: "Type",
-        allowedValues: ["Equipment", "Hero", "Hostage", "Location", "Starter", "Crisis", "Super Power", "Villain", "Typeless", "Weakness"],
+        allowedValues: ["Equipment", "Hero", "Hostage", "Location", "Starter", "Super Power", "Villain", "Typeless", "Basic", "Weakness", "Super Move", "Crisis", "startertransformed", "equipmenttransformed", "herotransformed", "villaintransformed"],
     },
     {
         name: "Text",
@@ -113,11 +115,26 @@ export const cardsHeadings: IColumnData[] = [
         name: "Variant",
         type: "boolean",
     },
+       {
+        name: "Bannerrows",
+        id: "Bannerrows",
+        type: "number",
+    },
+    {
+        name: "destination",
+        id: "destination",
+        type: "number",
+        inputAttributes: {
+            min: 0,
+            max: 5,
+            step: 1,
+        },
+    },
     {
         name: "Oversized",
         type: "boolean",
         transform: (checked: RowValue, row: IRowData) => {
-            if (checked && row.values.type !== "Hero" && row.values.type !== "Villain") {
+            if (checked && row.values.type !== "Hero" && row.values.type !== "Villain" && row.values.type !== "Location") {
                 return false;
             }
             return checked;
@@ -132,9 +149,7 @@ export const cardsHeadings: IColumnData[] = [
         defaultValue: deleteButton,
     },
 ];
-
 addTitlesTo(cardsHeadings);
-
 /** the rows for the custom cards table on the LiveEditorTable */
 export const cardsRows: IRowValues[] = [
     {

@@ -34,6 +34,21 @@ export const CardOptionsList: ICardOption[] = [
                    + `on Oversized card`,
     },
     {
+        name: "Bannerrows",
+        type: "number",
+        description: `Input a number: (-2 or -1) GREEN Mandatory rule (must be played first/before ending turn). `
+                + `(0) No Banner. (1-3) BLUE - card interactions (discard, control, seal). `
+                + `(4-6) GOLD - Effects when you gain a card. `
+                + `(7-9)BURGUNDY-Crisis Stack ongoing. (10) YELLOW - Recruit {also workd for oversized}, (11)Pink {depreciated} ongoing, (12+13) specific to Hush` ,
+    },
+     {
+        name: "destination",
+        type: "number",
+        description: `For Villians for rebirth 1-5`
+            ,
+    },
+
+    {
         name: "Oversized",
         type: "checkbox",
         description: `If enabled, the card becomes an oversized player card. `
@@ -76,7 +91,7 @@ export const CardOptionsList: ICardOption[] = [
                    + ` like <a href="https://imgur.com/">imgur</a> to manage `
                    + `your images. The image will be automatically centered on `
                    + `the card. Normal cards will be 750px × 523px in size, and`
-                   + ` Oversized ones will be 900px × 741px.`,
+                   + ` Oversized ones will be 900px × 741px. Oversized locations 1200px × 490px`,
     },
     {
         name: "Logo URL",
@@ -108,8 +123,8 @@ export const CardOptionsList: ICardOption[] = [
     {
         name: "Subtype",
         type: "text",
-        description: `An additional type describing the card, such as its owner`
-                   + ` in the Street Fighter Deck Building Game.`,
+        description: `An additional type describing the card, `
+                   + ` Try METAL or CONSTRUCT or CONDITIONAL COST or CONDITIONAL VP in caps, CURSED (weakness variant).`,
     },
     {
         name: "Set",

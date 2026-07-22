@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import { Card, CARD_MAX_HEIGHT, CARD_MAX_WIDTH } from "src/cards/card/";
+import { Card, CARD_MAX_HEIGHT, CARD_MAX_WIDTH, LANDSCAPE_CARD_MAX_WIDTH } from "src/cards/card/";
 import { EditableTable, IRowData, IRowValues } from "src/gui/table";
 import { Tab } from "src/gui/tabular/";
 import { clone, select, template } from "src/utils/";
@@ -106,7 +106,7 @@ export class LiveEditorTab extends Tab {
         });
 
         // Rendering related tasks \\
-        this.app = new PIXI.Application(CARD_MAX_WIDTH, CARD_MAX_HEIGHT, {antialias: true, transparent: true});
+        this.app = new PIXI.Application(LANDSCAPE_CARD_MAX_WIDTH, CARD_MAX_HEIGHT, {antialias: true, transparent: true});
 
         this.clearGraphics = new PIXI.Graphics();
         this.app.stage.addChild(this.clearGraphics);

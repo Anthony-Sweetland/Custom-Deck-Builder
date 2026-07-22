@@ -32,6 +32,39 @@ const styles: {
             stroke: "#646569",
             strokeThickness: 18,
         },
+        destination: {
+            fill: "#ffffff",
+            fontFamily: "CompactaBdBT",
+            fontSize: 45,
+            fontWeight: "bold",
+            letterSpacing: 0.06,
+            padding: 100,
+            stroke: "#646569",
+            strokeThickness: 18,
+        },
+        bribe: {
+            fill: "#161616",
+            fontFamily: "NotFondOfFont",
+            fontSize: 55,
+            fontWeight: "bold",
+            letterSpacing: 0.06,
+            padding: 100,
+            stroke: "#99c92a",
+            strokeThickness: 8,
+        },
+        backgroundsvlevel: {
+            fill: "#ffffff",
+            fontFamily: "CompactaBdBT",
+            fontSize: 22.25,
+            letterSpacing: 4,
+            padding: 100,
+            stroke: "#f30f0f",
+            strokeThickness: .05,
+            dropShadow: true,
+            dropShadowAngle: 60 * Math.PI / 180,
+            dropShadowBlur: 0,
+            dropShadowColor: "#000000",
+        },
         name: {
             dropShadow: true,
             dropShadowAngle: 60 * Math.PI / 180,
@@ -44,8 +77,16 @@ const styles: {
             padding: 100,
         },
         subtype: {
-            fontSize: 33.333,
-            letterSpacing: 1.375,
+           // fontSize: 33.33,
+            //letterSpacing: 1.375,
+            fill: "#000000",
+            fontFamily: "CompactaBdBT",
+            fontSize: 60,
+            fontWeight: "bold",
+            letterSpacing: 0.06,
+            padding: 100,
+            stroke: "#ffffff",
+            strokeThickness: 10,
         },
         type: {
             fill: "#ffffff",
@@ -68,7 +109,7 @@ const styles: {
             strokeThickness: 6,
         },
         copyright: {
-            fill: "#000000",
+            fill: "#ffffff",
             fontFamily: "TradeGothic",
             fontSize: 21,
             letterSpacing: -0.20,
@@ -128,6 +169,26 @@ const styles: {
         },
     },
 
+  herotransformed: {
+        name: {
+            fill: "#00a5e3",
+        },
+        text: {
+            fill: "#ffffff",
+            fontFamily: "TradeGothic",
+            fontSize: 38,
+            letterSpacing: -0.84,
+            padding: 0,
+
+            dropShadow: true,
+                dropShadowAngle: 60 * Math.PI / 180,
+                dropShadowBlur: 12,
+                dropShadowColor: "#000000",
+                dropShadowDistance: 2,
+                }
+    },
+
+
     SuperPower: {
         name: {
             fill: "#f77d27",
@@ -142,6 +203,24 @@ const styles: {
             fill: "#ed2122",
         },
     },
+    villaintransformed: {
+        name: {
+            fill: "#ed2122",
+        },
+        text: {
+            fill: "#ffffff",
+            fontFamily: "TradeGothic",
+            fontSize: 38,
+            letterSpacing: -0.84,
+            padding: 0,
+
+            dropShadow: true,
+                dropShadowAngle: 60 * Math.PI / 180,
+                dropShadowBlur: 12,
+                dropShadowColor: "#000000",
+                dropShadowDistance: 2,
+                }
+    },
 
     Location: {
         name: {
@@ -151,7 +230,18 @@ const styles: {
 
     Hostage: {
         name: {
-            fill: "#986E4C",
+            fill: "#A77B50",
+        },
+    },
+
+    Basic: {
+        name: {
+            fill: "#86649F",
+        },
+    },
+    SuperMove: {
+        name: {
+            fill: "#86649F",
         },
     },
     Crisis: {
@@ -171,7 +261,45 @@ const styles: {
             fill: "#000000",
         },
     },
+      startertransformed: {
+        name: {
+            fill: "#fff200",
+        },
+        type: {
+            fill: "#000000",
+        },
+        text: {
+           fill: "#ffffff",
+           fontFamily: "TradeGothic",
+           fontSize: 38,
+           letterSpacing: -0.84,
+           padding: 0,
 
+           dropShadow: true,
+            dropShadowAngle: 60 * Math.PI / 180,
+            dropShadowBlur: 12,
+            dropShadowColor: "#000000",
+            dropShadowDistance: 2,
+            }
+    },
+    equipmenttransformed: {
+            type: {
+            fill: "#000000",
+        },
+        text: {
+           fill: "#ffffff",
+           fontFamily: "TradeGothic",
+           fontSize: 38,
+           letterSpacing: -0.84,
+           padding: 0,
+
+           dropShadow: true,
+            dropShadowAngle: 60 * Math.PI / 180,
+            dropShadowBlur: 12,
+            dropShadowColor: "#000000",
+            dropShadowDistance: 2,
+            }
+    },
     Weakness: {
         name: {
             fill: "#8dc73f",

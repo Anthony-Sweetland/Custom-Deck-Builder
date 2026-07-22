@@ -48,3 +48,16 @@ nvm install 12
 nvm use 12
 npm install
 npm run dev
+
+
+***
+
+nvm use
+
+npm run build
+
+mkdir -p built/css
+
+cp node_modules/normalize.css/normalize.css built/css/normalize.css
+
+npx gh-pages@2.2.0 -d built --dotfiles
