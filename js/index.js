@@ -1276,8 +1276,8 @@ var styles = {
         },
         bribe: {
             fill: "#161616",
-            fontFamily: "CompactaBdBT",
-            fontSize: 45,
+            fontFamily: "NotFondOfFont",
+            fontSize: 55,
             fontWeight: "bold",
             letterSpacing: 0.06,
             padding: 100,
@@ -1652,7 +1652,8 @@ var Card = function () {
         key: "renderSync",
         value: function renderSync() {
             if (this.container) {
-                this.container.removeChild(this.container);
+                this.container.removeChildren();
+                this.container.destroy({ children: true });
             }
             this.container = new PIXI.Container();
             this.renderImage();
@@ -1730,17 +1731,15 @@ var Card = function () {
             var imageMaxWidth = 750;
             var imageMaxHeight = 523;
             var imageTop = 117;
-            if (this.oversized) {
-                imageMaxWidth = 900;
-                imageMaxHeight = 741;
-                imageTop = 216;
-            }
             if (this.oversized && this.type === "Location") {
                 imageMaxWidth = 1200;
                 imageMaxHeight = 500;
                 imageTop = 136;
-            }
-            if (this.type === "Crisis") {
+            } else if (this.oversized) {
+                imageMaxWidth = 900;
+                imageMaxHeight = 741;
+                imageTop = 216;
+            } else if (this.type === "Crisis") {
                 imageMaxWidth = 750;
                 imageMaxHeight = 600;
                 imageTop = 80;
@@ -1807,7 +1806,7 @@ var Card = function () {
                 return;
             }
             var banners = String(this.Bannerrows);
-            if (banners === "2" && !this.oversized) {
+            if (this.Bannerrows === 2 && !this.oversized) {
                 var graphics = new PIXI.Graphics();
                 graphics.beginFill(0x00BAF1);
                 graphics.drawRect(0, 719, 750, 92);
@@ -2122,7 +2121,7 @@ var Card = function () {
             var cardCostFrontText = new PIXI.Text(String(this.destination), cardCostFrontStyle);
             cardCostFrontText.pivot.x = cardCostFrontText.width / 2;
             cardCostFrontText.pivot.y = cardCostFrontText.height / 2;
-            cardCostFrontText.position.set(400, 735);
+            cardCostFrontText.position.set(400, 730);
             this.container.addChild(cardCostFrontText);
         }
     }, {
@@ -2242,12 +2241,12 @@ var Card = function () {
             var set = new PIXI.Text(this.set.toUpperCase(), style);
             set.scale.y *= 0.75;
             set.pivot.set(set.width, set.height);
-            if (this.oversized) {
-                set.position.x = copyright.x - copyright.width - 16;
-                set.position.y = 1171 - set.height;
-            } else if (this.oversized && this.type === "Location") {
+            if (this.oversized && this.type === "Location") {
                 set.position.x = copyright.x - copyright.width - 16;
                 set.position.y = 810 - set.height;
+            } else if (this.oversized) {
+                set.position.x = copyright.x - copyright.width - 16;
+                set.position.y = 1171 - set.height;
             } else {
                 set.position.set(550, 934);
             }
@@ -2269,15 +2268,14 @@ var Card = function () {
             var maxWidth = 150;
             var x = 450;
             var y = 980;
-            if (this.oversized) {
-                maxWidth = 182;
-                x = 900 - 37;
-                y = 1136;
-            }
             if (this.oversized && this.type === "Location") {
                 maxWidth = 182;
                 x = 900 - 37;
                 y = 830;
+            } else if (this.oversized) {
+                maxWidth = 182;
+                x = 900 - 37;
+                y = 1136;
             }
             var style = this.getStyle("copyright");
             var copyright = utils_1.wrapStyledText("\xA9" + this.copyright, maxWidth, style);
@@ -2298,15 +2296,14 @@ var Card = function () {
             var y = 954;
             var style = this.getStyle("legal");
             var legal = void 0;
-            if (this.oversized) {
+            if (this.oversized && this.type === "Location") {
+                maxWidth = 824;
+                x = 600;
+                y = 830;
+            } else if (this.oversized) {
                 maxWidth = 824;
                 x = 37;
                 y = 1136;
-                if (this.oversized && this.type === "Location") {
-                    maxWidth = 824;
-                    x = 37;
-                    y = 830;
-                }
                 if (set) {
                     maxWidth -= set.width + 16;
                 }
@@ -4695,7 +4692,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.input-like, .live-editor table input[type=checkbox] + label:before {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .live-editor table input[type=checkbox] + label:hover:before, .input-like:focus, .live-editor table input[type=checkbox] + label:focus:before {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus, .live-editor table input[type=checkbox] + label:focus:before {\n    background-color: #ffffff; }\n  .input-like:disabled, .live-editor table input[type=checkbox] + label:disabled:before {\n    background-color: #999;\n    cursor: default; }\n\n.live-editor .custom-cards {\n  margin-top: 1em; }\n\n.live-editor .custom-cards-bottom {\n  float: left;\n  width: 100%;\n  text-align: center;\n  margin-top: 0.5em; }\n\n.live-editor .canvases-scale {\n  margin-top: 0.375em;\n  float: left; }\n  .live-editor .canvases-scale .canvases-scale-percent {\n    margin-left: 0.5em;\n    color: #007AA2;\n    text-align: left;\n    width: 3.5em;\n    display: inline-block; }\n\n.live-editor .add-row-button {\n  font-weight: bold;\n  cursor: pointer;\n  float: right;\n  margin-right: 0.625em; }\n\n.live-editor .reset-to-defaults {\n  background-color: #FFC60E;\n  color: #000000; }\n  .live-editor .reset-to-defaults:before {\n    display: inline-block;\n    content: '\\21BB';\n    margin-right: 0.375em; }\n  .live-editor .reset-to-defaults:hover {\n    background-color: #FFD240; }\n    .live-editor .reset-to-defaults:hover:before {\n      -webkit-transform: rotate(360deg);\n      -moz-transform: rotate(360deg);\n      -ms-transform: rotate(360deg);\n      -o-transform: rotate(360deg);\n      transform: rotate(360deg); }\n\n.live-editor table {\n  width: 100%; }\n  .live-editor table input, .live-editor table select, .live-editor table textarea {\n    font-size: 1em;\n    width: 100%;\n    padding: 0.25em; }\n    .live-editor table input[type=number], .live-editor table select[type=number], .live-editor table textarea[type=number] {\n      width: 2em;\n      text-align: right; }\n    .live-editor table input[type=color], .live-editor table select[type=color], .live-editor table textarea[type=color] {\n      padding: 0;\n      background: transparent;\n      border: 0;\n      cursor: pointer; }\n      html[data-browser*=\"Chrome\"] .live-editor table input[type=color], html[data-browser*=\"Chrome\"] .live-editor table select[type=color], html[data-browser*=\"Chrome\"] .live-editor table textarea[type=color] {\n        height: 2em; }\n  .live-editor table input[type=checkbox] {\n    display: none; }\n    .live-editor table input[type=checkbox] + label:before {\n      font-weight: bold;\n      content: '\\A0';\n      cursor: pointer;\n      min-width: 1.5em;\n      padding: 0.25em 0.125em;\n      display: inline-block; }\n    .live-editor table input[type=checkbox]:checked + label:before {\n      content: '\\2713'; }\n  .live-editor table .column-logoScale input, .live-editor table .column-copyright input {\n    width: 3.75em; }\n  .live-editor table input[type=color] {\n    width: 5em; }\n  .live-editor table textarea {\n    height: 3.5em;\n    resize: none; }\n  .live-editor table .column-copyright input {\n    width: 4.5em; }\n  .live-editor table .column-type select, .live-editor table .column-type input, .live-editor table .column-subtype select, .live-editor table .column-subtype input {\n    width: 6em; }\n  .live-editor table .column-legal textarea {\n    width: 20em; }\n  .live-editor table .column-set input, .live-editor table .column-name input, .live-editor table .column-imageURL input, .live-editor table .column-logoURL input {\n    width: 8.75em; }\n  .live-editor table .column-cost input, .live-editor table .column-victoryPoints input {\n    width: 2.5em; }\n  .live-editor table .column-text {\n    width: 30em; }\n    .live-editor table .column-text textarea {\n      width: calc(100% - 1em); }\n  .live-editor table .column-delete > button {\n    font-weight: bold;\n    cursor: pointer; }\n  .live-editor table tr td {\n    text-align: center;\n    padding: 0;\n    opacity: 0; }\n    .live-editor table tr td > div {\n      max-height: 0;\n      margin: 0; }\n    .live-editor table tr td.error input {\n      border-color: #f82104;\n      background-color: #febab1; }\n  .live-editor table tr.shown > td {\n    opacity: 1; }\n    .live-editor table tr.shown > td > div {\n      margin: 0.5em;\n      max-height: 4.5em;\n      overflow: hidden;\n      box-sizing: border-box; }\n\n.live-editor .too-many-cards {\n  clear: both;\n  text-align: center;\n  padding-top: 1em;\n  max-height: 3em; }\n  .live-editor .too-many-cards .warning-block {\n    display: inline-block;\n    text-align: center;\n    background: #A17B00;\n    color: #ffffff;\n    padding: 0.5em;\n    border-radius: 0.75em; }\n    .live-editor .too-many-cards .warning-block a {\n      color: #FFDC6A; }\n      .live-editor .too-many-cards .warning-block a:hover, .live-editor .too-many-cards .warning-block a:focus {\n        color: #27C7FC; }\n  .live-editor .too-many-cards.collapsed {\n    max-height: 0em;\n    opacity: 0; }\n\n.live-editor .canvases {\n  text-align: center; }\n  .live-editor .canvases canvas {\n    margin: 0.75em;\n    display: inline-block;\n    opacity: 0;\n    max-height: 0;\n    max-width: 0;\n    overflow: hidden; }\n    .live-editor .canvases canvas.shown {\n      opacity: 1;\n      max-height: 1200px;\n      max-width: 900px; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.input-like, .live-editor table input[type=checkbox] + label:before {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .live-editor table input[type=checkbox] + label:hover:before, .input-like:focus, .live-editor table input[type=checkbox] + label:focus:before {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus, .live-editor table input[type=checkbox] + label:focus:before {\n    background-color: #ffffff; }\n  .input-like:disabled, .live-editor table input[type=checkbox] + label:disabled:before {\n    background-color: #999;\n    cursor: default; }\n\n.live-editor .custom-cards {\n  margin-top: 1em; }\n\n.live-editor .custom-cards-bottom {\n  float: left;\n  width: 100%;\n  text-align: center;\n  margin-top: 0.5em; }\n\n.live-editor .canvases-scale {\n  margin-top: 0.375em;\n  float: left; }\n  .live-editor .canvases-scale .canvases-scale-percent {\n    margin-left: 0.5em;\n    color: #007AA2;\n    text-align: left;\n    width: 3.5em;\n    display: inline-block; }\n\n.live-editor .add-row-button {\n  font-weight: bold;\n  cursor: pointer;\n  float: right;\n  margin-right: 0.625em; }\n\n.live-editor .reset-to-defaults {\n  background-color: #FFC60E;\n  color: #000000; }\n  .live-editor .reset-to-defaults:before {\n    display: inline-block;\n    content: '\\21BB';\n    margin-right: 0.375em; }\n  .live-editor .reset-to-defaults:hover {\n    background-color: #FFD240; }\n    .live-editor .reset-to-defaults:hover:before {\n      -webkit-transform: rotate(360deg);\n      -moz-transform: rotate(360deg);\n      -ms-transform: rotate(360deg);\n      -o-transform: rotate(360deg);\n      transform: rotate(360deg); }\n\n.live-editor table {\n  width: 100%; }\n  .live-editor table input, .live-editor table select, .live-editor table textarea {\n    font-size: 1em;\n    width: 100%;\n    padding: 0.25em; }\n    .live-editor table input[type=number], .live-editor table select[type=number], .live-editor table textarea[type=number] {\n      width: 4em;\n      text-align: right; }\n    .live-editor table input[type=color], .live-editor table select[type=color], .live-editor table textarea[type=color] {\n      padding: 0;\n      background: transparent;\n      border: 0;\n      cursor: pointer; }\n      html[data-browser*=\"Chrome\"] .live-editor table input[type=color], html[data-browser*=\"Chrome\"] .live-editor table select[type=color], html[data-browser*=\"Chrome\"] .live-editor table textarea[type=color] {\n        height: 2em; }\n  .live-editor table input[type=checkbox] {\n    display: none; }\n    .live-editor table input[type=checkbox] + label:before {\n      font-weight: bold;\n      content: '\\A0';\n      cursor: pointer;\n      min-width: 1.5em;\n      padding: 0.25em 0.125em;\n      display: inline-block; }\n    .live-editor table input[type=checkbox]:checked + label:before {\n      content: '\\2713'; }\n  .live-editor table .column-logoScale input, .live-editor table .column-copyright input {\n    width: 3.75em; }\n  .live-editor table input[type=color] {\n    width: 5em; }\n  .live-editor table textarea {\n    height: 3.5em;\n    resize: none; }\n  .live-editor table .column-copyright input {\n    width: 4.5em; }\n  .live-editor table .column-type select, .live-editor table .column-type input, .live-editor table .column-subtype select, .live-editor table .column-subtype input {\n    width: 6em; }\n  .live-editor table .column-legal textarea {\n    width: 20em; }\n  .live-editor table .column-set input, .live-editor table .column-name input, .live-editor table .column-imageURL input, .live-editor table .column-logoURL input {\n    width: 8.75em; }\n  .live-editor table .column-cost input, .live-editor table .column-victoryPoints input {\n    width: 2.5em; }\n  .live-editor table .column-text {\n    width: 30em; }\n    .live-editor table .column-text textarea {\n      width: calc(100% - 1em); }\n  .live-editor table .column-delete > button {\n    font-weight: bold;\n    cursor: pointer; }\n  .live-editor table tr td {\n    text-align: center;\n    padding: 0;\n    opacity: 0; }\n    .live-editor table tr td > div {\n      max-height: 0;\n      margin: 0; }\n    .live-editor table tr td.error input {\n      border-color: #f82104;\n      background-color: #febab1; }\n  .live-editor table tr.shown > td {\n    opacity: 1; }\n    .live-editor table tr.shown > td > div {\n      margin: 0.5em;\n      max-height: 4.5em;\n      overflow: hidden;\n      box-sizing: border-box; }\n\n.live-editor .too-many-cards {\n  clear: both;\n  text-align: center;\n  padding-top: 1em;\n  max-height: 3em; }\n  .live-editor .too-many-cards .warning-block {\n    display: inline-block;\n    text-align: center;\n    background: #A17B00;\n    color: #ffffff;\n    padding: 0.5em;\n    border-radius: 0.75em; }\n    .live-editor .too-many-cards .warning-block a {\n      color: #FFDC6A; }\n      .live-editor .too-many-cards .warning-block a:hover, .live-editor .too-many-cards .warning-block a:focus {\n        color: #27C7FC; }\n  .live-editor .too-many-cards.collapsed {\n    max-height: 0em;\n    opacity: 0; }\n\n.live-editor .canvases {\n  text-align: center; }\n  .live-editor .canvases canvas {\n    margin: 0.75em;\n    display: inline-block;\n    opacity: 0;\n    max-height: 0;\n    max-width: 0;\n    overflow: hidden; }\n    .live-editor .canvases canvas.shown {\n      opacity: 1;\n      max-height: 1200px;\n      max-width: 900px; }\n", ""]);
 
 // exports
 
@@ -5219,7 +5216,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 /* 274 */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 id=\"custom-deck-builder\">Custom Deck Builder</h1>\n<h2 id=\"about-this-tool\">About This Tool</h2>\n<p>This application is a <strong>fan creation</strong> by <a href=\"https://github.com/JacobFischer/\">Jacob Fischer</a> with the sole intent of making it easier to try custom cards in Cryptozoic&#39;s Game Engine. It is open source and available on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>.</p>\n<p>No cards produced using this tool should be used to profit from. Instead please buy <a href=\"https://www.cryptozoic.com/\">Cryptozoic</a>&#39;s own deck building games utilizing their engine such as the DC Deck Building game, they are excellent.</p>\n<p>This project was produced mostly as a tool to help its author more easily prototype custom cards to try in <a href=\"http://store.steampowered.com/app/286160/Tabletop_Simulator/\">Table Top Simulator</a> with and around Cryptozoic&#39;s own titles, as well as an excuse to brush up on some technical skills.</p>\n<h2 id=\"technical-details\">Technical Details</h2>\n<p>This application is an <a href=\"https://en.wikipedia.org/wiki/Single-page_application\" title=\"Single-page Application\">SPA</a>. Once you load the page you have everything you need to build some custom cards. <strong>No</strong> data is saved on a server somewhere. All the processing is done and saved on your machine via your web browser. I&#39;m not interested in tracking you or stealing your data.</p>\n<p>This project was made using a variety of frameworks:</p>\n<ul>\n<li><strong><a href=\"https://www.typescriptlang.org/\" title=\"JavaScript with types\">TypeScript</a></strong>: The coding language used for pretty much everything in this project.</li>\n<li><strong><a href=\"http://sass-lang.com/\" title=\"Syntactically Awesome Style Sheets\">SASS</a></strong>: Used to control the style and most animations on this page.</li>\n<li><strong><a href=\"http://handlebarsjs.com/\" title=\"Simple HTML Templates\">Handlebars</a></strong>: Used to template the HTML layout and elements for all page sections.</li>\n<li><strong><a href=\"http://www.pixijs.com/\" title=\"2D graphics library for easily drawing cards\">PixiJS</a></strong>: Currently the best browser library for manipulating 2D graphics and images on canvases. Used to render the custom cards.</li>\n<li><strong><a href=\"https://www.npmjs.com/\" title=\"Node Package Manager\">NPM</a></strong>: The biggest and most popular JavaScript package manager, that hosts many of the smaller modules not explicitly mentioned here, but are still necessary to run.</li>\n<li><strong><a href=\"https://webpack.js.org/\">Webpack 2</a></strong>: What wraps all these things together into a single page. I used this opportunity to transition Webpack 1.x skills to 2.0.</li>\n</ul>\n<p>All the source code, commits, and resources are available freely on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>. All classes, methods, and exports and documented using well formed docstrings; so if you wish to modify this tool, do so to your heart&#39;s content!</p>\n<hr>\n<p>A live version of application is kept up to date on <a href=\"https://jacobfischer.github.io/Custom-Deck-Builder/\">https://jacobfischer.github.io/Custom-Deck-Builder/</a>. Check out that version if you are not interested in developing it yourself.</p>\n<h2 id=\"how-to-build\">How to Build</h2>\n<p>As this is a webpack project, you just need to build and deploy it. As with most projects ensure you have <a href=\"https://nodejs.org/\">Node.js</a> installed, then just:</p>\n<pre><code>npm install\nnpm run dev\n</code></pre><p>Then just in your browser navigate to <a href=\"http://localhost:8080/\">http://localhost:8080/</a></p>\n<p>Alternatively run <code>npm run build</code> to run webpack and save the output in the <code>built/</code> directory, and you can deploy the static assets at your will.</p>\n<p>2026 Package dependancies are outdated. Steps to run currently:</p>\n<p>nvm use\nnpm run build\nmkdir -p built/css\ncp node_modules/normalize.css/normalize.css built/css/normalize.css\nnpx <a href=\"mailto:gh-pages@2.2.0\">gh-pages@2.2.0</a> -d built --dotfiles</p>\n";
+module.exports = "<h1 id=\"custom-deck-builder\">Custom Deck Builder</h1>\n<h2 id=\"about-this-tool\">About This Tool</h2>\n<p>This application is a <strong>fan creation</strong> by <a href=\"https://github.com/JacobFischer/\">Jacob Fischer</a> with the sole intent of making it easier to try custom cards in Cryptozoic&#39;s Game Engine. It is open source and available on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>.</p>\n<p>No cards produced using this tool should be used to profit from. Instead please buy <a href=\"https://www.cryptozoic.com/\">Cryptozoic</a>&#39;s own deck building games utilizing their engine such as the DC Deck Building game, they are excellent.</p>\n<p>This project was produced mostly as a tool to help its author more easily prototype custom cards to try in <a href=\"http://store.steampowered.com/app/286160/Tabletop_Simulator/\">Table Top Simulator</a> with and around Cryptozoic&#39;s own titles, as well as an excuse to brush up on some technical skills.</p>\n<h2 id=\"technical-details\">Technical Details</h2>\n<p>This application is an <a href=\"https://en.wikipedia.org/wiki/Single-page_application\" title=\"Single-page Application\">SPA</a>. Once you load the page you have everything you need to build some custom cards. <strong>No</strong> data is saved on a server somewhere. All the processing is done and saved on your machine via your web browser. I&#39;m not interested in tracking you or stealing your data.</p>\n<p>This project was made using a variety of frameworks:</p>\n<ul>\n<li><strong><a href=\"https://www.typescriptlang.org/\" title=\"JavaScript with types\">TypeScript</a></strong>: The coding language used for pretty much everything in this project.</li>\n<li><strong><a href=\"http://sass-lang.com/\" title=\"Syntactically Awesome Style Sheets\">SASS</a></strong>: Used to control the style and most animations on this page.</li>\n<li><strong><a href=\"http://handlebarsjs.com/\" title=\"Simple HTML Templates\">Handlebars</a></strong>: Used to template the HTML layout and elements for all page sections.</li>\n<li><strong><a href=\"http://www.pixijs.com/\" title=\"2D graphics library for easily drawing cards\">PixiJS</a></strong>: Currently the best browser library for manipulating 2D graphics and images on canvases. Used to render the custom cards.</li>\n<li><strong><a href=\"https://www.npmjs.com/\" title=\"Node Package Manager\">NPM</a></strong>: The biggest and most popular JavaScript package manager, that hosts many of the smaller modules not explicitly mentioned here, but are still necessary to run.</li>\n<li><strong><a href=\"https://webpack.js.org/\">Webpack 2</a></strong>: What wraps all these things together into a single page. I used this opportunity to transition Webpack 1.x skills to 2.0.</li>\n</ul>\n<p>All the source code, commits, and resources are available freely on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>. All classes, methods, and exports and documented using well formed docstrings; so if you wish to modify this tool, do so to your heart&#39;s content!</p>\n<hr>\n<p>A live version of application is kept up to date on <a href=\"https://jacobfischer.github.io/Custom-Deck-Builder/\">https://jacobfischer.github.io/Custom-Deck-Builder/</a>. Check out that version if you are not interested in developing it yourself.</p>\n<h2 id=\"how-to-build\">How to Build</h2>\n<p>As this is a webpack project, you just need to build and deploy it. As with most projects ensure you have <a href=\"https://nodejs.org/\">Node.js</a> installed, then just:</p>\n<pre><code>npm install\nnpm run dev\n</code></pre><p>Then just in your browser navigate to <a href=\"http://localhost:8080/\">http://localhost:8080/</a></p>\n<p>Alternatively run <code>npm run build</code> to run webpack and save the output in the <code>built/</code> directory, and you can deploy the static assets at your will.</p>\n<p>2026 Package dependancies are outdated. Steps to run currently:</p>\n<p>nvm install 12\nnvm use 12\nnpm install\nnpm run dev</p>\n";
 
 /***/ }),
 /* 275 */,
