@@ -325,7 +325,11 @@ exports.CardOptionsList = [{
 }, {
     name: "destination",
     type: "number",
-    description: "For Villians for rebirth 1-5"
+    description: "For Villains for rebirth 1-5"
+}, {
+    name: "bribe",
+    type: "number",
+    description: "bribe value"
 }, {
     name: "Oversized",
     type: "checkbox",
@@ -342,6 +346,18 @@ exports.CardOptionsList = [{
     name: "Cost",
     type: "number",
     description: "How much this card costs. Ignored on Oversized cards."
+}, {
+    name: "ConditionalCost",
+    type: "checkbox",
+    description: "If enabled, an asterisk * will appear after the cost " + "the condtition that affects the cost should be written in the card text "
+}, {
+    name: "ConditionalVP",
+    type: "checkbox",
+    description: "If enabled, an asterisk * will appear in place of the VP "
+}, {
+    name: "Transformed",
+    type: "checkbox",
+    description: "If enabled, Transformed card template for Starter, Hero, Villain, or Equipment"
 }, {
     name: "Text",
     type: "text",
@@ -369,7 +385,7 @@ exports.CardOptionsList = [{
 }, {
     name: "Subtype",
     type: "text",
-    description: "An additional type describing the card, " + " Try METAL or CONSTRUCT or CONDITIONAL COST or CONDITIONAL VP in caps, CURSED (weakness variant)."
+    description: "An additional type describing the card, " + " Try METAL or CONSTRUCT or SIDE MISSION in caps, CURSED (weakness variant)."
 }, {
     name: "Set",
     type: "text",
@@ -1579,9 +1595,12 @@ var Card = function () {
         this.name = "Card Name";
         this.type = "Starter" | "startertransformed" | "equipment-transformed" | "hero-transformed" | "villain-transformed" | "supermove";
         this.variant = false;
+        this.ConditionalCost = false;
+        this.ConditionalVP = false;
+        this.Transformed = false;
         this.Bannerrows = 0;
-        this.destination = 1;
-        this.bribe = this.destination;
+        this.destination = 0;
+        this.bribe = 0;
         this.oversized = false;
         this.typePrefix = "";
         this.victoryPoints = 1;
@@ -1765,8 +1784,7 @@ var Card = function () {
         value: function renderBackground() {
             if (!this.type) {
                 return;
-            }
-            if (this.variant && this.oversized && this.type === "Hero") {
+            } else if (this.variant && this.oversized && this.type === "Hero") {
                 utils_1.newSprite("oversizedcrisishero", this.container);
             } else if (this.variant && this.oversized && this.type === "Villain") {
                 utils_1.newSprite("oversizedcrisisvillain", this.container);
@@ -1774,6 +1792,11 @@ var Card = function () {
                 utils_1.newSprite("oversizedlocation", this.container);
             } else {
                 var backgroundType = this.type;
+                if (this.type === "Hero" || this.type === "Equipment" || this.type === "Villain" || this.type === "Starter") {
+                    if (this.Transformed) {
+                        backgroundType = this.type + "transformed";
+                    }
+                }
                 if (this.variant || this.oversized) {
                     if (this.type === "Hero" || this.type === "Villain") {
                         backgroundType = "Super-" + this.type;
@@ -1783,7 +1806,7 @@ var Card = function () {
                     backgroundType = "Oversized-" + backgroundType;
                 }
                 utils_1.newSprite(backgroundType.replace(" ", "-").toLowerCase(), this.container);
-                if (this.variant && !this.oversized) {
+                if (this.variant && !this.oversized && !this.Transformed) {
                     var graphics = new PIXI.Graphics();
                     graphics.beginFill(0x000000);
                     graphics.drawRect(0, 719, 750, 224);
@@ -1805,7 +1828,6 @@ var Card = function () {
             if (!this.type) {
                 return;
             }
-            var banners = String(this.Bannerrows);
             if (this.Bannerrows === 2 && !this.oversized) {
                 var graphics = new PIXI.Graphics();
                 graphics.beginFill(0x00BAF1);
@@ -1971,7 +1993,7 @@ var Card = function () {
     }, {
         key: "renderType",
         value: function renderType() {
-            if (this.oversized || this.type === "Weakness" || this.type === "Hostage" || this.type === "Crisis" || this.type === "Basic" || this.type === "Typeless" || this.type === "startertransformed" || this.type === "equipmenttransformed" || this.type === "herotransformed" || this.type === "villaintransformed") {
+            if (this.oversized || this.type === "Weakness" || this.type === "Hostage" || this.type === "Crisis" || this.type === "Basic" || this.type === "Typeless" || this.Transformed) {
                 return;
             }
             if (this.subtype === "SIDE MISSION") {
@@ -2008,7 +2030,7 @@ var Card = function () {
                 utils_1.newSprite("backgroundmetal", this.container);
             } else if (this.subtype === "CURSED" && this.variant === true && this.type === "Weakness") {
                 utils_1.newSprite("backgroundcursed", this.container);
-            } else if (this.subtype === "CONDITIONAL VP" || this.subtype === "CONDITIONAL COST" || this.subtype === "SIDE MISSION" || this.subtype === "BRIBE") {
+            } else if (this.subtype === "CONDITIONAL VP" || this.subtype === "SIDE MISSION") {
                 return;
             } else {
                 var x = 710;
@@ -2037,7 +2059,7 @@ var Card = function () {
                 return;
             }
             utils_1.newSprite("background-cost", this.container);
-            if (this.subtype === "CONDITIONAL COST") {
+            if (this.ConditionalCost === true) {
                 var cardCostBackStyle = this.getStyle("cost");
                 var cardCostBackText = new PIXI.Text(String(this.cost + "*"), cardCostBackStyle);
                 cardCostBackText.pivot.x = cardCostBackText.width / 2;
@@ -2113,12 +2135,12 @@ var Card = function () {
     }, {
         key: "renderbribe",
         value: function renderbribe() {
-            if (this.oversized || this.destination == 0 || this.subtype !== "BRIBE") {
+            if (this.oversized || this.bribe == 0) {
                 return;
             }
             utils_1.newSprite("backgroundbribe", this.container);
             var cardCostFrontStyle = this.getStyle("bribe");
-            var cardCostFrontText = new PIXI.Text(String(this.destination), cardCostFrontStyle);
+            var cardCostFrontText = new PIXI.Text(String(this.bribe), cardCostFrontStyle);
             cardCostFrontText.pivot.x = cardCostFrontText.width / 2;
             cardCostFrontText.pivot.y = cardCostFrontText.height / 2;
             cardCostFrontText.position.set(400, 730);
@@ -2170,7 +2192,7 @@ var Card = function () {
             utils_1.newSprite("background-vp-" + vpSign, this.container);
             if (this.victoryPoints === "*") {
                 utils_1.newSprite("vp-variable", this.container);
-            } else if (this.subtype == "CONDITIONAL VP") {
+            } else if (this.ConditionalVP) {
                 utils_1.newSprite("vp-variable", this.container);
             } else {
                 var scalar = 2;
@@ -2220,6 +2242,9 @@ var Card = function () {
             if (this.variant && !this.oversized) {
                 style.fill = "#ffffff";
             }
+            if (this.Transformed) {
+                style.fill = "#ffffff";
+            }
             if (!this.variant && this.oversized && this.type === "Location") {
                 style.fill = "#000000";
             }
@@ -2243,7 +2268,7 @@ var Card = function () {
             set.pivot.set(set.width, set.height);
             if (this.oversized && this.type === "Location") {
                 set.position.x = copyright.x - copyright.width - 16;
-                set.position.y = 810 - set.height;
+                set.position.y = 865 - set.height;
             } else if (this.oversized) {
                 set.position.x = copyright.x - copyright.width - 16;
                 set.position.y = 1171 - set.height;
@@ -2270,7 +2295,7 @@ var Card = function () {
             var y = 980;
             if (this.oversized && this.type === "Location") {
                 maxWidth = 182;
-                x = 900 - 37;
+                x = 1200 - 37;
                 y = 830;
             } else if (this.oversized) {
                 maxWidth = 182;
@@ -2296,11 +2321,7 @@ var Card = function () {
             var y = 954;
             var style = this.getStyle("legal");
             var legal = void 0;
-            if (this.oversized && this.type === "Location") {
-                maxWidth = 824;
-                x = 600;
-                y = 830;
-            } else if (this.oversized) {
+            if (this.oversized) {
                 maxWidth = 824;
                 x = 37;
                 y = 1136;
@@ -2311,6 +2332,11 @@ var Card = function () {
                     maxWidth -= copyright.width + 16;
                 }
                 legal = utils_1.autoSizeAndWrapStyledText(this.legal, maxWidth, Number(style.fontSize) * 2, style, 0.25);
+            }
+            if (this.oversized && this.type === "Location") {
+                maxWidth = 824;
+                x = 37;
+                y = 830;
             } else {
                 legal = utils_1.wrapStyledText(this.legal, maxWidth, this.getStyle("legal"));
             }
@@ -3190,7 +3216,7 @@ function addTitlesTo(columns) {
             var column = _step.value;
 
             var name = column.name;
-            if (name === "Delete") {
+            if (name === "Delete" || name === "Advanced" || !card_options_1.CardOptions[name]) {
                 continue;
             }
             if (name === "VP") {
@@ -3216,6 +3242,10 @@ function addTitlesTo(columns) {
 var deleteButton = document.createElement("button");
 deleteButton.innerHTML = "&#x2716;";
 deleteButton.setAttribute("title", "Delete this row");
+var advancedButton = document.createElement("button");
+advancedButton.innerHTML = "&#x2699;";
+advancedButton.setAttribute("title", "Advanced card options");
+advancedButton.classList.add("advanced-button");
 exports.defaultsHeadings = [{
     name: "Name",
     notEditable: true
@@ -3257,7 +3287,7 @@ exports.cardsHeadings = [{
     name: "Name"
 }, {
     name: "Type",
-    allowedValues: ["Equipment", "Hero", "Hostage", "Location", "Starter", "Super Power", "Villain", "Typeless", "Basic", "Weakness", "Super Move", "Crisis", "startertransformed", "equipmenttransformed", "herotransformed", "villaintransformed"]
+    allowedValues: ["Equipment", "Hero", "Hostage", "Location", "Starter", "Super Power", "Villain", "Typeless", "Basic", "Weakness", "Super Move", "Crisis"]
 }, {
     name: "Text",
     longText: true
@@ -3271,21 +3301,10 @@ exports.cardsHeadings = [{
 }, {
     name: "Subtype"
 }, {
-    name: "Variant",
-    type: "boolean"
-}, {
-    name: "Bannerrows",
-    id: "Bannerrows",
-    type: "number"
-}, {
-    name: "destination",
-    id: "destination",
-    type: "number",
-    inputAttributes: {
-        min: 0,
-        max: 5,
-        step: 1
-    }
+    name: "Advanced",
+    id: "advanced",
+    type: "node",
+    defaultValue: advancedButton
 }, {
     name: "Oversized",
     type: "boolean",
@@ -3356,6 +3375,7 @@ var LiveEditorTab = function (_tabular_1$Tab) {
         _this.maxCustomCards = 6;
         _this.cards = new Map();
         _this.canvases = new Map();
+        _this.advancedDrawerRow = null;
         _this.tooManyCardsElement = utils_1.select(_this.element, ".too-many-cards");
         _this.canvasesElement = utils_1.select(_this.element, ".canvases");
         _this.addRowButton = utils_1.select(_this.element, ".add-row-button");
@@ -3427,6 +3447,10 @@ var LiveEditorTab = function (_tabular_1$Tab) {
             });
             var card = new card_1.Card(row.values);
             this.cards.set(row, card);
+            var advancedButton = row.values.advanced;
+            advancedButton.addEventListener("click", function () {
+                _this2.openAdvancedDrawer(row);
+            });
             this.canvases.set(row, canvas);
             this.canvasesElement.appendChild(canvas);
             this.renderCard(row);
@@ -3435,6 +3459,17 @@ var LiveEditorTab = function (_tabular_1$Tab) {
     }, {
         key: "rowDeleted",
         value: function rowDeleted(row) {
+            this.updateStore(this.cardsTable);
+            this.cards.delete(row);
+            this.canvases.get(row).remove();
+            this.canvases.delete(row);
+        }
+    }, {
+        key: "rowDeleted",
+        value: function rowDeleted(row) {
+            if (this.advancedDrawerRow === row) {
+                this.closeAdvancedDrawer();
+            }
             this.updateStore(this.cardsTable);
             this.cards.delete(row);
             this.canvases.get(row).remove();
@@ -3670,6 +3705,176 @@ var LiveEditorTab = function (_tabular_1$Tab) {
                     _this4.updateStore(_this4.cardsTable);
                 }, 50);
             }, 355);
+        }
+    }, {
+        key: "ensureAdvancedDrawer",
+        value: function ensureAdvancedDrawer() {
+            var _this5 = this;
+
+            if (this.advancedDrawer) {
+                return;
+            }
+            var overlay = document.createElement("div");
+            overlay.className = "advanced-drawer-overlay";
+            var drawer = document.createElement("div");
+            drawer.className = "advanced-drawer";
+            var header = document.createElement("div");
+            header.className = "advanced-drawer-header";
+            var title = document.createElement("span");
+            title.textContent = "Advanced Options";
+            var close = document.createElement("button");
+            close.type = "button";
+            close.innerHTML = "&#x2716;";
+            close.setAttribute("title", "Close");
+            close.addEventListener("click", function () {
+                return _this5.closeAdvancedDrawer();
+            });
+            header.appendChild(title);
+            header.appendChild(close);
+            var body = document.createElement("div");
+            body.className = "advanced-drawer-body";
+            var variantLabel = document.createElement("label");
+            variantLabel.className = "advanced-drawer-field";
+            variantLabel.appendChild(document.createTextNode("Variant"));
+            var variantInput = document.createElement("input");
+            variantInput.type = "checkbox";
+            variantInput.addEventListener("change", function () {
+                return _this5.applyAdvancedValues();
+            });
+            variantLabel.appendChild(variantInput);
+            var ConditionalCostLabel = document.createElement("label");
+            ConditionalCostLabel.className = "advanced-drawer-field";
+            ConditionalCostLabel.appendChild(document.createTextNode("Conditional Cost (*)"));
+            var ConditionalCostInput = document.createElement("input");
+            ConditionalCostInput.type = "checkbox";
+            ConditionalCostInput.addEventListener("change", function () {
+                return _this5.applyAdvancedValues();
+            });
+            ConditionalCostLabel.appendChild(ConditionalCostInput);
+            var ConditionalVPLabel = document.createElement("label");
+            ConditionalVPLabel.className = "advanced-drawer-field";
+            ConditionalVPLabel.appendChild(document.createTextNode("Conditional VP (*)"));
+            var ConditionalVPInput = document.createElement("input");
+            ConditionalVPInput.type = "checkbox";
+            ConditionalVPInput.addEventListener("change", function () {
+                return _this5.applyAdvancedValues();
+            });
+            ConditionalVPLabel.appendChild(ConditionalVPInput);
+            var TransformedLabel = document.createElement("label");
+            TransformedLabel.className = "advanced-drawer-field";
+            TransformedLabel.appendChild(document.createTextNode("Transformed (hero, villain, equipment, or Starter)"));
+            var TransformedInput = document.createElement("input");
+            TransformedInput.type = "checkbox";
+            TransformedInput.addEventListener("change", function () {
+                return _this5.applyAdvancedValues();
+            });
+            TransformedLabel.appendChild(TransformedInput);
+            var bannerrowsLabel = document.createElement("label");
+            bannerrowsLabel.className = "advanced-drawer-field";
+            bannerrowsLabel.appendChild(document.createTextNode("Bannerrows"));
+            var bannerrowsInput = document.createElement("input");
+            bannerrowsInput.type = "number";
+            bannerrowsInput.addEventListener("change", function () {
+                return _this5.applyAdvancedValues();
+            });
+            bannerrowsLabel.appendChild(bannerrowsInput);
+            var destinationLabel = document.createElement("label");
+            destinationLabel.className = "advanced-drawer-field";
+            destinationLabel.appendChild(document.createTextNode("Destination - Villains"));
+            var destinationInput = document.createElement("input");
+            destinationInput.type = "number";
+            destinationInput.min = "0";
+            destinationInput.max = "5";
+            destinationInput.step = "1";
+            destinationInput.addEventListener("change", function () {
+                return _this5.applyAdvancedValues();
+            });
+            destinationLabel.appendChild(destinationInput);
+            var bribeLabel = document.createElement("label");
+            bribeLabel.className = "advanced-drawer-field";
+            bribeLabel.appendChild(document.createTextNode("Bribe - regular sized cards"));
+            var bribeInput = document.createElement("input");
+            bribeInput.type = "number";
+            bribeInput.min = "0";
+            bribeInput.max = "5";
+            bribeInput.step = "1";
+            bribeInput.addEventListener("change", function () {
+                return _this5.applyAdvancedValues();
+            });
+            bribeLabel.appendChild(bribeInput);
+            body.appendChild(variantLabel);
+            body.appendChild(ConditionalCostLabel);
+            body.appendChild(ConditionalVPLabel);
+            body.appendChild(TransformedLabel);
+            body.appendChild(bannerrowsLabel);
+            body.appendChild(destinationLabel);
+            body.appendChild(bribeLabel);
+            drawer.appendChild(header);
+            drawer.appendChild(body);
+            overlay.appendChild(drawer);
+            overlay.addEventListener("click", function (event) {
+                if (event.target === overlay) {
+                    _this5.closeAdvancedDrawer();
+                }
+            });
+            this.advancedVariantInput = variantInput;
+            this.advancedConditionalCostInput = ConditionalCostInput;
+            this.advancedConditionalVPInput = ConditionalVPInput;
+            this.advancedTransformedInput = TransformedInput;
+            this.advancedBannerrowsInput = bannerrowsInput;
+            this.advancedDestinationInput = destinationInput;
+            this.advancedBribeInput = bribeInput;
+            this.advancedDrawer = overlay;
+            document.body.appendChild(overlay);
+        }
+    }, {
+        key: "openAdvancedDrawer",
+        value: function openAdvancedDrawer(row) {
+            this.ensureAdvancedDrawer();
+            this.advancedDrawerRow = row;
+            this.advancedVariantInput.checked = Boolean(row.values.variant);
+            this.advancedConditionalCostInput.checked = Boolean(row.values.ConditionalCost);
+            this.advancedConditionalVPInput.checked = Boolean(row.values.ConditionalVP);
+            this.advancedTransformedInput.checked = Boolean(row.values.Transformed);
+            this.advancedBannerrowsInput.value = row.values.Bannerrows != null ? String(row.values.Bannerrows) : "";
+            this.advancedDestinationInput.value = row.values.destination != null ? String(row.values.destination) : "";
+            this.advancedBribeInput.value = row.values.bribe != null ? String(row.values.bribe) : "";
+            this.advancedDrawer.classList.add("open");
+        }
+    }, {
+        key: "closeAdvancedDrawer",
+        value: function closeAdvancedDrawer() {
+            if (!this.advancedDrawer) {
+                return;
+            }
+            this.advancedDrawer.classList.remove("open");
+            this.advancedDrawerRow = null;
+        }
+    }, {
+        key: "applyAdvancedValues",
+        value: function applyAdvancedValues() {
+            var row = this.advancedDrawerRow;
+            if (!row) {
+                return;
+            }
+            row.values.variant = this.advancedVariantInput.checked;
+            row.values.ConditionalCost = this.advancedConditionalCostInput.checked;
+            row.values.ConditionalVP = this.advancedConditionalVPInput.checked;
+            row.values.Transformed = this.advancedTransformedInput.checked;
+            this.setOptionalNumber(row, "Bannerrows", this.advancedBannerrowsInput.value);
+            this.setOptionalNumber(row, "destination", this.advancedDestinationInput.value);
+            this.setOptionalNumber(row, "bribe", this.advancedBribeInput.value);
+            this.updateStore(this.cardsTable);
+            this.renderCard(row);
+        }
+    }, {
+        key: "setOptionalNumber",
+        value: function setOptionalNumber(row, key, value) {
+            if (value === "") {
+                delete row.values[key];
+                return;
+            }
+            row.values[key] = Number(value);
         }
     }, {
         key: "checkMaxCards",
@@ -4692,7 +4897,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.input-like, .live-editor table input[type=checkbox] + label:before {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .live-editor table input[type=checkbox] + label:hover:before, .input-like:focus, .live-editor table input[type=checkbox] + label:focus:before {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus, .live-editor table input[type=checkbox] + label:focus:before {\n    background-color: #ffffff; }\n  .input-like:disabled, .live-editor table input[type=checkbox] + label:disabled:before {\n    background-color: #999;\n    cursor: default; }\n\n.live-editor .custom-cards {\n  margin-top: 1em; }\n\n.live-editor .custom-cards-bottom {\n  float: left;\n  width: 100%;\n  text-align: center;\n  margin-top: 0.5em; }\n\n.live-editor .canvases-scale {\n  margin-top: 0.375em;\n  float: left; }\n  .live-editor .canvases-scale .canvases-scale-percent {\n    margin-left: 0.5em;\n    color: #007AA2;\n    text-align: left;\n    width: 3.5em;\n    display: inline-block; }\n\n.live-editor .add-row-button {\n  font-weight: bold;\n  cursor: pointer;\n  float: right;\n  margin-right: 0.625em; }\n\n.live-editor .reset-to-defaults {\n  background-color: #FFC60E;\n  color: #000000; }\n  .live-editor .reset-to-defaults:before {\n    display: inline-block;\n    content: '\\21BB';\n    margin-right: 0.375em; }\n  .live-editor .reset-to-defaults:hover {\n    background-color: #FFD240; }\n    .live-editor .reset-to-defaults:hover:before {\n      -webkit-transform: rotate(360deg);\n      -moz-transform: rotate(360deg);\n      -ms-transform: rotate(360deg);\n      -o-transform: rotate(360deg);\n      transform: rotate(360deg); }\n\n.live-editor table {\n  width: 100%; }\n  .live-editor table input, .live-editor table select, .live-editor table textarea {\n    font-size: 1em;\n    width: 100%;\n    padding: 0.25em; }\n    .live-editor table input[type=number], .live-editor table select[type=number], .live-editor table textarea[type=number] {\n      width: 4em;\n      text-align: right; }\n    .live-editor table input[type=color], .live-editor table select[type=color], .live-editor table textarea[type=color] {\n      padding: 0;\n      background: transparent;\n      border: 0;\n      cursor: pointer; }\n      html[data-browser*=\"Chrome\"] .live-editor table input[type=color], html[data-browser*=\"Chrome\"] .live-editor table select[type=color], html[data-browser*=\"Chrome\"] .live-editor table textarea[type=color] {\n        height: 2em; }\n  .live-editor table input[type=checkbox] {\n    display: none; }\n    .live-editor table input[type=checkbox] + label:before {\n      font-weight: bold;\n      content: '\\A0';\n      cursor: pointer;\n      min-width: 1.5em;\n      padding: 0.25em 0.125em;\n      display: inline-block; }\n    .live-editor table input[type=checkbox]:checked + label:before {\n      content: '\\2713'; }\n  .live-editor table .column-logoScale input, .live-editor table .column-copyright input {\n    width: 3.75em; }\n  .live-editor table input[type=color] {\n    width: 5em; }\n  .live-editor table textarea {\n    height: 3.5em;\n    resize: none; }\n  .live-editor table .column-copyright input {\n    width: 4.5em; }\n  .live-editor table .column-type select, .live-editor table .column-type input, .live-editor table .column-subtype select, .live-editor table .column-subtype input {\n    width: 6em; }\n  .live-editor table .column-legal textarea {\n    width: 20em; }\n  .live-editor table .column-set input, .live-editor table .column-name input, .live-editor table .column-imageURL input, .live-editor table .column-logoURL input {\n    width: 8.75em; }\n  .live-editor table .column-cost input, .live-editor table .column-victoryPoints input {\n    width: 2.5em; }\n  .live-editor table .column-text {\n    width: 30em; }\n    .live-editor table .column-text textarea {\n      width: calc(100% - 1em); }\n  .live-editor table .column-delete > button {\n    font-weight: bold;\n    cursor: pointer; }\n  .live-editor table tr td {\n    text-align: center;\n    padding: 0;\n    opacity: 0; }\n    .live-editor table tr td > div {\n      max-height: 0;\n      margin: 0; }\n    .live-editor table tr td.error input {\n      border-color: #f82104;\n      background-color: #febab1; }\n  .live-editor table tr.shown > td {\n    opacity: 1; }\n    .live-editor table tr.shown > td > div {\n      margin: 0.5em;\n      max-height: 4.5em;\n      overflow: hidden;\n      box-sizing: border-box; }\n\n.live-editor .too-many-cards {\n  clear: both;\n  text-align: center;\n  padding-top: 1em;\n  max-height: 3em; }\n  .live-editor .too-many-cards .warning-block {\n    display: inline-block;\n    text-align: center;\n    background: #A17B00;\n    color: #ffffff;\n    padding: 0.5em;\n    border-radius: 0.75em; }\n    .live-editor .too-many-cards .warning-block a {\n      color: #FFDC6A; }\n      .live-editor .too-many-cards .warning-block a:hover, .live-editor .too-many-cards .warning-block a:focus {\n        color: #27C7FC; }\n  .live-editor .too-many-cards.collapsed {\n    max-height: 0em;\n    opacity: 0; }\n\n.live-editor .canvases {\n  text-align: center; }\n  .live-editor .canvases canvas {\n    margin: 0.75em;\n    display: inline-block;\n    opacity: 0;\n    max-height: 0;\n    max-width: 0;\n    overflow: hidden; }\n    .live-editor .canvases canvas.shown {\n      opacity: 1;\n      max-height: 1200px;\n      max-width: 900px; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.input-like, .live-editor table input[type=checkbox] + label:before {\n  border: 1px solid #999;\n  color: #000000;\n  border-radius: 0.375em;\n  background-color: #ffffff; }\n  .input-like:hover, .live-editor table input[type=checkbox] + label:hover:before, .input-like:focus, .live-editor table input[type=checkbox] + label:focus:before {\n    outline: none;\n    border-color: #27C7FC; }\n  .input-like:focus, .live-editor table input[type=checkbox] + label:focus:before {\n    background-color: #ffffff; }\n  .input-like:disabled, .live-editor table input[type=checkbox] + label:disabled:before {\n    background-color: #999;\n    cursor: default; }\n\n.live-editor .custom-cards {\n  margin-top: 1em; }\n\n.live-editor .custom-cards-bottom {\n  float: left;\n  width: 100%;\n  text-align: center;\n  margin-top: 0.5em; }\n\n.live-editor .canvases-scale {\n  margin-top: 0.375em;\n  float: left; }\n  .live-editor .canvases-scale .canvases-scale-percent {\n    margin-left: 0.5em;\n    color: #007AA2;\n    text-align: left;\n    width: 3.5em;\n    display: inline-block; }\n\n.live-editor .add-row-button {\n  font-weight: bold;\n  cursor: pointer;\n  float: right;\n  margin-right: 0.625em; }\n\n.live-editor .reset-to-defaults {\n  background-color: #FFC60E;\n  color: #000000; }\n  .live-editor .reset-to-defaults:before {\n    display: inline-block;\n    content: '\\21BB';\n    margin-right: 0.375em; }\n  .live-editor .reset-to-defaults:hover {\n    background-color: #FFD240; }\n    .live-editor .reset-to-defaults:hover:before {\n      -webkit-transform: rotate(360deg);\n      -moz-transform: rotate(360deg);\n      -ms-transform: rotate(360deg);\n      -o-transform: rotate(360deg);\n      transform: rotate(360deg); }\n\n.live-editor table {\n  width: 100%; }\n  .live-editor table input, .live-editor table select, .live-editor table textarea {\n    font-size: 1em;\n    width: 100%;\n    padding: 0.25em; }\n    .live-editor table input[type=number], .live-editor table select[type=number], .live-editor table textarea[type=number] {\n      width: 4em;\n      text-align: right; }\n    .live-editor table input[type=color], .live-editor table select[type=color], .live-editor table textarea[type=color] {\n      padding: 0;\n      background: transparent;\n      border: 0;\n      cursor: pointer; }\n      html[data-browser*=\"Chrome\"] .live-editor table input[type=color], html[data-browser*=\"Chrome\"] .live-editor table select[type=color], html[data-browser*=\"Chrome\"] .live-editor table textarea[type=color] {\n        height: 2em; }\n  .live-editor table input[type=checkbox] {\n    display: none; }\n    .live-editor table input[type=checkbox] + label:before {\n      font-weight: bold;\n      content: '\\A0';\n      cursor: pointer;\n      min-width: 1.5em;\n      padding: 0.25em 0.125em;\n      display: inline-block; }\n    .live-editor table input[type=checkbox]:checked + label:before {\n      content: '\\2713'; }\n  .live-editor table .column-logoScale input, .live-editor table .column-copyright input {\n    width: 3.75em; }\n  .live-editor table input[type=color] {\n    width: 5em; }\n  .live-editor table textarea {\n    height: 3.5em;\n    resize: none; }\n  .live-editor table .column-copyright input {\n    width: 4.5em; }\n  .live-editor table .column-type select, .live-editor table .column-type input, .live-editor table .column-subtype select, .live-editor table .column-subtype input {\n    width: 6em; }\n  .live-editor table .column-legal textarea {\n    width: 20em; }\n  .live-editor table .column-set input, .live-editor table .column-name input, .live-editor table .column-imageURL input, .live-editor table .column-logoURL input {\n    width: 8.75em; }\n  .live-editor table .column-cost input, .live-editor table .column-victoryPoints input {\n    width: 2.5em; }\n  .live-editor table .column-text {\n    width: 30em; }\n    .live-editor table .column-text textarea {\n      width: calc(100% - 1em); }\n  .live-editor table .column-delete > button {\n    font-weight: bold;\n    cursor: pointer; }\n  .live-editor table tr td {\n    text-align: center;\n    padding: 0;\n    opacity: 0; }\n    .live-editor table tr td > div {\n      max-height: 0;\n      margin: 0; }\n    .live-editor table tr td.error input {\n      border-color: #f82104;\n      background-color: #febab1; }\n  .live-editor table tr.shown > td {\n    opacity: 1; }\n    .live-editor table tr.shown > td > div {\n      margin: 0.5em;\n      max-height: 4.5em;\n      overflow: hidden;\n      box-sizing: border-box; }\n\n.live-editor .too-many-cards {\n  clear: both;\n  text-align: center;\n  padding-top: 1em;\n  max-height: 3em; }\n  .live-editor .too-many-cards .warning-block {\n    display: inline-block;\n    text-align: center;\n    background: #A17B00;\n    color: #ffffff;\n    padding: 0.5em;\n    border-radius: 0.75em; }\n    .live-editor .too-many-cards .warning-block a {\n      color: #FFDC6A; }\n      .live-editor .too-many-cards .warning-block a:hover, .live-editor .too-many-cards .warning-block a:focus {\n        color: #27C7FC; }\n  .live-editor .too-many-cards.collapsed {\n    max-height: 0em;\n    opacity: 0; }\n\n.live-editor .canvases {\n  text-align: center; }\n  .live-editor .canvases canvas {\n    margin: 0.75em;\n    display: inline-block;\n    opacity: 0;\n    max-height: 0;\n    max-width: 0;\n    overflow: hidden; }\n    .live-editor .canvases canvas.shown {\n      opacity: 1;\n      max-height: 1200px;\n      max-width: 900px; }\n\n.advanced-drawer-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.4);\n  opacity: 0;\n  pointer-events: none;\n  transition: opacity 0.2s ease;\n  z-index: 1000; }\n\n.advanced-drawer-overlay.open {\n  opacity: 1;\n  pointer-events: auto; }\n\n.advanced-drawer {\n  position: absolute;\n  top: 0;\n  right: 0;\n  width: 300px;\n  max-width: 85vw;\n  height: 100%;\n  background: #fff;\n  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);\n  transform: translateX(100%);\n  transition: transform 0.2s ease;\n  display: flex;\n  flex-direction: column; }\n\n.advanced-drawer-overlay.open .advanced-drawer {\n  transform: translateX(0); }\n\n.advanced-drawer-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 16px;\n  border-bottom: 1px solid #ddd;\n  font-weight: bold; }\n\n.advanced-drawer-header button {\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 16px; }\n\n.advanced-drawer-body {\n  padding: 16px;\n  display: flex;\n  flex-direction: column;\n  gap: 16px; }\n\n.advanced-drawer-field {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n  font-size: 14px; }\n\n.advanced-button {\n  cursor: pointer; }\n", ""]);
 
 // exports
 
@@ -5216,7 +5421,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
 /* 274 */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 id=\"custom-deck-builder\">Custom Deck Builder</h1>\n<h2 id=\"about-this-tool\">About This Tool</h2>\n<p>This application is a <strong>fan creation</strong> by <a href=\"https://github.com/JacobFischer/\">Jacob Fischer</a> with the sole intent of making it easier to try custom cards in Cryptozoic&#39;s Game Engine. It is open source and available on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>.</p>\n<p>No cards produced using this tool should be used to profit from. Instead please buy <a href=\"https://www.cryptozoic.com/\">Cryptozoic</a>&#39;s own deck building games utilizing their engine such as the DC Deck Building game, they are excellent.</p>\n<p>This project was produced mostly as a tool to help its author more easily prototype custom cards to try in <a href=\"http://store.steampowered.com/app/286160/Tabletop_Simulator/\">Table Top Simulator</a> with and around Cryptozoic&#39;s own titles, as well as an excuse to brush up on some technical skills.</p>\n<h2 id=\"technical-details\">Technical Details</h2>\n<p>This application is an <a href=\"https://en.wikipedia.org/wiki/Single-page_application\" title=\"Single-page Application\">SPA</a>. Once you load the page you have everything you need to build some custom cards. <strong>No</strong> data is saved on a server somewhere. All the processing is done and saved on your machine via your web browser. I&#39;m not interested in tracking you or stealing your data.</p>\n<p>This project was made using a variety of frameworks:</p>\n<ul>\n<li><strong><a href=\"https://www.typescriptlang.org/\" title=\"JavaScript with types\">TypeScript</a></strong>: The coding language used for pretty much everything in this project.</li>\n<li><strong><a href=\"http://sass-lang.com/\" title=\"Syntactically Awesome Style Sheets\">SASS</a></strong>: Used to control the style and most animations on this page.</li>\n<li><strong><a href=\"http://handlebarsjs.com/\" title=\"Simple HTML Templates\">Handlebars</a></strong>: Used to template the HTML layout and elements for all page sections.</li>\n<li><strong><a href=\"http://www.pixijs.com/\" title=\"2D graphics library for easily drawing cards\">PixiJS</a></strong>: Currently the best browser library for manipulating 2D graphics and images on canvases. Used to render the custom cards.</li>\n<li><strong><a href=\"https://www.npmjs.com/\" title=\"Node Package Manager\">NPM</a></strong>: The biggest and most popular JavaScript package manager, that hosts many of the smaller modules not explicitly mentioned here, but are still necessary to run.</li>\n<li><strong><a href=\"https://webpack.js.org/\">Webpack 2</a></strong>: What wraps all these things together into a single page. I used this opportunity to transition Webpack 1.x skills to 2.0.</li>\n</ul>\n<p>All the source code, commits, and resources are available freely on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>. All classes, methods, and exports and documented using well formed docstrings; so if you wish to modify this tool, do so to your heart&#39;s content!</p>\n<hr>\n<p>A live version of application is kept up to date on <a href=\"https://jacobfischer.github.io/Custom-Deck-Builder/\">https://jacobfischer.github.io/Custom-Deck-Builder/</a>. Check out that version if you are not interested in developing it yourself.</p>\n<h2 id=\"how-to-build\">How to Build</h2>\n<p>As this is a webpack project, you just need to build and deploy it. As with most projects ensure you have <a href=\"https://nodejs.org/\">Node.js</a> installed, then just:</p>\n<pre><code>npm install\nnpm run dev\n</code></pre><p>Then just in your browser navigate to <a href=\"http://localhost:8080/\">http://localhost:8080/</a></p>\n<p>Alternatively run <code>npm run build</code> to run webpack and save the output in the <code>built/</code> directory, and you can deploy the static assets at your will.</p>\n<p>2026 Package dependancies are outdated. Steps to run currently:</p>\n<p>nvm install 12\nnvm use 12\nnpm install\nnpm run dev</p>\n";
+module.exports = "<h1 id=\"custom-deck-builder\">Custom Deck Builder</h1>\n<h2 id=\"about-this-tool\">About This Tool</h2>\n<p>This application is a <strong>fan creation</strong> by <a href=\"https://github.com/JacobFischer/\">Jacob Fischer</a> with the sole intent of making it easier to try custom cards in Cryptozoic&#39;s Game Engine. It is open source and available on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>.</p>\n<p>No cards produced using this tool should be used to profit from. Instead please buy <a href=\"https://www.cryptozoic.com/\">Cryptozoic</a>&#39;s own deck building games utilizing their engine such as the DC Deck Building game, they are excellent.</p>\n<p>This project was produced mostly as a tool to help its author more easily prototype custom cards to try in <a href=\"http://store.steampowered.com/app/286160/Tabletop_Simulator/\">Table Top Simulator</a> with and around Cryptozoic&#39;s own titles, as well as an excuse to brush up on some technical skills.</p>\n<h2 id=\"technical-details\">Technical Details</h2>\n<p>This application is an <a href=\"https://en.wikipedia.org/wiki/Single-page_application\" title=\"Single-page Application\">SPA</a>. Once you load the page you have everything you need to build some custom cards. <strong>No</strong> data is saved on a server somewhere. All the processing is done and saved on your machine via your web browser. I&#39;m not interested in tracking you or stealing your data.</p>\n<p>This project was made using a variety of frameworks:</p>\n<ul>\n<li><strong><a href=\"https://www.typescriptlang.org/\" title=\"JavaScript with types\">TypeScript</a></strong>: The coding language used for pretty much everything in this project.</li>\n<li><strong><a href=\"http://sass-lang.com/\" title=\"Syntactically Awesome Style Sheets\">SASS</a></strong>: Used to control the style and most animations on this page.</li>\n<li><strong><a href=\"http://handlebarsjs.com/\" title=\"Simple HTML Templates\">Handlebars</a></strong>: Used to template the HTML layout and elements for all page sections.</li>\n<li><strong><a href=\"http://www.pixijs.com/\" title=\"2D graphics library for easily drawing cards\">PixiJS</a></strong>: Currently the best browser library for manipulating 2D graphics and images on canvases. Used to render the custom cards.</li>\n<li><strong><a href=\"https://www.npmjs.com/\" title=\"Node Package Manager\">NPM</a></strong>: The biggest and most popular JavaScript package manager, that hosts many of the smaller modules not explicitly mentioned here, but are still necessary to run.</li>\n<li><strong><a href=\"https://webpack.js.org/\">Webpack 2</a></strong>: What wraps all these things together into a single page. I used this opportunity to transition Webpack 1.x skills to 2.0.</li>\n</ul>\n<p>All the source code, commits, and resources are available freely on <a href=\"https://github.com/JacobFischer/Custom-Deck-Builder\">GitHub</a>. All classes, methods, and exports and documented using well formed docstrings; so if you wish to modify this tool, do so to your heart&#39;s content!</p>\n<hr>\n<p>A live version of application is kept up to date on <a href=\"https://jacobfischer.github.io/Custom-Deck-Builder/\">https://jacobfischer.github.io/Custom-Deck-Builder/</a>. Check out that version if you are not interested in developing it yourself.</p>\n<h2 id=\"how-to-build\">How to Build</h2>\n<p>As this is a webpack project, you just need to build and deploy it. As with most projects ensure you have <a href=\"https://nodejs.org/\">Node.js</a> installed, then just:</p>\n<pre><code>npm install\nnpm run dev\n</code></pre><p>Then just in your browser navigate to <a href=\"http://localhost:8080/\">http://localhost:8080/</a></p>\n<p>Alternatively run <code>npm run build</code> to run webpack and save the output in the <code>built/</code> directory, and you can deploy the static assets at your will.</p>\n<p>2026 Package dependancies are outdated. Steps to run currently:</p>\n<p>nvm install 12\nnvm use 12\nnpm install\nnpm run dev</p>\n<hr>\n<p>nvm use</p>\n<p>npm run build</p>\n<p>mkdir -p built/css</p>\n<p>cp node_modules/normalize.css/normalize.css built/css/normalize.css</p>\n<p>npx <a href=\"mailto:gh-pages@2.2.0\">gh-pages@2.2.0</a> -d built --dotfiles</p>\n";
 
 /***/ }),
 /* 275 */,
