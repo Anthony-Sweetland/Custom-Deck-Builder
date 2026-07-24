@@ -44,7 +44,13 @@ export const CardOptionsList: ICardOption[] = [
      {
         name: "destination",
         type: "number",
-        description: `For Villians for rebirth 1-5`
+        description: `For Villains for rebirth 1-5`
+            ,
+    },
+    {
+        name: "bribe",
+        type: "number",
+        description: `bribe value`
             ,
     },
 
@@ -71,6 +77,22 @@ export const CardOptionsList: ICardOption[] = [
         name: "Cost",
         type: "number",
         description: `How much this card costs. Ignored on Oversized cards.`,
+    },
+    {
+        name: "ConditionalCost",
+        type: "checkbox",
+        description: `If enabled, an asterisk * will appear after the cost `
+                   + `the condtition that affects the cost should be written in the card text `                  
+    },
+     {
+        name: "ConditionalVP",
+        type: "checkbox",
+        description: `If enabled, an asterisk * will appear in place of the VP `
+    },
+     {
+        name: "Transformed",
+        type: "checkbox",
+        description: `If enabled, Transformed card template for Starter, Hero, Villain, or Equipment`             
     },
     {
         name: "Text",
@@ -124,7 +146,7 @@ export const CardOptionsList: ICardOption[] = [
         name: "Subtype",
         type: "text",
         description: `An additional type describing the card, `
-                   + ` Try METAL or CONSTRUCT or CONDITIONAL COST or CONDITIONAL VP in caps, CURSED (weakness variant).`,
+                   + ` Try METAL or CONSTRUCT or SIDE MISSION in caps, CURSED (weakness variant).`,
     },
     {
         name: "Set",

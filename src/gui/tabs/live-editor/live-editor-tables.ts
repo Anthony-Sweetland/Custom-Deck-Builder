@@ -8,8 +8,8 @@ function addTitlesTo(columns: IColumnData[]): void {
     for (const column of columns) {
         let name: string = column.name;
 
-        if (name === "Delete") {
-            continue; // skip, special column we add that is not a normal option
+        if (name === "Delete" || name === "Advanced" || !CardOptions[name]) {
+            continue; // skip special columns and any option without a CardOptions entry
         }
 
         if (name === "VP") {
@@ -24,6 +24,10 @@ function addTitlesTo(columns: IColumnData[]): void {
 const deleteButton = document.createElement("button");
 deleteButton.innerHTML = "&#x2716;";
 deleteButton.setAttribute("title", "Delete this row");
+const advancedButton = document.createElement("button");
+advancedButton.innerHTML = "&#x2699;"; // gear icon
+advancedButton.setAttribute("title", "Advanced card options");
+advancedButton.classList.add("advanced-button");
 
 /** the headings for the cards defaults table on the LiveEditorTable */
 export const defaultsHeadings: IColumnData[] = [
@@ -86,14 +90,16 @@ export const defaultsRows: IRowValues[] = [
     },*/
 ];
 
-/** the headings for the custom cards table on the LiveEditorTable */
+/** the headings for the custom cards table on the LiveEditorTable 
+ * note fields in the advanced sidebar are defined in live-editor.ts
+*/
 export const cardsHeadings: IColumnData[] = [
     {
         name: "Name",
     },
     {
         name: "Type",
-        allowedValues: ["Equipment", "Hero", "Hostage", "Location", "Starter", "Super Power", "Villain", "Typeless", "Basic", "Weakness", "Super Move", "Crisis", "startertransformed", "equipmenttransformed", "herotransformed", "villaintransformed"],
+        allowedValues: ["Equipment", "Hero", "Hostage", "Location", "Starter", "Super Power", "Villain", "Typeless", "Basic", "Weakness", "Super Move", "Crisis"],
     },
     {
         name: "Text",
@@ -111,6 +117,7 @@ export const cardsHeadings: IColumnData[] = [
     {
         name: "Subtype",
     },
+   /*moved these fields to advanced
     {
         name: "Variant",
         type: "boolean",
@@ -129,6 +136,13 @@ export const cardsHeadings: IColumnData[] = [
             max: 5,
             step: 1,
         },
+    },
+    */
+    {
+        name: "Advanced",
+        id: "advanced",
+        type: "node",
+        defaultValue: advancedButton,
     },
     {
         name: "Oversized",

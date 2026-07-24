@@ -67,14 +67,19 @@ export class Card {
 
     /** If this card is a variant with black background text */
     public variant: boolean = false;
-
+    /** If this card has a ConditionalCost */
+    public ConditionalCost: boolean = false;
+    /** If this card has a ConditionalVP */
+    public ConditionalVP: boolean = false;
+    /** If this card is Transformed */
+    public Transformed: boolean = false;
     /** If this card has a banner with background for text, how many rows to cover and the color */
     public Bannerrows: number = 0;
 
     /** Destination for rebirth */
-    public destination: number = 1;
-       /** Bribe */
-    public bribe: number = this.destination;
+    public destination: number = 0;
+       /** bribe */
+    public bribe: number = 0;
 
     /** If this card is oversized */
     public oversized: boolean = false;
@@ -300,21 +305,20 @@ export class Card {
         let imageTop = 117;
 
         if (this.oversized && this.type === "Location") {
-        imageMaxWidth = 1200;
-        imageMaxHeight = 500;
-        imageTop = 136;
-    }
-      
+            imageMaxWidth = 1200;
+            imageMaxHeight = 500;
+            imageTop = 136;
+        }
        else if (this.oversized) {
             imageMaxWidth = 900;
             imageMaxHeight = 741;
             imageTop = 216;
         }
         else if (this.type === "Crisis") {
-        imageMaxWidth = 750;
-        imageMaxHeight = 600;
-        imageTop = 80;
-    }
+            imageMaxWidth = 750;
+            imageMaxHeight = 600;
+            imageTop = 80;
+        }
 
 
        const backgroundImage = newSprite(this.imageURL, this.container);
@@ -350,22 +354,22 @@ export class Card {
         if (!this.type) {
             return;
         }
-         
-        if (this.variant && this.oversized && this.type==="Hero"){
-        newSprite("oversizedcrisishero", this.container)
+        else if (this.variant && this.oversized && this.type==="Hero") {
+            newSprite("oversizedcrisishero", this.container)
         }
         else if(this.variant && this.oversized && this.type==="Villain") {
             newSprite("oversizedcrisisvillain", this.container)
         }
-
-        else if (this.type === "Location" && this.oversized) 
-            {
+        else if (this.type === "Location" && this.oversized) {
              newSprite("oversizedlocation", this.container)
             }
-
         else {
         let backgroundType: string = this.type;
-               
+        
+        if(this.type === "Hero" || this.type === "Equipment" || this.type === "Villain"  || this.type === "Starter"){
+            if(this.Transformed){backgroundType = `${this.type}transformed`;}
+        }
+        
         if (this.variant || this.oversized) {
             if (this.type === "Hero" || this.type === "Villain") {
                 backgroundType = `Super-${this.type}`;
@@ -374,10 +378,14 @@ export class Card {
         if (this.oversized) {
             backgroundType = `Oversized-${backgroundType}`;
         }
-
+        
+        
+        
         newSprite(backgroundType.replace(" ", "-").toLowerCase(), this.container);
 
-        if (this.variant && !this.oversized) {
+
+        // in the below block !this.Transformed doesn't seem to be working
+        if (this.variant && !this.oversized && !this.Transformed) {
             // draw a black box behind the text
             const graphics = new PIXI.Graphics();
             graphics.beginFill(0x000000); // black
@@ -385,11 +393,10 @@ export class Card {
             graphics.endFill();
             this.container.addChild(graphics);
         }
- 
-        }
+         }
 
         if (this.variant && this.oversized && this.type==="Location") {
-            // draw a black box behind the text
+            // draw a black box behind the text for oversized Location variant
             const graphics = new PIXI.Graphics();
             graphics.beginFill(0x000000); // black
             graphics.drawRect(0, 689, 1200, 120);
@@ -401,7 +408,7 @@ export class Card {
         if (!this.type) {
             return;
         }
-        const banners = String(this.Bannerrows);        
+      //  const banners = String(this.Bannerrows);        
         ///// Banners
          if (this.Bannerrows === 2 && !this.oversized) {
          // draw a blue box behind the text
@@ -624,7 +631,7 @@ if (cardName.width > maxWidth) {
      * Renders the type part of the card (text, not background)
      */
   private renderType(): void {
-        if (this.oversized || this.type === "Weakness"|| this.type === "Hostage"|| this.type === "Crisis"|| this.type === "Basic"|| this.type === "Typeless"|| this.type === "startertransformed" || this.type === "equipmenttransformed" || this.type === "herotransformed"|| this.type === "villaintransformed") {
+        if (this.oversized || this.type === "Weakness"|| this.type === "Hostage"|| this.type === "Crisis"|| this.type === "Basic"|| this.type === "Typeless" || this.Transformed) {
             return;
         }
 
@@ -672,8 +679,8 @@ else{
     else if(this.subtype === "CURSED" && this.variant === true && this.type === "Weakness"){
      newSprite("backgroundcursed", this.container);
     }
-  //Conditional VP is setup in VP section, and Cost in cost section, this line just prevents the subtype from showing.
-    else if(this.subtype === "CONDITIONAL VP" || this.subtype === "CONDITIONAL COST" || this.subtype === "SIDE MISSION"|| this.subtype === "BRIBE"){
+  //Conditional VP is setup in VP section, this line just prevents the subtype from showing.
+    else if(this.subtype === "CONDITIONAL VP" || this.subtype === "SIDE MISSION"){
         return;
     }
 
@@ -709,7 +716,7 @@ else{
         }
 
         newSprite("background-cost", this.container);
-        if(this.subtype ===  "CONDITIONAL COST") 
+        if(this.ConditionalCost === true) 
                     {// card's cost back
                         const cardCostBackStyle = this.getStyle("cost");
                         const cardCostBackText = new PIXI.Text(
@@ -826,7 +833,7 @@ private renderDestination(): void {
     }
 // render bribe
 private renderbribe(): void {
-        if (this.oversized|| this.destination == 0 || this.subtype !== "BRIBE") {
+        if (this.oversized|| this.bribe == 0) {
             return;
         }
 newSprite("backgroundbribe", this.container);
@@ -834,7 +841,7 @@ newSprite("backgroundbribe", this.container);
  // bribe text
         const cardCostFrontStyle = this.getStyle("bribe");
         const cardCostFrontText = new PIXI.Text(
-            String(this.destination),
+            String(this.bribe),
             cardCostFrontStyle,
         );
 cardCostFrontText.pivot.x = cardCostFrontText.width / 2;
@@ -906,7 +913,7 @@ cardCostFrontText.pivot.x = cardCostFrontText.width / 2;
         if (this.victoryPoints === "*") {
             newSprite("vp-variable", this.container);
         }
-else if(this.subtype == "CONDITIONAL VP"){
+else if(this.ConditionalVP){
      newSprite("vp-variable", this.container);
     }
 
@@ -959,13 +966,16 @@ else if(this.subtype == "CONDITIONAL VP"){
         else {
             collisions.push(vpCircle);
         }
-if (this.oversized && this.type === "Location") {
+        if (this.oversized && this.type === "Location") {
             y = 695;
             maxWidth = 1100;
             maxHeight = 120 - 14 * 2;
         }
         const style = this.getStyle("text");
         if (this.variant && !this.oversized) {
+            style.fill = "#ffffff";
+        }
+        if (this.Transformed) {
             style.fill = "#ffffff";
         }
         if (!this.variant && this.oversized && this.type === "Location") {
@@ -986,10 +996,8 @@ if (this.oversized && this.type === "Location") {
         );
 
         textContainer.position.set(x, y);
-
         this.container.addChild(textContainer);
     }
-
 
 
     /**
@@ -1005,12 +1013,12 @@ if (this.oversized && this.type === "Location") {
         const style = this.getStyle("set");
         style.fill = this.setTextColor || "#ffffff";
         const set = new PIXI.Text(this.set.toUpperCase(), style);
-
         set.scale.y *= 0.75;
         set.pivot.set(set.width, set.height);
+
         if (this.oversized && this.type === "Location") {
             set.position.x = copyright.x - copyright.width - 16;
-            set.position.y = 810 - set.height;
+            set.position.y = 865 - set.height;
         }
         else if (this.oversized) {
             // note these and other numbers were found via pixel coordinates
@@ -1018,7 +1026,6 @@ if (this.oversized && this.type === "Location") {
             set.position.x = copyright.x - copyright.width - 16;
             set.position.y = 1171 - set.height;
         }
-        
         else {
             set.position.set(550, 934);
         }
@@ -1055,7 +1062,7 @@ if (this.oversized && this.type === "Location") {
         let y = 980;
         if (this.oversized && this.type === "Location") {
             maxWidth = 182;
-            x = 900 - 37;
+            x = 1200 - 37;
             y = 830;
         }
         
@@ -1067,11 +1074,6 @@ if (this.oversized && this.type === "Location") {
         
 
         const style = this.getStyle("copyright");
-        // no longer relevant now that copyright is out of text box??
-        //        if (this.variant && !this.oversized) {
-        //      style.fill = "#ffffff";
-        //        }
-
 
         const copyright = wrapStyledText(`©${this.copyright}`, maxWidth, style);
 
@@ -1098,12 +1100,8 @@ if (this.oversized && this.type === "Location") {
         let y = 954;
         const style = this.getStyle("legal");
         let legal: PIXI.Container;
-if(this.oversized && this.type === "Location") {
-            maxWidth = 824;
-            x = 600;
-            y = 830;
-        }
-       else if (this.oversized) {
+
+       if (this.oversized) {
             maxWidth = 824;
             x = 37;
             y = 1136;
@@ -1122,6 +1120,11 @@ if(this.oversized && this.type === "Location") {
                 style,
                 0.25,
             );
+        }
+        if(this.oversized && this.type === "Location") {
+            maxWidth = 824;
+            x = 37;
+            y = 830;
         }
         else {
             // no need to auto size on none oversized cards
